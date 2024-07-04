@@ -8,6 +8,7 @@ const useApi = (name?: string) => {
 
     const [data, setData] = useState<any>();
     const [error, setError] = useState<any>();
+    const [rawData, setRawData] = useState<IReturnPayload>();
     const { loadingControl, logout: removeToken } = useContext(AppContext);
 
     const sendRequest = async (reqModal: ApiRequestModel): Promise<IReturnPayload | undefined> => {
@@ -28,6 +29,7 @@ const useApi = (name?: string) => {
 
                 if (fetched?.data.status_code === 200) {
                     setData(fetched?.data.data)
+                    setRawData(fetched.data)
                 } else {
                     setData(undefined)
                 }
@@ -40,9 +42,9 @@ const useApi = (name?: string) => {
         }
     }
 
-    useEffect(() => { }, [data, error])
+    useEffect(() => { }, [rawData, data, error])
 
-    return { data, sendRequest, error }
+    return { data, sendRequest, error, rawData }
 }
 
 export default useApi;

@@ -1,3 +1,3 @@
 export * from './home'
 export * from './profile'
-export * from './auth/login'
+export * from './auth/auth'

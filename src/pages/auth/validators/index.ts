@@ -1,0 +1,18 @@
+import * as Yup from 'yup';
+
+export const registerValidationSchema = Yup.object().shape({
+    username: Yup.string().required(),
+    emph: Yup.string().required(),
+    password: Yup.string()
+        .required('Password is required')
+        .min(6, 'Password must be at least 6 characters'),
+    confirm_password: Yup.string()
+        .oneOf([Yup.ref('password')], 'Passwords must match')
+        .required('Confirm Password is required')
+});
+
+export const loginValidationSchema = Yup.object().shape({
+    emph: Yup.string().required(),
+    password: Yup.string()
+        .required('Password is required')
+});

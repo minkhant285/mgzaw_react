@@ -1,22 +1,25 @@
-import React, { useContext, useState } from 'react'
-import StyledButton from '../../components/button'
+import { useContext } from 'react'
 import useApi from '../../hooks/useApi';
 import { AppContext } from '../../providers/app.provider';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { LoginResult } from '../../models';
-import { useForm, SubmitHandler } from "react-hook-form";
+import { Link } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { loginValidationSchema } from './validators';
 
 type Inputs = {
     emph: string,
-    pass: string,
+    password: string,
 };
-
 
 function Login() {
 
     const { token, saveToken, logout: removeToken } = useContext(AppContext);
     const login = useApi();
 
-    const { register, handleSubmit, watch, getValues, formState: { errors, isValid, }, getFieldState } = useForm<Inputs>();
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        resolver: yupResolver(loginValidationSchema)
+    });
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         if (token) {
             removeToken();
@@ -28,7 +31,7 @@ function Login() {
                 method: 'POST',
                 data: {
                     'phemail': data.emph,
-                    'password': data.pass
+                    'password': data.password
                 }
             }) as LoginResult;
 
@@ -40,52 +43,36 @@ function Login() {
     }
 
     return (
-        <React.Fragment>
 
 
-
-            <React.Fragment>
-                <div className='flex flex-1 bg-tertiary p-16 px-44'>
-
-                    <div className='bg-white flex-1 p-5'>
-                    </div>
-                    <div className='w-1/3 bg-secondary flex justify-center items-center'>
-
-                        <div className="bg-primary gap-8 w-fit h-fit p-5 rounded-lg flex flex-col justify-around items-center ">
+        <div className=" gap-8 w-fit h-fit p-5 rounded-lg flex flex-col justify-around items-center ">
 
 
+            {login.error && <div style={{ backgroundColor: '#e16161', padding: 16, borderRadius: 10, fontSize: '0.8em', maxWidth: 400, overflow: 'auto' }}>
+                {login.error}
+            </div>
+                // :JSON.stringify(login.data, null, 2)
+            }
 
-                            <div style={{ backgroundColor: 'yellowgreen', fontSize: '0.8em', maxWidth: 400, overflow: 'auto' }}>
-                                {login.error && login.error
-                                    // :JSON.stringify(login.data, null, 2)
-                                }
-                            </div>
+            <h3 className="text-white text-2xl font-bold underline ">
+                React Base Login Here
+            </h3>
+            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center'>
+                <input {...register("emph", { required: true })} placeholder="Email or Phone" className="bg-gray-400 m-3 p-2 rounded-sm" />
+                {errors.emph && <span className='text-[#af3939]'>{errors.emph.message}</span>}
+                <input {...register("password", { required: true })} type="text" placeholder="Password" className="bg-gray-400 m-3 p-2 rounded-sm" />
+                {errors.password && <span className='text-[#af3939]'>{errors.password.message}</span>}
+                <br />
+                <button className='bg-primary p-2 rounded-md text-white px-5'
+                    type='submit'
+                >Login</button>
 
+            </form>
 
-                            <h3 className="text-2xl font-bold underline dark:text-white">
-                                React Base Login Here
-                            </h3>
-                            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center'>
-                                <input {...register("emph", { required: true })} placeholder="Email or Phone" className="bg-gray-400 m-3 p-2 rounded-sm" />
-                                {errors.emph && <span className='text-[#af3939]'>This field is required</span>}
-                                <input {...register("pass", { required: true })} type="text" placeholder="Password" className="bg-gray-400 m-3 p-2 rounded-sm" />
-                                {errors.pass && <span className='text-[#af3939]'>This field is required</span>}
-                                {/* <input {...register("exampleRequired", { required: true })} type="text" value={emph} onChange={(e) => setEMPH(e.target.value)} placeholder="Email or Phone" className="bg-gray-400 m-3 p-2 rounded-sm" />
-                                <input {...register("example")} type="text" value={pass} onChange={(e) => setPass(e.target.value)} placeholder="Password" className="bg-gray-400 m-3 p-2 rounded-sm" /> */}
+            <Link to="/register" style={{ color: '#2974de', textDecoration: 'underline' }}>Don't Have an Account? Sign Up Here</Link>
+            <Link to="/forgotpass" style={{ color: '#2974de', textDecoration: 'underline' }}>Forgot Password? Reset Here</Link>
+        </div>
 
-                                <br />
-                                <button className='bg-secondary p-2 rounded-md text-white'
-                                    type='submit'
-                                >{token ? 'Logout' : 'Login'}</button>
-
-                            </form>
-
-                            <span>Don't Have an Account? Sign Up Here</span>
-                        </div>
-                    </div>
-                </div>
-            </React.Fragment>
-        </React.Fragment>
     )
 }
 

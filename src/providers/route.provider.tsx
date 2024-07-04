@@ -7,12 +7,12 @@ import {
 } from "react-router-dom";
 import Loading from '../components/loading';
 import { AppContext } from './app.provider';
-import Login from '../pages/auth/login';
 import AppBar from '../components/appbar';
 import Home from '../pages/home';
 import Landing from '../pages/landing';
 import Profile from '../pages/profile';
 import About from '../pages/about';
+import Auth from '../pages/auth/auth';
 
 const AppRouteProvider: React.FC = () => {
 
@@ -57,7 +57,29 @@ const AppRouteProvider: React.FC = () => {
                 }
                 return 0;
             },
-            element: <RouterRender component={<Login />} />,
+            element: <RouterRender component={<Auth />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/register",
+            loader: () => {
+                if (token) {
+                    return redirect('/home')
+                }
+                return 0;
+            },
+            element: <RouterRender component={<Auth />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/forgotpass",
+            loader: () => {
+                if (token) {
+                    return redirect('/home')
+                }
+                return 0;
+            },
+            element: <RouterRender component={<Auth />} />,
             errorElement: <div>Error</div>,
         }
     ]);
