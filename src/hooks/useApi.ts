@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { ThemeContext } from "../providers/app.provider";
+import { AppContext } from "../providers/app.provider";
 import { ApiInstance } from "../services";
 import { ApiRequestModel } from '../services/api_instance';
 import { IReturnPayload } from "../models";
@@ -8,7 +8,7 @@ const useApi = (name?: string) => {
 
     const [data, setData] = useState<any>();
     const [error, setError] = useState<any>();
-    const { loadingControl, removeToken } = useContext(ThemeContext);
+    const { loadingControl, logout: removeToken } = useContext(AppContext);
 
     const sendRequest = async (reqModal: ApiRequestModel): Promise<IReturnPayload | undefined> => {
         loadingControl(true);

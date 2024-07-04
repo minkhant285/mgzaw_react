@@ -1,11 +1,11 @@
-import { ThemeProvider } from "./providers/app.provider";
+import { AppProvider } from "./providers/app.provider";
 import AppRouteProvider from "./providers/route.provider";
 
 function App() {
     return (
-        <ThemeProvider>
+        <AppProvider>
             <AppRouteProvider />
-        </ThemeProvider>
+        </AppProvider>
     )
 }
 

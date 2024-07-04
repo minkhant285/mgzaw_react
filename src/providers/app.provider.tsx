@@ -3,29 +3,29 @@ import React, { createContext, useState, useContext } from 'react';
 import { IUser } from '../models';
 import { AppStorage } from '../utils';
 
-export const ThemeContext = createContext<{
+export const AppContext = createContext<{
     theme: string;
     appLoading: boolean;
-    token: string;
+    token: string | undefined;
     userInfo: IUser | {};
     toggleTheme: (themeVal: string) => void;
     loadingControl: (val: boolean) => void;
     saveToken: (token: string) => void;
-    removeToken: () => void;
+    logout: () => void;
     saveUserInfo: (info: IUser) => void;
 }>({
     theme: 'default',
     appLoading: false,
-    token: '',
+    token: undefined,
     userInfo: {},
     saveToken: () => { },
-    removeToken: () => { },
+    logout: () => { },
     saveUserInfo: () => { },
     toggleTheme: () => { },
     loadingControl: () => { }
 });
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const storage = new AppStorage();
     const [theme, setTheme] = useState(storage.getTheme());
     const [appLoading, setAppLoading] = useState(false);
@@ -38,18 +38,17 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }, [theme, appLoading]);
 
     return (
-        <ThemeContext.Provider value={{
+        <AppContext.Provider value={{
             theme,
             userInfo: user,
             token,
             appLoading,
             saveToken: (token: string) => {
-                console.log("saved token", token)
                 setToken(token);
                 storage.setToken(token);
 
             },
-            removeToken: () => {
+            logout: () => {
                 storage.removeToken();
                 setToken('');
                 setUser({});
@@ -66,8 +65,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             }
         }}>
             {children}
-        </ThemeContext.Provider>
+        </AppContext.Provider>
     );
 };
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => useContext(AppContext);

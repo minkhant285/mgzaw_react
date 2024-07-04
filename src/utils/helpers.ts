@@ -16,7 +16,7 @@ export class AppStorage {
     }
 
     getToken = () => {
-        return localStorage.getItem(this.tokenKey) || '';
+        return localStorage.getItem(this.tokenKey) || undefined;
     }
 
     removeToken = () => {

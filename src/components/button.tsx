@@ -1,9 +1,9 @@
 import { useContext } from 'react'
-import { ThemeContext } from '../providers/app.provider'
+import { AppContext } from '../providers/app.provider'
 
 function StyledButton() {
 
-    const { toggleTheme } = useContext(ThemeContext);
+    const { toggleTheme } = useContext(AppContext);
 
     return (
         <div>
