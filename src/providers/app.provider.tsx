@@ -7,18 +7,18 @@ export const AppContext = createContext<{
     theme: string;
     appLoading: boolean;
     token: string | undefined;
-    userInfo: IUser | {};
+    userInfo: IUser | undefined;
     toggleTheme: (themeVal: string) => void;
     loadingControl: (val: boolean) => void;
-    saveToken: (token: string) => void;
+    saveAuth: (token: string, info: IUser | undefined) => void;
     logout: () => void;
     saveUserInfo: (info: IUser) => void;
 }>({
     theme: 'default',
     appLoading: false,
     token: undefined,
-    userInfo: {},
-    saveToken: () => { },
+    userInfo: undefined,
+    saveAuth: () => { },
     logout: () => { },
     saveUserInfo: () => { },
     toggleTheme: () => { },
@@ -29,7 +29,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const storage = new AppStorage();
     const [theme, setTheme] = useState(storage.getTheme());
     const [appLoading, setAppLoading] = useState(false);
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState<IUser | undefined>(storage.getUserInfo());
     const [token, setToken] = useState(storage.getToken());
 
 
@@ -43,15 +43,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             userInfo: user,
             token,
             appLoading,
-            saveToken: (token: string) => {
+            saveAuth: (token: string, userInfo: IUser | undefined) => {
                 setToken(token);
                 storage.setToken(token);
-
+                setUser(userInfo);
+                storage.setUserInfo(userInfo);
             },
             logout: () => {
                 storage.removeToken();
                 setToken('');
-                setUser({});
+                storage.setUserInfo(undefined);
+                setUser(undefined);
             },
             toggleTheme: (themeVal: string) => {
                 setTheme(themeVal);
@@ -60,8 +62,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             loadingControl: (val: boolean) => {
                 setAppLoading(val);
             },
-            saveUserInfo: (userInfo: IUser) => {
+            saveUserInfo: (userInfo: IUser | undefined) => {
                 setUser(userInfo);
+                storage.setUserInfo(userInfo);
             }
         }}>
             {children}

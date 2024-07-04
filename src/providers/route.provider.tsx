@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
     createBrowserRouter,
     LoaderFunction,
@@ -13,6 +13,8 @@ import Landing from '../pages/landing';
 import Profile from '../pages/profile';
 import About from '../pages/about';
 import Auth from '../pages/auth/auth';
+import useApi from '../hooks/useApi';
+import { UserInfoResult } from '../models';
 
 const AppRouteProvider: React.FC = () => {
 
@@ -92,7 +94,21 @@ const AppRouteProvider: React.FC = () => {
 export default AppRouteProvider;
 
 const RouterRender: React.FC<{ component: React.ReactNode }> = ({ component }) => {
-    const { appLoading } = useContext(AppContext);
+    const { appLoading, userInfo, saveUserInfo, token } = useContext(AppContext);
+    const allusers = useApi('getUser');
+
+    useEffect(() => {
+        (async () => {
+            if (!userInfo && token) {
+                let r = await allusers.sendRequest({
+                    url: `user`,
+                    method: 'GET',
+                }) as UserInfoResult;
+                saveUserInfo(r.data);
+                console.log("main user info called", userInfo)
+            }
+        })()
+    }, [allusers.data])
 
     return <div className='bg-background flex flex-col   top-0 left-0 right-0 bottom-0 absolute'>
         {appLoading && <Loading />}

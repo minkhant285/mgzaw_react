@@ -2,10 +2,11 @@ import { useContext } from 'react'
 import useApi from '../../hooks/useApi';
 import { AppContext } from '../../providers/app.provider';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { LoginResult } from '../../models';
+import { LoginResult, UserInfoResult } from '../../models';
 import { Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginValidationSchema } from './validators';
+import { AppStorage } from '../../utils';
 
 type Inputs = {
     emph: string,
@@ -14,15 +15,16 @@ type Inputs = {
 
 function Login() {
 
-    const { token, saveToken, logout: removeToken } = useContext(AppContext);
+    const { token, saveAuth, logout } = useContext(AppContext);
     const login = useApi();
+    const user = useApi();
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
         resolver: yupResolver(loginValidationSchema)
     });
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         if (token) {
-            removeToken();
+            logout();
             console.log("Logout")
 
         } else {
@@ -36,7 +38,12 @@ function Login() {
             }) as LoginResult;
 
             if (result.status_code !== 400 && result.data.token) {
-                saveToken(result.data.token)
+                new AppStorage().setToken(result.data.token);
+                let r = await user.sendRequest({
+                    url: `user`,
+                    method: 'GET',
+                }) as UserInfoResult;
+                saveAuth(result.data.token, r.data);
             }
         }
 
