@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { ThemeContext } from '../providers/Theme.provider'
+import { ThemeContext } from '../providers/app.provider'
 
 function StyledButton() {
 

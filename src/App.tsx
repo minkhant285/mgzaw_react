@@ -1,10 +1,10 @@
-import Home from "./pages/home";
-import { ThemeProvider } from "./providers/Theme.provider";
+import { ThemeProvider } from "./providers/app.provider";
+import AppRouteProvider from "./providers/route.provider";
 
 function App() {
     return (
         <ThemeProvider>
-            <Home />
+            <AppRouteProvider />
         </ThemeProvider>
     )
 }
