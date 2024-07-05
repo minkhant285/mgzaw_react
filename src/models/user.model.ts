@@ -6,6 +6,6 @@ export interface IUser {
     phone?: string;
     gender: string;
     photoUrl: string;
-    dob: Date;
+    dob: Date | null;
 }
 

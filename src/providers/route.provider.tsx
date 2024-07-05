@@ -10,11 +10,12 @@ import { AppContext } from './app.provider';
 import AppBar from '../components/appbar';
 import Home from '../pages/home';
 import Landing from '../pages/landing';
-import Profile from '../pages/profile';
+import Profile from '../pages/profile/profile';
 import About from '../pages/about';
 import Auth from '../pages/auth/auth';
 import useApi from '../hooks/useApi';
 import { UserInfoResult } from '../models';
+import ComponentPage from '../pages/component/component';
 
 const AppRouteProvider: React.FC = () => {
 
@@ -32,6 +33,11 @@ const AppRouteProvider: React.FC = () => {
         {
             path: "/",
             element: <RouterRender component={<Landing />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/components",
+            element: <RouterRender component={<ComponentPage />} />,
             errorElement: <div>Error</div>,
         },
         {
@@ -95,12 +101,12 @@ export default AppRouteProvider;
 
 const RouterRender: React.FC<{ component: React.ReactNode }> = ({ component }) => {
     const { appLoading, userInfo, saveUserInfo, token } = useContext(AppContext);
-    const allusers = useApi('getUser');
+    const user = useApi('getUser');
 
     useEffect(() => {
         (async () => {
             if (!userInfo && token) {
-                let r = await allusers.sendRequest({
+                let r = await user.sendRequest({
                     url: `user`,
                     method: 'GET',
                 }) as UserInfoResult;
@@ -108,7 +114,7 @@ const RouterRender: React.FC<{ component: React.ReactNode }> = ({ component }) =
                 console.log("main user info called", userInfo)
             }
         })()
-    }, [allusers.data])
+    }, [user.data])
 
     return <div className='bg-background flex flex-col   top-0 left-0 right-0 bottom-0 absolute'>
         {appLoading && <Loading />}

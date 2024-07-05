@@ -1,16 +1,11 @@
-import { useContext } from 'react'
-import { AppContext } from '../providers/app.provider'
-
-function StyledButton() {
-
-    const { toggleTheme } = useContext(AppContext);
+const StyledButton: React.FC<
+    React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
+> = (props) => {
 
     return (
-        <div>
-            <button type="submit" onClick={() => toggleTheme('default')} className="bg-primary p-3" >default</button>
-            <button type="submit" onClick={() => toggleTheme('green')} className="bg-success p-3" >green</button>
-            <button type="submit" onClick={() => toggleTheme('blue')} className="bg-secondary p-3" >blue</button>
-        </div>
+        <button className="bg-primary p-2 text-white px-6 rounded-md w-fit hover:bg-[#f00]" {...props}>
+            {props.children}
+        </button>
     )
 }
 

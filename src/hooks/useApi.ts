@@ -9,7 +9,7 @@ const useApi = (name?: string) => {
     const [data, setData] = useState<any>();
     const [error, setError] = useState<any>();
     const [rawData, setRawData] = useState<IReturnPayload>();
-    const { loadingControl, logout: removeToken } = useContext(AppContext);
+    const { loadingControl, logout } = useContext(AppContext);
 
     const sendRequest = async (reqModal: ApiRequestModel): Promise<IReturnPayload | undefined> => {
         loadingControl(true);
@@ -18,10 +18,11 @@ const useApi = (name?: string) => {
             loadingControl(false);
             // console.log(fetched)
             if (fetched) {
-                if (fetched.data.status_code === 401 && name === 'getUser') {
-                    removeToken()
+                if (fetched.data.status_code === 401) {
+                    alert('Session Expired! PlEASE Login Again!');
+                    logout();
                 }
-                if (fetched?.data.status_code === 400 || fetched?.data.status_code === 401) {
+                if (fetched?.data.status_code === 400) {
                     setError(fetched?.data.message);
                 } else {
                     setError(undefined)

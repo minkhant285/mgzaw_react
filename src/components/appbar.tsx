@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { AppContext } from "../providers/app.provider"
 import { useNavigate } from "react-router-dom";
+import { envLoader } from "../utils";
 
 function AppBar() {
 
@@ -9,16 +10,16 @@ function AppBar() {
 
     return (
         <div className='bg-primary h-14 p-7 flex justify-between items-center'>
-            <h3 className=" text-white  font-bold text-2xl">
+            <h3 className="text-white  font-bold text-lg ">
                 Base React App
             </h3>
             {token && userInfo && <div className="flex items-center cursor-pointer" onClick={() => navigation('/profile')}>
-                <span className="text-white text-1sm">
+                <span className="text-white text-xs hidden md:block">
                     {userInfo?.username}
                 </span>
                 <div>
                     <img
-                        src="https://img.freepik.com/premium-vector/cartoon-style-emoji-character-girl-profile-photo-icon-women-portraits-user-photo_750364-52.jpg"
+                        src={`http://${envLoader.host}:${envLoader.port}/image/${userInfo?.photoUrl}`}
                         style={{ objectFit: 'contain', borderRadius: 50, marginLeft: 10 }}
                         width={30}
                         height={30}

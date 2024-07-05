@@ -6,11 +6,13 @@ export interface ApiRequestModel {
     method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH';
     data?: any;
     customUrl?: string;
-    headerOptions?: 'GOOGLE' | 'FACEBOOK' | 'TIKTOK'
+    headerOptions?: 'GOOGLE' | 'FACEBOOK' | 'TIKTOK';
+    contentType?: 'multipart/form-data' | 'application/json';
 }
 
 export async function ApiInstance(reqModal: ApiRequestModel) {
     const token = new AppStorage().getToken();
+    // const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiZDJiM2EwMmUtNzE2MC00NTMzLTk5MGEtZDBhOWY5MDk3Yjk1IiwidXNlcm5hbWUiOiJXYWkgTWFyIEx3aW4ifSwiaWF0IjoxNzE5OTc2ODc1LCJleHAiOjE3MTk5ODA0NzV9.Pw6Z9Q8G9KPzTiQIDWvsRJfX6M5NanI6KJf3oKqevvw`
     try {
         const response = await axios({
             method: reqModal.method,
@@ -18,7 +20,7 @@ export async function ApiInstance(reqModal: ApiRequestModel) {
             data: reqModal.data,
             headers: {
                 Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
+                'Content-Type': reqModal.contentType ? reqModal.contentType : 'application/json',
                 Accept: 'application/json',
                 social_source: reqModal.headerOptions
             },
