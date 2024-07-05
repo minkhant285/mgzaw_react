@@ -5,12 +5,14 @@ import { UserInfoResult } from '../../models';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { envLoader } from '../../utils';
+import { useNavigate } from 'react-router-dom';
 
 function Profile() {
 
     const user = useApi('getUser');
     const userUpdate = useApi('updateUser');
     const updateProfile = useApi('updatePhoto');
+    const navigation = useNavigate();
 
 
     const { logout, userInfo, saveUserInfo } = useContext(AppContext);
@@ -148,6 +150,10 @@ function Profile() {
                     <div className="py-2">
                         <h2 className="text-lg text-gray-700 font-semibold">Gender</h2>
                         <input name="gender" onChange={handleChange} style={{ backgroundColor: editable ? 'gray' : 'inherit' }} disabled={!editable} className="text-gray-600 text-sm w-full" value={formData.gender} />
+                    </div>
+                    <div className="py-2 cursor-pointer hover:filter" onClick={() => navigation('/changepass')}>
+                        <h2 className="text-lg text-gray-700 font-semibold">Change Password</h2>
+                        <p className="text-gray-600 text-sm w-full">******</p>
                     </div>
                     <div className="py-2">
                         <h2 className="text-lg text-gray-700 font-semibold">Date of Birth</h2>

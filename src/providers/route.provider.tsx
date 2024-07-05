@@ -16,6 +16,7 @@ import Auth from '../pages/auth/auth';
 import useApi from '../hooks/useApi';
 import { UserInfoResult } from '../models';
 import ComponentPage from '../pages/component/component';
+import ChangePasswordPage from '../pages/auth/changepass';
 
 const AppRouteProvider: React.FC = () => {
 
@@ -55,6 +56,12 @@ const AppRouteProvider: React.FC = () => {
             path: "/profile",
             loader: AuthLoader,
             element: <RouterRender component={<Profile />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/changepass",
+            loader: AuthLoader,
+            element: <RouterRender component={<ChangePasswordPage />} />,
             errorElement: <div>Error</div>,
         },
         {
