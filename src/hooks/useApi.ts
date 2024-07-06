@@ -18,17 +18,17 @@ const useApi = (name?: string) => {
             loadingControl(false);
             // console.log(fetched)
             if (fetched) {
-                if (fetched.data.status_code === 401) {
+                if (fetched.status === 401) {
                     alert('Session Expired! PlEASE Login Again!');
                     logout();
                 }
-                if (fetched?.data.status_code === 400) {
+                if (fetched?.status === 400) {
                     setError(fetched?.data.message);
                 } else {
                     setError(undefined)
                 }
 
-                if (fetched?.data.status_code === 200) {
+                if (fetched?.status === 200) {
                     setData(fetched?.data.data)
                     setRawData(fetched.data)
                 } else {

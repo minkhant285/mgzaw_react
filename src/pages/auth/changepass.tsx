@@ -54,7 +54,7 @@ function ChangePasswordPage() {
                     {errors.new_password && <span className='text-[#af3939]'>{errors.new_password.message}</span>}
                     <input className="bg-gray-400 m-3 p-2 rounded-sm border-2" {...register("confirm_password", { required: true })} placeholder='Confirm Password' />
                     {errors.confirm_password && <span className='text-[#af3939]'>{errors.confirm_password.message}</span>}
-                    <button type='submit' className='bg-primary p-2 rounded-md text-white  mt-3'>Sign Up</button>
+                    <button type='submit' className='bg-primary p-2 rounded-md text-white  mt-3'>Save</button>
                 </form>
 
             </div>

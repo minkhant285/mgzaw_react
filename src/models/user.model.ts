@@ -7,5 +7,7 @@ export interface IUser {
     gender: string;
     photoUrl: string;
     dob: Date | null;
+    registeredType: string;
+    twoWayAuth: boolean;
 }
 

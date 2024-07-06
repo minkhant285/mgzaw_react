@@ -36,6 +36,7 @@ function Login() {
                     'password': data.password
                 }
             }) as LoginResult;
+            console.log(result)
 
             if (result.status_code !== 400 && result.data.token) {
                 new AppStorage().setToken(result.data.token);

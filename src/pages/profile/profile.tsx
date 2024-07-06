@@ -12,18 +12,18 @@ function Profile() {
     const user = useApi('getUser');
     const userUpdate = useApi('updateUser');
     const updateProfile = useApi('updatePhoto');
+    const twoAuthApi = useApi('TwoAuth');
     const navigation = useNavigate();
 
 
     const { logout, userInfo, saveUserInfo } = useContext(AppContext);
     const [dob, setDob] = useState(userInfo?.dob);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [tAuth, setTAuth] = useState<boolean | undefined>(userInfo?.twoWayAuth);
     const [formData, setFormData] = useState({
         dob: userInfo?.dob,
-        gender: userInfo?.gender,
+        gender: userInfo?.gender || '',
         username: userInfo?.username,
-        email: userInfo?.email,
-        phone: userInfo?.phone || '',
         photoUrl: userInfo?.photoUrl,
     });
     const [editable, setEditable] = useState(false);
@@ -44,7 +44,8 @@ function Profile() {
         selectedFile !== null && handleFileUpload();
         if (updated.status_code === 200) {
             await loadUser();
-            console.log("user reloaded")
+            alert(updated.message);
+            setEditable(false);
         }
     }
 
@@ -54,7 +55,6 @@ function Profile() {
             method: 'GET',
         }) as UserInfoResult;
         saveUserInfo(r.data);
-        // console.log("profile called", userInfo)
     }
 
     const handleDivClick = () => {
@@ -95,11 +95,23 @@ function Profile() {
         }
     };
 
+    const handleTwoAuth = () => {
+
+        twoAuthApi.sendRequest({
+            method: 'PUT',
+            url: 'auth/twowayAuth',
+            data: {
+                enable: !tAuth
+            }
+        }).then((r) => { alert(r?.message); setTAuth(!tAuth); loadUser(); })
+
+    }
+
 
 
     useEffect(() => {
         (async () => {
-            console.log("called")
+            // console.log("called")
             await loadUser();
 
         })()
@@ -134,26 +146,8 @@ function Profile() {
                         <input name="username" onChange={handleChange} style={{ backgroundColor: editable ? 'gray' : 'inherit' }} disabled={!editable} className="text-gray-600 text-sm w-full" value={formData.username} />
                     </div>
                     <div className="py-2">
-                        <h2 className="text-lg text-gray-700 font-semibold">Phone</h2>
-                        <input name="phone"
-                            onChange={handleChange}
-                            style={{ backgroundColor: editable ? 'gray' : 'inherit' }}
-                            disabled={!editable}
-                            className="text-gray-600 text-sm w-full"
-                            value={formData.phone}
-                        />
-                    </div>
-                    <div className="py-2">
-                        <h2 className="text-lg text-gray-700 font-semibold">Email</h2>
-                        <input name="email" onChange={handleChange} style={{ backgroundColor: editable ? 'gray' : 'inherit' }} disabled={!editable} className="text-gray-600 text-sm w-full" value={formData.email} />
-                    </div>
-                    <div className="py-2">
                         <h2 className="text-lg text-gray-700 font-semibold">Gender</h2>
                         <input name="gender" onChange={handleChange} style={{ backgroundColor: editable ? 'gray' : 'inherit' }} disabled={!editable} className="text-gray-600 text-sm w-full" value={formData.gender} />
-                    </div>
-                    <div className="py-2 cursor-pointer hover:filter" onClick={() => navigation('/changepass')}>
-                        <h2 className="text-lg text-gray-700 font-semibold">Change Password</h2>
-                        <p className="text-gray-600 text-sm w-full">******</p>
                     </div>
                     <div className="py-2">
                         <h2 className="text-lg text-gray-700 font-semibold">Date of Birth</h2>
@@ -161,12 +155,31 @@ function Profile() {
                             maxDate={new Date()}
                             showYearDropdown
                             yearDropdownItemNumber={100}
-                            isClearable disabled={!editable}
                             selected={dob}
                             onChange={(date) => setDob(date)}
                         />
 
                     </div>
+                    <div className="py-2" onClick={() => navigation(`/changephone?old=${userInfo?.phone}`)}>
+                        <h2 className="text-lg text-gray-700 font-semibold">Phone</h2>
+                        <p className="text-gray-600 text-sm w-full">{userInfo?.phone}</p>
+                    </div>
+                    <div className="py-2" onClick={() => navigation(`/changeemail?old=${userInfo?.email}`)}>
+                        <h2 className="text-lg text-gray-700 font-semibold">Email</h2>
+                        <p className="text-gray-600 text-sm w-full">{userInfo?.email}</p>
+                    </div>
+
+                    <div className="py-2 cursor-pointer hover:filter" onClick={() => navigation('/changepass')}>
+                        <h2 className="text-lg text-gray-700 font-semibold">Change Password</h2>
+                        <p className="text-gray-600 text-sm w-full">******</p>
+                    </div>
+                    <div className="py-2 cursor-pointer hover:filter">
+                        <h2 className="text-lg text-gray-700 font-semibold">Enable Two Way Login</h2>
+                        <label htmlFor="switch">
+                            <input type="checkbox" id='switch' checked={tAuth} onChange={handleTwoAuth} />
+                        </label>
+                    </div>
+
                 </div>
             </div>
             <div className='max-w-sm mx-auto bg-primary shadow-md rounded-lg overflow-hidden flex justify-center text-white p-3 mt-5'

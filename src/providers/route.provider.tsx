@@ -17,6 +17,8 @@ import useApi from '../hooks/useApi';
 import { UserInfoResult } from '../models';
 import ComponentPage from '../pages/component/component';
 import ChangePasswordPage from '../pages/auth/changepass';
+import ChangePhonePage from '../pages/profile/change_phone';
+import ChangeEmailPage from '../pages/profile/change_email';
 
 const AppRouteProvider: React.FC = () => {
 
@@ -62,6 +64,18 @@ const AppRouteProvider: React.FC = () => {
             path: "/changepass",
             loader: AuthLoader,
             element: <RouterRender component={<ChangePasswordPage />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/changephone",
+            loader: AuthLoader,
+            element: <RouterRender component={<ChangePhonePage />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/changeemail",
+            loader: AuthLoader,
+            element: <RouterRender component={<ChangeEmailPage />} />,
             errorElement: <div>Error</div>,
         },
         {
