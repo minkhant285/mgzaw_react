@@ -49,7 +49,7 @@ function ChangePhonePage() {
 
                     <div className='flex flex-col p-4'>
                         <span className='font-bold text-lg'>Current Phone: </span>
-                        <p>+{old}</p>
+                        {old !== "null" && <p>+{old}</p>}
                     </div>
                     <input className="bg-gray-400 m-3 p-2 rounded-sm border-2" {...register("phone", { required: true })} placeholder='New Phone Number' />
                     {errors.phone && <span className='text-[#af3939]'>{errors.phone.message}</span>}

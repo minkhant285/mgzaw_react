@@ -1,6 +1,5 @@
-import React from 'react'
 import useApi from '../../hooks/useApi';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 type Inputs = {
@@ -47,7 +46,7 @@ function ChangeEmailPage() {
                 <form onSubmit={handleSubmit(onSubmit)} className='flex-col flex'>
                     <div className='flex flex-col p-4'>
                         <span className='font-bold text-lg'>Current Email: </span>
-                        <p>{old}</p>
+                        {old !== "null" && <p>{old}</p>}
                     </div>
                     <input className="bg-gray-400 m-3 p-2 rounded-sm border-2" {...register("email", { required: true })} placeholder='New Email' />
                     {errors.email && <span className='text-[#af3939]'>{errors.email.message}</span>}
