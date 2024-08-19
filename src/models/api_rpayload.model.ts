@@ -9,14 +9,14 @@ export interface IReturnPayload {
     status_code: number;
     status_message: STATUS_MESSAGE;
     message: string;
-    data?: Object | null;
+    result?: Object | null;
     error?: unknown;
 }
 
 export interface LoginResult extends Omit<IReturnPayload, 'data'> {
-    data: { token: string }
+    result: { token: string }
 }
 
 export interface UserInfoResult extends Omit<IReturnPayload, 'data'> {
-    data: IUser
+    result: IUser
 }

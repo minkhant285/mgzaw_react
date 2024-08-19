@@ -19,6 +19,7 @@ function Profile() {
     const { logout, userInfo, saveUserInfo } = useContext(AppContext);
     const [dob, setDob] = useState(userInfo?.dob);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const [tAuth, setTAuth] = useState<boolean | undefined>(userInfo?.twoWayAuth);
     const [formData, setFormData] = useState({
         dob: userInfo?.dob,
@@ -27,7 +28,6 @@ function Profile() {
         photoUrl: userInfo?.photoUrl,
     });
     const [editable, setEditable] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +54,7 @@ function Profile() {
             url: `user`,
             method: 'GET',
         }) as UserInfoResult;
-        saveUserInfo(r.data);
+        saveUserInfo(r.result);
     }
 
     const handleDivClick = () => {

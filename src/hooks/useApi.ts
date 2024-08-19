@@ -29,7 +29,7 @@ const useApi = (name?: string) => {
                 }
 
                 if (fetched?.status === 200) {
-                    setData(fetched?.data.data)
+                    setData(fetched?.data.result)
                     setRawData(fetched.data)
                 } else {
                     setData(undefined)

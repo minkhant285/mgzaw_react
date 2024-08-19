@@ -19,6 +19,8 @@ import ComponentPage from '../pages/component/component';
 import ChangePasswordPage from '../pages/auth/changepass';
 import ChangePhonePage from '../pages/profile/change_phone';
 import ChangeEmailPage from '../pages/profile/change_email';
+import CreateMovie from '../pages/movie/create';
+import Movie from '../pages/movie/movie_detail';
 
 const AppRouteProvider: React.FC = () => {
 
@@ -46,6 +48,16 @@ const AppRouteProvider: React.FC = () => {
         {
             path: "/about",
             element: <RouterRender component={<About />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/movie/create",
+            element: <RouterRender component={<CreateMovie />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/movie/watch",
+            element: <RouterRender component={<Movie />} />,
             errorElement: <div>Error</div>,
         },
         {
@@ -131,13 +143,13 @@ const RouterRender: React.FC<{ component: React.ReactNode }> = ({ component }) =
                     url: `user`,
                     method: 'GET',
                 }) as UserInfoResult;
-                saveUserInfo(r.data);
+                saveUserInfo(r.result);
                 console.log("main user info called", userInfo)
             }
         })()
     }, [user.data])
 
-    return <div className='bg-background flex flex-col   top-0 left-0 right-0 bottom-0 absolute'>
+    return <div className='bg-background flex flex-col  top-0 left-0 right-0 bottom-0 absolute overflow-auto'>
         {appLoading && <Loading />}
         <AppBar />
         {component}

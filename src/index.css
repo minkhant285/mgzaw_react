@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 @layer base {
 
     :root[data-theme="default"] {
         --color-primary: #1F4068;
         --color-secondary: #206A5D;
-        --color-background: #EBECF1;
+        --color-background: #2c2d31;
         --color-tertiary: #1B1C25;
         --color-black: #000;
         --color-white: #fff;

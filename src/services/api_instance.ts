@@ -23,7 +23,7 @@ export async function ApiInstance(reqModal: ApiRequestModel) {
                 'Content-Type': reqModal.contentType ? reqModal.contentType : 'application/json',
                 Accept: 'application/json',
                 social_source: reqModal.headerOptions
-            },
+            }
         });
 
         if (response.data) {

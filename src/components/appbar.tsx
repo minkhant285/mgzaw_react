@@ -9,7 +9,7 @@ function AppBar() {
     const navigation = useNavigate();
 
     return (
-        <div className='bg-primary h-14 p-7 flex justify-between items-center'>
+        <div className='bg-primary h-14 p-7 flex justify-between items-center top-0 sticky'>
             <h3 className="text-white  font-bold text-lg cursor-pointer" onClick={() => navigation('/')}>
                 Base React App
             </h3>

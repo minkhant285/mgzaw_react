@@ -38,13 +38,13 @@ function Login() {
             }) as LoginResult;
             // console.log(result)
 
-            if (result.status_code !== 400 && result.data.token) {
-                new AppStorage().setToken(result.data.token);
+            if (result.status_code !== 400 && result.result.token) {
+                new AppStorage().setToken(result.result.token);
                 let r = await user.sendRequest({
                     url: `user`,
                     method: 'GET',
                 }) as UserInfoResult;
-                saveAuth(result.data.token, r.data);
+                saveAuth(result.result.token, r.result);
             }
         }
 
