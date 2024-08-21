@@ -1,11 +1,14 @@
 import { useForm } from 'react-hook-form';
 import useApi from '../../hooks/useApi';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
 import { IMovie } from '../../models';
 import { io } from 'socket.io-client';
 import { envLoader } from '../../utils';
 import axios, { AxiosProgressEvent } from 'axios';
 import ReactSelect from 'react-select';
+import { AppContext } from '../../providers/app.provider';
+import ProgressBar from '../../components/progressbar';
+import { useNavigate } from 'react-router-dom';
 
 type MovieInput = {
     name: string
@@ -31,6 +34,9 @@ const CreateMovie = () => {
     const getCategory = useApi();
     const [progress, setProgress] = useState<number>(0);
     const [selectedCategory, setCategory] = useState<IMovie[]>();
+    const { loadingControl, token } = useContext(AppContext);
+    const navigate = useNavigate();
+
 
     // Handle form submission
     const onSubmit = async (data: MovieInput) => {
@@ -44,33 +50,46 @@ const CreateMovie = () => {
                 const fileData = new FormData();
                 fileData.append('file', selectedFile);
 
-                try {
+                // socket.on('uploadProgress', (data: { progress: number }) => {
+                //     setProgress(data.progress);
+                // });
 
+
+                try {
+                    loadingControl(true)
                     const response = await axios.post(`${envLoader.baseURL}/movie/upload`, fileData, {
                         headers: {
-                            'x-socket-id': socket.id,
+                            'x-socket-id': "gg",
                             'Content-Type': 'multipart/form-data',
+                            Authorization: `Bearer ${token}`,
                         },
                         onUploadProgress: (progressEvent: AxiosProgressEvent) => {
                             if (progressEvent.total) {
                                 const percentComplete = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                                 setProgress(percentComplete);
+                                loadingControl(false);
                             }
                         },
                     });
 
-                    console.log({ ...vidInput, url: response.data.result.fileUrl, thumbnail_url: response.data.result.thumbnail_url })
+                    console.log(response.data)
+
                     await createMovie.sendRequest({
                         method: 'POST',
                         url: "movie",
                         data: { ...vidInput, url: response.data.result.fileUrl, thumbnail_url: response.data.result.thumbnail_url, categories: selectedCategory }
+                    }).then(() => {
+                        socket.disconnect();
+                        navigate(0);
                     })
                     setProgress(100);
                     return response.data
 
 
                 } catch (error) {
+                    loadingControl(false);
                     console.error('Error uploading file:', error);
+                    socket.disconnect()
                 }
 
             } else {
@@ -104,9 +123,6 @@ const CreateMovie = () => {
             })
         })()
 
-        socket.on('uploadProgress', (data: { progress: number }) => {
-            setProgress(data.progress);
-        });
 
 
         return () => {
@@ -140,6 +156,8 @@ const CreateMovie = () => {
                     {
                         `progress ${progress}%`
                     }
+
+                    <ProgressBar progress={progress} />
                 </div>
                 <div className='w-full'>
                     <input
@@ -187,17 +205,7 @@ const CreateMovie = () => {
                     {errors.description && <span>This field is required</span>}
                 </div>
 
-                {/* <div>
-                    <input
-                        className='rounded p-1 shadow-md border focus:border-[#00f]'
-                        id="url"
-                        type="url"
-                        {...register('url', { required: false })}
-                    />
-                </div> */}
-
                 <button className='text-white p-3 bg-primary rounded-md w-full' type="submit" >Upload</button>
-                {/* <button className='text-white p-3 bg-primary rounded-md w-full' onClick={handleFileUpload} >Upload video</button> */}
             </form>
         </div>
     );

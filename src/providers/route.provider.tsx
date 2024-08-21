@@ -52,6 +52,7 @@ const AppRouteProvider: React.FC = () => {
         },
         {
             path: "/movie/create",
+            loader: AuthLoader,
             element: <RouterRender component={<CreateMovie />} />,
             errorElement: <div>Error</div>,
         },
