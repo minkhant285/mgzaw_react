@@ -21,13 +21,16 @@ function Movie() {
 
     return (
         <div>
-            {getMovie.data && <ReactPlayer
+            {getMovie.data && <><ReactPlayer
                 autoPlay={false} width={300} height={150}
                 poster={getMovie.data.thumbnail_url}
                 style={{ objectFit: 'contain' }}
                 url={getMovie.data.url}
                 controls
-            />}
+            />
+                <pre>{JSON.stringify(getMovie.data.categories, null, 2)}</pre>
+            </>
+            }
         </div>
     )
 }

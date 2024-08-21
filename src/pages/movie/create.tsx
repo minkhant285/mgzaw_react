@@ -9,12 +9,16 @@ import ReactSelect from 'react-select';
 import { AppContext } from '../../providers/app.provider';
 import ProgressBar from '../../components/progressbar';
 import { useNavigate } from 'react-router-dom';
+import MovieCategory from './category';
+import ModalBox from '../../components/modal';
 
 type MovieInput = {
     name: string
     caption: string,
     description: string
 }
+
+
 
 const CreateMovie = () => {
     // Initialize React Hook Form
@@ -36,6 +40,7 @@ const CreateMovie = () => {
     const [selectedCategory, setCategory] = useState<IMovie[]>();
     const { loadingControl, token } = useContext(AppContext);
     const navigate = useNavigate();
+    const [addCategory, setNewCategory] = useState<any>();
 
 
     // Handle form submission
@@ -115,14 +120,20 @@ const CreateMovie = () => {
         }
     };
 
-    useEffect(() => {
-        (async () => {
-            await getCategory.sendRequest({
-                method: 'GET',
-                url: 'category'
-            })
-        })()
 
+    const loadCategory = async () => {
+        await getCategory.sendRequest({
+            method: 'GET',
+            url: 'category'
+        });
+        setNewCategory(false);
+    }
+
+    useEffect(() => {
+
+        (async () => {
+            await loadCategory();
+        })()
 
 
         return () => {
@@ -190,7 +201,9 @@ const CreateMovie = () => {
                         getOptionValue={(option: IMovie) => option.id}
                     />}
 
-                    <button className='p-2 w-20 bg-primary rounded-md text-white'>
+                    <ModalBox children={<MovieCategory apiRefresh={loadCategory} />} isOpen={addCategory} onClose={() => { setNewCategory(!addCategory) }} />
+
+                    <button className='p-2 w-20 bg-primary rounded-md text-white' onClick={() => { setNewCategory(!addCategory) }}>
                         ADD
                     </button>
                 </div>
