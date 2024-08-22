@@ -27,14 +27,7 @@ function Movie() {
             <div className='col-span-5  p-0 sm:p-4 '>
                 {getMovie.data && <div className='flex flex-col'>
                     <div className='h-fit w-full '>
-                        {/* <ReactPlayer
-                            autoPlay={false} width="100%" height={window.innerWidth < 400 ? 205 : '100%'}
-                            poster={getMovie.data.thumbnail_url}
-                            url={getMovie.data.url}
-                            config={{ file: { attributes: { controlsList: 'nodownload' } } }}
-                            onContextMenu={(e: any) => e.preventDefault()}
-                            controls
-                        /> */}
+
                         <video
                             controls
                             controlsList='nodownload'
@@ -46,24 +39,27 @@ function Movie() {
                         </video>
 
                     </div>
-                    <div className='bg-[#242424] flex justify-between items-start px-2'>
-                        <div>
-                            <span className='text-white text-sm'>Categories</span>
-                            <div className='flex p-2 gap-2 flex-wrap '>
+                    <div className='bg-[#242424] flex justify-between items-start p-2'>
+                        <div className='w-full mt-1'>
+                            <div className='flex justify-between w-full items-center'>
+                                <span className='text-white text-md'>Categories</span>
+                                <div className='flex justify-center items-center p-1 pl-3 text-white text-xs  bg-secondary rounded-md'>
+                                    Download
+                                    <MdDownload
+                                        className="text-white  shadow-lg mx-1 "
+                                        size={20} />
+                                </div>
+                            </div>
+                            <div className='flex p-2 gap-2 flex-wrap mt-1 '>
                                 {
                                     getMovie.data.categories.map((c: ICategory, i: number) => <div
                                         key={i}
-                                        className='bg-primary p-2 h-8 text-white rounded-md shadow-md text-xs'
+                                        className='bg-primary p-[5px] px-2 text-white rounded-md shadow-md text-[10px]'
                                     >{c.name}</div>)
                                 }
                             </div>
                         </div>
-                        <div className='flex justify-center items-center p-1 pl-3 text-white text-sm bg-secondary rounded-md'>
-                            Download
-                            <MdDownload
-                                className="text-white  shadow-lg mx-1 "
-                                size={25} />
-                        </div>
+
                     </div>
                 </div>
                 }
