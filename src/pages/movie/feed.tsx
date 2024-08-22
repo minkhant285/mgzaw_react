@@ -41,7 +41,7 @@ function MovieFeed() {
                 col-span-10
                 grid
                 grid-rows-16 sm:grid-rows-8 md:grid-rows-6 lg:grid-rows-4
-                grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4
+                grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4
                 gap-4 p-4
                 justify-start
                 '>

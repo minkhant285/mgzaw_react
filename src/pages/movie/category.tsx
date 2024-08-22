@@ -2,10 +2,10 @@ import useApi from '../../hooks/useApi';
 import { useState } from 'react';
 import { STATUS_MESSAGE } from '../../models';
 
-type MovieCategoryInput = {
-    name: string;
-    description: string;
-}
+// type MovieCategoryInput = {
+//     name: string;
+//     description: string;
+// }
 
 const MovieCategory: React.FC<{ apiRefresh: Function }> = ({ apiRefresh }) => {
 
