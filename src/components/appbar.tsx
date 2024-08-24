@@ -11,7 +11,7 @@ function AppBar() {
     return (
         <div className='bg-primary h-14 p-7 flex justify-between items-center top-0 sticky'>
             <h3 className="text-white  font-bold text-lg cursor-pointer" onClick={() => navigation('/')}>
-                Base React App
+                MG ZAW
             </h3>
             {token && userInfo && <div className="flex items-center cursor-pointer" onClick={() => navigation('/profile')}>
                 <span className="text-white text-xs hidden md:block">

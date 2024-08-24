@@ -21,6 +21,11 @@
     "react-router-dom": "^6.24.0",
     "react-select": "^5.8.0",
     "socket.io-client": "^4.7.5",
+    "video.js": "^8.17.3",
+    "videojs-contrib-ads": "^7.5.2",
+    "videojs-ima": "^2.3.0",
+    "videojs-vast-vpaid": "^3.0.0-beta.8",
+    "vite-plugin-static-copy": "^1.0.6",
     "yup": "^1.4.0"
   },
   "devDependencies": {

@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import useApi from '../../hooks/useApi';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ICategory, IMovie } from '../../models';
 import { MdDownload } from "react-icons/md";
+import VideoAdPlayer from '../../components/videoplayer';
+import AdComponent from '../../components/radcomponent';
 
 
 function Movie() {
@@ -42,18 +44,21 @@ function Movie() {
             <div className='lg:col-span-5 md:col-span-7  p-0 sm:p-4'>
                 {getMovie.data && <div className='flex flex-col'>
 
-                    <div className='h-fit w-full sticky top-'>
 
-                        <video
-                            controls
-                            controlsList='nodownload'
-                            onContextMenu={(e: any) => e.preventDefault()}
-                            poster={getMovie.data.thumbnail_url}
-                            style={{ backgroundColor: 'black', width: '100%', maxHeight: 350, height: window.innerWidth < 400 ? 220 : '0%' }}
-                        >
-                            <source src={getMovie.data.url}></source>
-                        </video>
-                    </div>
+                    <video
+                        controls
+                        controlsList='nodownload'
+                        onContextMenu={(e: any) => e.preventDefault()}
+                        poster={getMovie.data.thumbnail_url}
+                        style={{ backgroundColor: 'black', width: '100%', maxHeight: 350, height: window.innerWidth < 400 ? 220 : '0%' }}
+                    >
+                        <source src={getMovie.data.url}></source>
+                    </video>
+                    {/* <VideoAdPlayer
+                        vastTagUrl=""
+                        videoUrl={`${getMovie.data.url}`}
+                    /> */}
+                    {/* <VideoAdPlayer vastTagUrl='https://s.magsrv.com/splash.php?idzone=5395886' /> */}
 
                     <div className='bg-[#242424] flex justify-between items-start p-2'>
                         <div className='w-full mt-1'>
@@ -79,7 +84,9 @@ function Movie() {
                         </div>
                     </div>
 
-                    <div className='h-[220px] hidden md:block'></div>
+                    <div className='h-[220px] hidden md:block'>
+                        <AdComponent />
+                    </div>
 
                 </div>
                 }
