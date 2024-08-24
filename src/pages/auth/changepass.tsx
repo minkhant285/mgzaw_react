@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { changePassValidationSchema } from './validators';
 import useApi from '../../hooks/useApi';

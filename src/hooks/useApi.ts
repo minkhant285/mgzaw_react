@@ -13,6 +13,7 @@ const useApi = (name?: string) => {
 
     const sendRequest = async (reqModal: ApiRequestModel): Promise<IReturnPayload | undefined> => {
         loadingControl(true);
+        console.log(name)
         try {
             let fetched = await ApiInstance(reqModal);
             loadingControl(false);

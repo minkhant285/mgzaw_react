@@ -3,7 +3,7 @@ import useApi from '../../hooks/useApi';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ICategory, IMovie } from '../../models';
 import { MdDownload } from "react-icons/md";
-import VideoAdPlayer from '../../components/videoplayer';
+// import VideoAdPlayer from '../../components/videoplayer';
 import AdComponent from '../../components/radcomponent';
 
 
