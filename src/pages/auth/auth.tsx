@@ -16,10 +16,10 @@ function Auth() {
 
     return (
         <React.Fragment>
-            <div className='flex flex-1 bg-background p-5 py-16 px-48'>
+            <div className='flex flex-1 bg-background p-5 py-16 px-48 justify-center'>
 
-                <div className='bg-secondary flex-1 p-5 '>
-                </div>
+                {/* <div className='bg-secondary flex-1 p-5 '>
+                </div> */}
                 <div className='w-1/3 bg-tertiary flex justify-center items-center'>
                     {
                         pathname === '/login' && <Login />
