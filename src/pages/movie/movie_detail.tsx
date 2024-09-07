@@ -37,6 +37,8 @@ function Movie() {
         console.log("reloaded")
     }, [id])
 
+    // h-[calc(100%-3.5rem)] overflow-auto
+
     return (
         <div className='grid contain grid-cols-1 md:grid-cols-12 h-[calc(100%-3.5rem)] overflow-auto '>
             <div className='col-span-2  hidden lg:block'></div>

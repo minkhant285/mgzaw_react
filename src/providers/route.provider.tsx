@@ -21,6 +21,7 @@ import ChangePhonePage from '../pages/profile/change_phone';
 import ChangeEmailPage from '../pages/profile/change_email';
 import CreateMovie from '../pages/movie/create';
 import Movie from '../pages/movie/movie_detail';
+import MovieFeed from '../pages/movie/feed';
 
 const AppRouteProvider: React.FC = () => {
 
@@ -37,7 +38,12 @@ const AppRouteProvider: React.FC = () => {
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <RouterRender component={<Landing />} />,
+            element: <RouterRender component={<MovieFeed />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/s/category/:c_name",
+            element: <RouterRender component={<MovieFeed />} />,
             errorElement: <div>Error</div>,
         },
         {
@@ -61,12 +67,12 @@ const AppRouteProvider: React.FC = () => {
             element: <RouterRender component={<Movie />} />,
             errorElement: <div>Error</div>,
         },
-        {
-            path: "/home",
-            loader: AuthLoader,
-            element: <RouterRender component={<Home />} />,
-            errorElement: <div>Error</div>,
-        },
+        // {
+        //     path: "/home",
+        //     loader: AuthLoader,
+        //     element: <RouterRender component={<Home />} />,
+        //     errorElement: <div>Error</div>,
+        // },
         {
             path: "/profile",
             loader: AuthLoader,
@@ -154,5 +160,8 @@ const RouterRender: React.FC<{ component: React.ReactNode }> = ({ component }) =
         {appLoading && <Loading />}
         <AppBar />
         {component}
+        <div className='w-full h-60 bg-[#000] text-white flex justify-center items-center'>
+            Footer
+        </div>
     </div>
 }

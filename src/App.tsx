@@ -1,11 +1,14 @@
 import { AppProvider } from "./providers/app.provider";
+import ReduxProvider from "./providers/redux.provider";
 import AppRouteProvider from "./providers/route.provider";
 
 function App() {
     return (
-        <AppProvider>
-            <AppRouteProvider />
-        </AppProvider>
+        <ReduxProvider>
+            <AppProvider>
+                <AppRouteProvider />
+            </AppProvider>
+        </ReduxProvider>
     )
 }
 

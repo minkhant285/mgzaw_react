@@ -1,52 +1,103 @@
 import { useEffect } from 'react'
 import useApi from '../../hooks/useApi'
 import { ICategory, IMovie } from '../../models';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AppDispatch, MVProRootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMovies } from '../../redux/slicers/movie.slice';
 
 function MovieFeed() {
     const getAllMovie = useApi();
     const getCategory = useApi();
+    const getCategoryByName = useApi();
+    const dispatch: AppDispatch = useDispatch();
+    const movieDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
+    let { c_name } = useParams();
+
     const navigate = useNavigate();
+
+
 
     useEffect(() => {
         (async () => {
-            await getAllMovie.sendRequest({
-                method: 'GET',
-                url: 'movie'
-            });
+            if (c_name) {
+                await filterCategory(c_name as string);
+            } else {
+                await getAllMovies();
+            }
             await getCategory.sendRequest({
                 method: 'GET',
                 url: 'category'
-            })
+            });
         })()
     }, [])
 
+    const getAllMovies = async () => {
+        const res = await getAllMovie.sendRequest({
+            method: 'GET',
+            url: 'movie'
+        })
+        if (res) {
+            dispatch(setMovies(res.result as IMovie[]));
+        }
+    }
+
+
+    const filterCategory = async (category: string) => {
+        const res = await getCategoryByName.sendRequest({
+            url: `category/search/${category}`,
+            method: 'GET'
+        }) as any;
+        if (res) {
+            dispatch(setMovies(res?.result[0][0].movies as IMovie[]));
+        }
+    }
+
+    // h-[calc(100%-3.5rem)]
+
     return (
-        <div className='grid grid-cols-1 md:grid-cols-12 h-[calc(100%-3.5rem)] '>
-            <div className='col-span-2 bg-[#f00] hidden md:block'>
+        <div className='grid grid-cols-1 md:grid-cols-12  '>
+
+            <div className='col-span-2 bg-[#000] hidden lg:block text-white p-2 '>
                 {
                     getCategory.data && <div>
+                        <h3 className='bg-primary p-2 rounded-md'>Categories</h3>
+                        <div className=' m-2 rounded-md font-semibold px-2 cursor-pointer hover:bg-primary'
+                            onClick={getAllMovies}
+                        >
+                            All
+                        </div>
                         {
-                            getCategory.data.map((category: ICategory, i: number) => <div key={i}>
+                            getCategory.data.map((category: ICategory, i: number) => <div
+                                className=' m-2 rounded-md font-semibold px-2 cursor-pointer hover:bg-primary'
+                                key={i}
+                                onClick={() => filterCategory(category.name)}
+                            >
                                 {
                                     category.name
                                 }
+                                <span className='mx-1 text-gray text-xs'>({
+                                    category.movies.length
+                                })
+                                </span>
                             </div>)
                         }
                     </div>
                 }
             </div>
+
             {
-                getAllMovie.data && <div className='
-                col-span-10
+                movieDetails.movies && <div className='
+                col-span-12
+                lg:col-span-10
                 grid
                 grid-rows-16 sm:grid-rows-8 md:grid-rows-6 lg:grid-rows-4
-                grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4
+                grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
                 gap-4 p-4
                 justify-start
                 '>
                     {
-                        getAllMovie.data.map((movie: IMovie, i: number) => <div key={i}
+                        movieDetails.movies.map((movie: IMovie, i: number) => <div key={i}
                             className='rounded-md'
                             style={{ backgroundColor: 'black', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}
                             onClick={() => {
