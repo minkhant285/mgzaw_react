@@ -22,6 +22,8 @@ import ChangeEmailPage from '../pages/profile/change_email';
 import CreateMovie from '../pages/movie/create';
 import Movie from '../pages/movie/movie_detail';
 import MovieFeed from '../pages/movie/feed';
+import Footer from '../components/footer';
+import TNC from '../pages/about/terms';
 
 const AppRouteProvider: React.FC = () => {
 
@@ -54,6 +56,11 @@ const AppRouteProvider: React.FC = () => {
         {
             path: "/about",
             element: <RouterRender component={<About />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/terms",
+            element: <RouterRender component={<TNC />} />,
             errorElement: <div>Error</div>,
         },
         {
@@ -156,12 +163,10 @@ const RouterRender: React.FC<{ component: React.ReactNode }> = ({ component }) =
         })()
     }, [user.data])
 
-    return <div className='bg-background flex flex-col  top-0 left-0 right-0 bottom-0 absolute overflow-auto'>
+    return <div className='bg-background h-screen overflow-y-scroll  top-0 left-0 right-0  relative  '>
         {appLoading && <Loading />}
         <AppBar />
         {component}
-        <div className='w-full h-60 bg-[#000] text-white flex justify-center items-center'>
-            Footer
-        </div>
+        <Footer />
     </div>
 }

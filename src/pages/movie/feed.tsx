@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMovies } from '../../redux/slicers/movie.slice';
+import CategoryList from './categoryList';
 
 function MovieFeed() {
     const getAllMovie = useApi();
@@ -20,11 +21,7 @@ function MovieFeed() {
 
     useEffect(() => {
         (async () => {
-            if (c_name) {
-                await filterCategory(c_name as string);
-            } else {
-                await getAllMovies();
-            }
+            await getAllMovies();
             await getCategory.sendRequest({
                 method: 'GET',
                 url: 'category'
@@ -43,47 +40,15 @@ function MovieFeed() {
     }
 
 
-    const filterCategory = async (category: string) => {
-        const res = await getCategoryByName.sendRequest({
-            url: `category/search/${category}`,
-            method: 'GET'
-        }) as any;
-        if (res) {
-            dispatch(setMovies(res?.result[0][0].movies as IMovie[]));
-        }
-    }
 
     // h-[calc(100%-3.5rem)]
 
     return (
         <div className='grid grid-cols-1 md:grid-cols-12  '>
 
-            <div className='col-span-2 bg-[#000] hidden lg:block text-white p-2 '>
-                {
-                    getCategory.data && <div>
-                        <h3 className='bg-primary p-2 rounded-md'>Categories</h3>
-                        <div className=' m-2 rounded-md font-semibold px-2 cursor-pointer hover:bg-primary'
-                            onClick={getAllMovies}
-                        >
-                            All
-                        </div>
-                        {
-                            getCategory.data.map((category: ICategory, i: number) => <div
-                                className=' m-2 rounded-md font-semibold px-2 cursor-pointer hover:bg-primary'
-                                key={i}
-                                onClick={() => filterCategory(category.name)}
-                            >
-                                {
-                                    category.name
-                                }
-                                <span className='mx-1 text-gray text-xs'>({
-                                    category.movies.length
-                                })
-                                </span>
-                            </div>)
-                        }
-                    </div>
-                }
+            <div className='col-span-2  hidden lg:block p-1 '>
+                <h3 className='bg-primary p-2 rounded-md'>Categories</h3>
+                <CategoryList />
             </div>
 
             {
@@ -92,7 +57,7 @@ function MovieFeed() {
                 lg:col-span-10
                 grid
                 grid-rows-16 sm:grid-rows-8 md:grid-rows-6 lg:grid-rows-4
-                grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+                grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
                 gap-4 p-4
                 justify-start
                 '>
@@ -111,7 +76,7 @@ function MovieFeed() {
                                     alt={''}
                                 />
                             </div>
-                            <span className='text-white line-clamp-2 '> {movie.name}</span>
+                            <span className='text-white line-clamp-2 p-1 '> {movie.name}</span>
                         </div>)
                     }
                 </div>

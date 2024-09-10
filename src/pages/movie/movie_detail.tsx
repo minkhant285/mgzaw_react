@@ -16,10 +16,12 @@ function Movie() {
     const navigate = useNavigate();
 
     const loadMovieDetail = async () => {
-        await getMovie.sendRequest({
+        const res = await getMovie.sendRequest({
             method: 'GET',
             url: `movie/${id}`
         });
+        const m = res?.result as IMovie;
+        document.title = m.name;
     }
 
     React.useEffect(() => {
@@ -40,10 +42,10 @@ function Movie() {
     // h-[calc(100%-3.5rem)] overflow-auto
 
     return (
-        <div className='grid contain grid-cols-1 md:grid-cols-12 h-[calc(100%-3.5rem)] overflow-auto '>
-            <div className='col-span-2  hidden lg:block'></div>
+        <div className='grid contain grid-cols-1 md:grid-cols-12 '>
+            <div className='col-span-1  hidden lg:block'></div>
 
-            <div className='lg:col-span-5 md:col-span-7  p-0 sm:p-4'>
+            <div className='lg:col-span-7 md:col-span-8  p-0 sm:p-4'>
                 {getMovie.data && <div className='flex flex-col'>
 
 
@@ -52,7 +54,7 @@ function Movie() {
                         controlsList='nodownload'
                         onContextMenu={(e: any) => e.preventDefault()}
                         poster={getMovie.data.thumbnail_url}
-                        style={{ backgroundColor: 'black', width: '100%', maxHeight: 350, height: window.innerWidth < 400 ? 220 : '0%' }}
+                        style={{ backgroundColor: 'black', width: '100%', maxHeight: 550, height: window.innerWidth < 400 ? 220 : '0%' }}
                     >
                         <source src={getMovie.data.url}></source>
                     </video>
