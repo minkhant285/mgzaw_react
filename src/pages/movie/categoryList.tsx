@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import useApi from '../../hooks/useApi';
 import { ICategory, IMovie } from '../../models';
-import { AppDispatch, MVProRootState } from '../../redux/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { AppDispatch } from '../../redux/store';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { setMovies } from '../../redux/slicers/movie.slice';
+import { AppContext } from '../../providers/app.provider';
 
 function CategoryList() {
 
@@ -12,10 +13,9 @@ function CategoryList() {
     const getAllMovie = useApi();
     const getCategoryByName = useApi();
     const dispatch: AppDispatch = useDispatch();
-    const movieDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
+    const { modalControl } = useContext(AppContext);
     let { c_name } = useParams();
 
-    const navigate = useNavigate();
 
     const filterCategory = async (category: string) => {
         const res = await getCategoryByName.sendRequest({
@@ -24,6 +24,7 @@ function CategoryList() {
         }) as any;
         if (res) {
             dispatch(setMovies(res?.result[0][0].movies as IMovie[]));
+            modalControl(false)
         }
     }
 
@@ -48,6 +49,7 @@ function CategoryList() {
         })
         if (res) {
             dispatch(setMovies(res.result as IMovie[]));
+
         }
     }
 
@@ -58,7 +60,7 @@ function CategoryList() {
                 getCategory.data && <div>
 
                     <div className=' m-2 rounded-md font-semibold px-2 cursor-pointer hover:bg-primary'
-                        onClick={getAllMovies}
+                        onClick={() => { getAllMovies(); modalControl(false); }}
                     >
                         All
                     </div>

@@ -1,15 +1,17 @@
 import { OptionProps, StylesConfig } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import { ImSearch } from "react-icons/im";
-import React from 'react';
+import React, { useContext } from 'react';
 import { IMovie, IReturnPayload } from '../models';
 import useApi from '../hooks/useApi';
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../providers/app.provider';
 
 const SearchBox: React.FC = () => {
 
     const searchMovie = useApi('searchArticles');
     const [selectedOption, setSelectedOption] = React.useState<IMovie | null>(null);
+    const { searchModalControl } = useContext(AppContext);
     const navigate = useNavigate();
 
     const lSearchArticles = async (query: string): Promise<IMovie[]> => {
@@ -30,8 +32,10 @@ const SearchBox: React.FC = () => {
     }
 
     const handleChange = (option: any) => {
-        navigate(`/movie/watch?vid=${option.id}`)
+
         setSelectedOption(option);
+        searchModalControl(false);
+        navigate(`/movie/watch?vid=${option.id}`);
     };
 
 
@@ -73,26 +77,32 @@ const SearchBox: React.FC = () => {
         return (
             <div
                 {...props.innerProps}
+
                 style={{
                     display: 'flex',
                     alignItems: 'center',
                     padding: '10px',
                     backgroundColor: props.isFocused ? '#0aafe7' : 'white',
+                    cursor: 'pointer'
                 }}
-                onClick={() => navigate(`/movie/watch?vid=${props.data.id}`)}
+                onClick={() => {
+                    searchModalControl(false);
+                    navigate(`/movie/watch?vid=${props.data.id}`);
+                }}
             >
                 {/* <img
                     src={props.data.thumbnail_url !== null ? props.data.coverphoto : Assets.article}
                     className='w-10 h-fit object-contain mr-2'
                     alt='cover photo'
                 /> */}
-                <span className="line-clamp-1"> {props.data.name}</span>
+                <a className="line-clamp-1" > {props.data.name}</a>
             </div>
         );
     };
 
     return <AsyncSelect
         cacheOptions
+        autoFocus
         loadOptions={lSearchArticles}
         placeholder={<span className="flex items-center gap-1"><ImSearch size={15} /> Search......</span>}
         onChange={handleChange}

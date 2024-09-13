@@ -8,8 +8,6 @@ import {
 import Loading from '../components/loading';
 import { AppContext } from './app.provider';
 import AppBar from '../components/appbar';
-import Home from '../pages/home';
-import Landing from '../pages/landing';
 import Profile from '../pages/profile/profile';
 import About from '../pages/about';
 import Auth from '../pages/auth/auth';
@@ -24,6 +22,8 @@ import Movie from '../pages/movie/movie_detail';
 import MovieFeed from '../pages/movie/feed';
 import Footer from '../components/footer';
 import TNC from '../pages/about/terms';
+import Privacy from '../pages/about/privacy';
+import DownloadPage from '../pages/movie/download';
 
 const AppRouteProvider: React.FC = () => {
 
@@ -64,6 +64,11 @@ const AppRouteProvider: React.FC = () => {
             errorElement: <div>Error</div>,
         },
         {
+            path: "/privacy",
+            element: <RouterRender component={<Privacy />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
             path: "/movie/create",
             loader: AuthLoader,
             element: <RouterRender component={<CreateMovie />} />,
@@ -72,14 +77,13 @@ const AppRouteProvider: React.FC = () => {
         {
             path: "/movie/watch",
             element: <RouterRender component={<Movie />} />,
+            // errorElement: <div>Error</div>,
+        },
+        {
+            path: "/movie/download",
+            element: <RouterRender component={<DownloadPage />} />,
             errorElement: <div>Error</div>,
         },
-        // {
-        //     path: "/home",
-        //     loader: AuthLoader,
-        //     element: <RouterRender component={<Home />} />,
-        //     errorElement: <div>Error</div>,
-        // },
         {
             path: "/profile",
             loader: AuthLoader,
@@ -108,7 +112,7 @@ const AppRouteProvider: React.FC = () => {
             path: "/login",
             loader: () => {
                 if (token) {
-                    return redirect('/home')
+                    return redirect('/')
                 }
                 return 0;
             },
@@ -119,7 +123,7 @@ const AppRouteProvider: React.FC = () => {
             path: "/register",
             loader: () => {
                 if (token) {
-                    return redirect('/home')
+                    return redirect('/')
                 }
                 return 0;
             },
@@ -130,7 +134,7 @@ const AppRouteProvider: React.FC = () => {
             path: "/forgotpass",
             loader: () => {
                 if (token) {
-                    return redirect('/home')
+                    return redirect('/')
                 }
                 return 0;
             },

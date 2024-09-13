@@ -6,11 +6,11 @@ import { AppDispatch, MVProRootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMovies } from '../../redux/slicers/movie.slice';
 import CategoryList from './categoryList';
+import Footer from '../../components/footer';
 
 function MovieFeed() {
     const getAllMovie = useApi();
     const getCategory = useApi();
-    const getCategoryByName = useApi();
     const dispatch: AppDispatch = useDispatch();
     const movieDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
     let { c_name } = useParams();
@@ -42,7 +42,7 @@ function MovieFeed() {
 
 
     // h-[calc(100%-3.5rem)]
-
+    // grid-rows-12 sm:grid-rows-8 md:grid-rows-6 lg:grid-rows-4
     return (
         <div className='grid grid-cols-1 md:grid-cols-12  '>
 
@@ -52,27 +52,34 @@ function MovieFeed() {
             </div>
 
             {
-                movieDetails.movies && <div className='
+                movieDetails.movies &&
+
+                <div className='
                 col-span-12
                 lg:col-span-10
                 grid
-                grid-rows-16 sm:grid-rows-8 md:grid-rows-6 lg:grid-rows-4
-                grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+                grid-rows-3
+                grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
                 gap-4 p-4
                 justify-start
                 '>
                     {
                         movieDetails.movies.map((movie: IMovie, i: number) => <div key={i}
                             className='rounded-md'
-                            style={{ backgroundColor: 'black', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}
+                            style={{
+                                backgroundColor: 'black', display: 'flex', flexDirection: 'column', justifyContent: 'flex - start'
+                            }}
                             onClick={() => {
-                                navigate(`/movie/watch?vid=${movie.id}`)
+                                navigate(`/movie/watch?vid=${movie.id}`);
                             }}>
-                            <div className='h-[170px]'>
+                            <div className='max-h-[170px] '>
                                 <img
-                                    // src={`https://img.freepik.com/premium-vector/adults-only-18-plus-sensitive-content-explicit-video-vector-stock-illustration_100456-10148.jpg`}
-                                    src={movie.thumbnail_url !== null ? movie.thumbnail_url : `https://img.freepik.com/premium-vector/adults-only-18-plus-sensitive-content-explicit-video-vector-stock-illustration_100456-10148.jpg`}
-                                    style={{ objectFit: 'contain', width: "100%", maxHeight: 165, borderTopLeftRadius: "6px", borderTopRightRadius: "6px" }}
+                                    className='max-h-[165px]'
+                                    src={movie.thumbnail_url !== null ?
+                                        movie.thumbnail_url === "" ?
+                                            `https://img.freepik.com/premium-vector/adults-only-18-plus-sensitive-content-explicit-video-vector-stock-illustration_100456-10148.jpg` :
+                                            movie.thumbnail_url : ""}
+                                    style={{ objectFit: 'contain', width: "100%", borderTopLeftRadius: "6px", borderTopRightRadius: "6px" }}
                                     alt={''}
                                 />
                             </div>
@@ -80,9 +87,8 @@ function MovieFeed() {
                         </div>)
                     }
                 </div>
-
             }
-        </div>
+        </div >
     )
 }
 

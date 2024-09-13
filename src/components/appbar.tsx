@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import { AppContext } from "../providers/app.provider"
 import { useNavigate } from "react-router-dom";
 import { envLoader } from "../utils";
@@ -12,9 +12,7 @@ import CategoryList from "../pages/movie/categoryList";
 
 function AppBar() {
 
-    const { token, userInfo } = useContext(AppContext);
-    const [openSearchModal, setSearchModal] = useState<boolean>(false);
-    const [openCategoryModal, setCategoryModal] = useState<boolean>(false);
+    const { token, userInfo, categoryModal, modalControl, searchModal, searchModalControl } = useContext(AppContext);
     const navigation = useNavigate();
 
     return (
@@ -36,16 +34,16 @@ function AppBar() {
                     <SearchBox />
                 </div>
 
-                <div className="md:hidden cursor-pointer hover:bg-secondary p-2 rounded-md" onClick={() => setSearchModal(true)}>
+                <div className="md:hidden cursor-pointer hover:bg-secondary p-2 rounded-md" onClick={() => searchModalControl(true)}>
                     <ImSearch size={20} color="white" />
                 </div>
 
-                <div className="md:hidden cursor-pointer hover:bg-secondary p-2 rounded-md" onClick={() => setCategoryModal(true)}>
+                <div className="md:hidden cursor-pointer hover:bg-secondary p-2 rounded-md" onClick={() => modalControl(true)}>
                     <FaFilter size={20} color="white" />
                 </div>
 
-                <ModalBox children={<SearchBox />} isOpen={openSearchModal} onClose={() => { setSearchModal(!openSearchModal) }} />
-                <ModalBox children={<div className="p-4"><CategoryList /></div>} isOpen={openCategoryModal} onClose={() => { setCategoryModal(!openCategoryModal) }} />
+                <ModalBox children={<SearchBox />} isOpen={searchModal} onClose={() => { searchModalControl(!searchModal) }} />
+                <ModalBox children={<div className="p-4"><CategoryList /></div>} isOpen={categoryModal} onClose={() => { modalControl(!categoryModal) }} />
 
 
                 {token && userInfo && <div className="flex items-center cursor-pointer" onClick={() => navigation('/profile')}>

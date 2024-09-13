@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import useApi from '../../hooks/useApi';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ICategory, IMovie } from '../../models';
 import { MdDownload } from "react-icons/md";
-// import VideoAdPlayer from '../../components/videoplayer';
 import AdComponent from '../../components/radcomponent';
-
+import VideoAdPlayer from '../../components/videoplayer';
 
 function Movie() {
 
@@ -14,6 +13,7 @@ function Movie() {
     const [searchParams] = useSearchParams();
     const id = searchParams.get('vid');
     const navigate = useNavigate();
+    const [currentMovie, setCurrentMovie] = useState<IMovie>();
 
     const loadMovieDetail = async () => {
         const res = await getMovie.sendRequest({
@@ -21,7 +21,10 @@ function Movie() {
             url: `movie/${id}`
         });
         const m = res?.result as IMovie;
-        document.title = m.name;
+        if (JSON.stringify(currentMovie) !== JSON.stringify(m)) {
+            setCurrentMovie(m);
+            document.title = `mgzaw - ${m.name}`;
+        }
     }
 
     React.useEffect(() => {
@@ -35,34 +38,34 @@ function Movie() {
 
 
         })();
-
-        console.log("reloaded")
-    }, [id])
+    }, [id, currentMovie])
 
     // h-[calc(100%-3.5rem)] overflow-auto
+
+
 
     return (
         <div className='grid contain grid-cols-1 md:grid-cols-12 '>
             <div className='col-span-1  hidden lg:block'></div>
 
             <div className='lg:col-span-7 md:col-span-8  p-0 sm:p-4'>
-                {getMovie.data && <div className='flex flex-col'>
-
-
-                    <video
+                {currentMovie && <div className='flex flex-col'>
+                    {/* <video
                         controls
+                        key={currentMovie.id}
                         controlsList='nodownload'
                         onContextMenu={(e: any) => e.preventDefault()}
-                        poster={getMovie.data.thumbnail_url}
+                        poster={currentMovie.thumbnail_url}
                         style={{ backgroundColor: 'black', width: '100%', maxHeight: 550, height: window.innerWidth < 400 ? 220 : '0%' }}
                     >
-                        <source src={getMovie.data.url}></source>
-                    </video>
-                    {/* <VideoAdPlayer
-                        vastTagUrl=""
-                        videoUrl={`${getMovie.data.url}`}
-                    /> */}
-                    {/* <VideoAdPlayer vastTagUrl='https://s.magsrv.com/splash.php?idzone=5395886' /> */}
+                        <source src={currentMovie.url}></source>
+                    </video> */}
+                    <VideoAdPlayer
+                        vastTagUrl="https://s.magsrv.com/splash.php?idzone=5395886"
+                        videoUrl={`${currentMovie.url}`}
+                        key={currentMovie.id}
+                        poster={currentMovie.thumbnail_url}
+                    />
 
                     <div className='bg-[#242424] flex justify-between items-start p-2'>
                         <div className='w-full mt-1'>
@@ -70,12 +73,12 @@ function Movie() {
                                 <span className='text-white  font-bold'>
                                     {getMovie.data.name}
                                 </span>
-                                <div className='flex justify-center items-center p-1 pl-3 text-white text-xs  bg-secondary rounded-md'>
+                                <button onClick={() => navigate(`/movie/download?vid=${id}`)} className='flex justify-center items-center p-1 pl-3 text-white text-xs  bg-secondary rounded-md'>
                                     Download
                                     <MdDownload
                                         className="text-white  shadow-lg mx-1 "
                                         size={20} />
-                                </div>
+                                </button>
                             </div>
                             <div className='flex p-2 gap-2 flex-wrap mt-[5px] '>
                                 {

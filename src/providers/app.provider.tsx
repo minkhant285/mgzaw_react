@@ -6,6 +6,8 @@ import { AppStorage } from '../utils';
 export const AppContext = createContext<{
     theme: string;
     appLoading: boolean;
+    categoryModal: boolean;
+    searchModal: boolean;
     token: string | undefined;
     userInfo: IUser | undefined;
     toggleTheme: (themeVal: string) => void;
@@ -13,16 +15,22 @@ export const AppContext = createContext<{
     saveAuth: (token: string, info: IUser | undefined) => void;
     logout: () => void;
     saveUserInfo: (info: IUser) => void;
+    modalControl: (value: boolean) => void;
+    searchModalControl: (value: boolean) => void;
 }>({
     theme: 'default',
     appLoading: false,
+    categoryModal: false,
+    searchModal: false,
     token: undefined,
     userInfo: undefined,
     saveAuth: () => { },
     logout: () => { },
     saveUserInfo: () => { },
     toggleTheme: () => { },
-    loadingControl: () => { }
+    loadingControl: () => { },
+    modalControl: () => { },
+    searchModalControl: () => { }
 });
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -31,6 +39,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const [appLoading, setAppLoading] = useState(false);
     const [user, setUser] = useState<IUser | undefined>(storage.getUserInfo());
     const [token, setToken] = useState(storage.getToken());
+    const [categoryModal, setCategoryModal] = useState(false);
+    const [searchModal, setSearchModal] = useState(false);
 
 
     React.useEffect(() => {
@@ -43,6 +53,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             userInfo: user,
             token,
             appLoading,
+            categoryModal,
+            searchModal,
+            searchModalControl: (value: boolean) => {
+                setSearchModal(value);
+            },
+            modalControl: (value: boolean) => {
+                setCategoryModal(value);
+            },
             saveAuth: (token: string, userInfo: IUser | undefined) => {
                 setToken(token);
                 storage.setToken(token);
