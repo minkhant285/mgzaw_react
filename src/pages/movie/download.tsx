@@ -1,5 +1,6 @@
 import React from 'react'
 import { MdDownload } from 'react-icons/md'
+import AdComponent from '../../components/radcomponent';
 
 function DownloadPage() {
 
@@ -15,7 +16,7 @@ function DownloadPage() {
     return (
         <div className='grid grid-cols-7 h-[calc(100%-8.5rem)]'>
             <div className='col-span-2'>
-                ad
+                <AdComponent />
             </div>
             <div className='col-span-3'>
 
@@ -28,7 +29,7 @@ function DownloadPage() {
                 </button>
             </div>
             <div className='col-span-2'>
-                ad
+                <AdComponent />
             </div>
         </div>
     )
