@@ -1,19 +1,17 @@
 import { useEffect } from 'react'
 import useApi from '../../hooks/useApi'
-import { ICategory, IMovie } from '../../models';
-import { useNavigate, useParams } from 'react-router-dom';
+import { IMovie } from '../../models';
+import { useNavigate } from 'react-router-dom';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMovies } from '../../redux/slicers/movie.slice';
 import CategoryList from './categoryList';
-import Footer from '../../components/footer';
 
 function MovieFeed() {
     const getAllMovie = useApi();
     const getCategory = useApi();
     const dispatch: AppDispatch = useDispatch();
     const movieDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
-    let { c_name } = useParams();
 
     const navigate = useNavigate();
 
