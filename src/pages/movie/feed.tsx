@@ -1,39 +1,45 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useApi from '../../hooks/useApi'
 import { IMovie } from '../../models';
 import { useNavigate } from 'react-router-dom';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMovies } from '../../redux/slicers/movie.slice';
+import { setCurrentPage, setMovies, setPageCount } from '../../redux/slicers/movie.slice';
 import CategoryList from './categoryList';
+import { generateRangeArray } from '../../utils/rangeArray';
 
 function MovieFeed() {
     const getAllMovie = useApi();
     const getCategory = useApi();
     const dispatch: AppDispatch = useDispatch();
     const movieDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
-
     const navigate = useNavigate();
+    const pagelimit = 12;
+
 
 
 
     useEffect(() => {
         (async () => {
-            await getAllMovies();
+            await getAllMovies(1);
             await getCategory.sendRequest({
                 method: 'GET',
-                url: 'category'
+                url: 'category',
             });
         })()
     }, [])
 
-    const getAllMovies = async () => {
+    const getAllMovies = async (page: number) => {
         const res = await getAllMovie.sendRequest({
             method: 'GET',
-            url: 'movie'
-        })
+            url: `movie?page=${page}&limit=${pagelimit}`
+        });
+
         if (res) {
-            dispatch(setMovies(res.result as IMovie[]));
+            const resMovies = res.result as { movies: IMovie[], total: number, page: number, limit: number }
+            dispatch(setPageCount(resMovies.total));
+            dispatch(setCurrentPage(resMovies.page));
+            dispatch(setMovies(resMovies.movies));
         }
     }
 
@@ -44,9 +50,15 @@ function MovieFeed() {
     return (
         <div className='grid grid-cols-1 md:grid-cols-12  '>
 
-            <div className='col-span-2  hidden lg:block p-1 '>
+            <div className='col-span-1  hidden lg:block p-1 '>
                 <h3 className='bg-primary p-2 rounded-md'>Categories</h3>
                 <CategoryList />
+            </div>
+
+            <div>
+                {generateRangeArray(Math.ceil(movieDetails.pageCount / pagelimit)).map((num, i) =>
+                    <button className={`px-2 p-1 rounded-md ${movieDetails.currentPage === num ? 'bg-primary' : 'black'}  text-white m-1`} key={i} onClick={() => getAllMovies(num)}>{num}</button>
+                )}
             </div>
 
             {

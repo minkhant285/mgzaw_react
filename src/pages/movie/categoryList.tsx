@@ -1,55 +1,72 @@
 import { useContext, useEffect } from 'react'
 import useApi from '../../hooks/useApi';
 import { ICategory, IMovie } from '../../models';
-import { AppDispatch } from '../../redux/store';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { setMovies } from '../../redux/slicers/movie.slice';
+import { AppDispatch, MVProRootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { setActiveCategory, setCategories, setCurrentPage, setMovies, setPageCount } from '../../redux/slicers/movie.slice';
 import { AppContext } from '../../providers/app.provider';
 
 function CategoryList() {
 
     const getCategory = useApi();
     const getAllMovie = useApi();
-    const getCategoryByName = useApi();
     const dispatch: AppDispatch = useDispatch();
     const { modalControl } = useContext(AppContext);
     let { c_name } = useParams();
+    const navigate = useNavigate();
+    const categoryDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
 
 
     const filterCategory = async (category: string) => {
-        const res = await getCategoryByName.sendRequest({
-            url: `category/search/${category}`,
-            method: 'GET'
-        }) as any;
+        const res = await getAllMovie.sendRequest({
+            method: 'GET',
+            url: `movie?page=${1}&limit=${12}&category_id=${category}`
+        })
         if (res) {
-            dispatch(setMovies(res?.result[0][0].movies as IMovie[]));
-            modalControl(false)
+            const resMovies = res.result as { movies: IMovie[], total: number, page: number, limit: number }
+            dispatch(setMovies(resMovies.movies));
+            dispatch(setActiveCategory(category));
+            dispatch(setPageCount(resMovies.total));
+            dispatch(setCurrentPage(resMovies.page));
         }
     }
 
     useEffect(() => {
+        console.log(c_name);
         (async () => {
-            if (c_name) {
-                await filterCategory(c_name as string);
-            } else {
-                await getAllMovies();
+
+            if (categoryDetails.categories === null) {
+                const category_res = await getCategory.sendRequest({
+                    method: 'GET',
+                    url: 'category'
+                });
+                if (category_res) {
+                    const res = category_res.result as ICategory[];
+                    if (res.length > 0) {
+                        dispatch(setCategories(res));
+                    }
+                }
             }
-            await getCategory.sendRequest({
-                method: 'GET',
-                url: 'category'
-            });
+
+            // if (c_name) {
+            //     await filterCategory(c_name as string);
+            // } else {
+            //     await getAllMovies();
+            // }
         })()
-    }, [])
+    }, [c_name])
 
     const getAllMovies = async () => {
         const res = await getAllMovie.sendRequest({
             method: 'GET',
-            url: 'movie'
+            url: `movie?page=${1}&limit=${12}`
         })
         if (res) {
-            dispatch(setMovies(res.result as IMovie[]));
-
+            const resMovies = res.result as { movies: IMovie[], total: number, page: number, limit: number }
+            dispatch(setPageCount(resMovies.total));
+            dispatch(setCurrentPage(resMovies.page));
+            dispatch(setMovies(resMovies.movies));
         }
     }
 
@@ -57,18 +74,20 @@ function CategoryList() {
         <div className=' bg-[#000] text-white p-2 h-3/5 overflow-auto '>
 
             {
-                getCategory.data && <div>
+                categoryDetails.categories && <div>
 
                     <div className=' m-2 rounded-md font-semibold px-2 cursor-pointer hover:bg-primary'
-                        onClick={() => { getAllMovies(); modalControl(false); }}
+                        onClick={() => { getAllMovies(); modalControl(false); navigate('/'); dispatch(setActiveCategory('0')) }}
+                        style={{ backgroundColor: '0' === categoryDetails.activeCategory ? 'blue' : 'black' }}
                     >
                         All
                     </div>
                     {
-                        getCategory.data.map((category: ICategory, i: number) => <div
+                        categoryDetails.categories.map((category: ICategory, i: number) => <div
                             className=' m-2 rounded-md font-semibold px-2 cursor-pointer hover:bg-primary'
+                            style={{ backgroundColor: category.id === categoryDetails.activeCategory ? 'blue' : 'black' }}
                             key={i}
-                            onClick={() => filterCategory(category.name)}
+                            onClick={() => { filterCategory(category.id); modalControl(false) }}
                         >
                             {
                                 category.name

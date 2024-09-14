@@ -43,7 +43,11 @@ function AppBar() {
                 </div>
 
                 <ModalBox children={<SearchBox />} isOpen={searchModal} onClose={() => { searchModalControl(!searchModal) }} />
-                <ModalBox children={<div className="p-4"><CategoryList /></div>} isOpen={categoryModal} onClose={() => { modalControl(!categoryModal) }} />
+                <ModalBox children={
+                    <div className="p-4"><CategoryList /></div>}
+                    isOpen={categoryModal}
+                    onClose={() => { modalControl(!categoryModal) }}
+                />
 
 
                 {token && userInfo && <div className="flex items-center cursor-pointer" onClick={() => navigation('/profile')}>

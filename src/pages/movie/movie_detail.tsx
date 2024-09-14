@@ -5,15 +5,18 @@ import { ICategory, IMovie } from '../../models';
 import { MdDownload } from "react-icons/md";
 import AdComponent from '../../components/radcomponent';
 import VideoAdPlayer from '../../components/videoplayer';
+import { useSelector } from 'react-redux';
+import { MVProRootState } from '../../redux/store';
 
 function Movie() {
 
     const getMovie = useApi();
-    const getAllMovie = useApi();
     const [searchParams] = useSearchParams();
     const id = searchParams.get('vid');
     const navigate = useNavigate();
     const [currentMovie, setCurrentMovie] = useState<IMovie>();
+    const movieDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
+
 
     const loadMovieDetail = async () => {
         const res = await getMovie.sendRequest({
@@ -30,13 +33,6 @@ function Movie() {
     React.useEffect(() => {
         (async () => {
             await loadMovieDetail();
-
-            await getAllMovie.sendRequest({
-                method: 'GET',
-                url: 'movie'
-            });
-
-
         })();
     }, [id, currentMovie])
 
@@ -60,6 +56,7 @@ function Movie() {
                     >
                         <source src={currentMovie.url}></source>
                     </video> */}
+                    {currentMovie.url}
                     <VideoAdPlayer
                         vastTagUrl="https://s.magsrv.com/splash.php?idzone=5395886"
                         videoUrl={`${currentMovie.url}`}
@@ -101,7 +98,7 @@ function Movie() {
 
             <div className='lg:col-span-3 md:col-span-5  flex-col  p-2 overflow-auto'>
                 {
-                    getAllMovie.data && getAllMovie.data.map((movie: IMovie, i: number) =>
+                    movieDetails.movies && movieDetails.movies.map((movie: IMovie, i: number) =>
                         <div className='grid grid-cols-3  w-full mt-2 justify-start cursor-pointer' key={i} onClick={() => {
                             navigate(`/movie/watch?vid=${movie.id}`)
                             navigate(0)
