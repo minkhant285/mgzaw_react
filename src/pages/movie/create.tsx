@@ -1,16 +1,19 @@
 import { useForm } from 'react-hook-form';
 import useApi from '../../hooks/useApi';
 import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
-import { IMovie } from '../../models';
+import { ICategory } from '../../models';
 import { io } from 'socket.io-client';
 import { envLoader } from '../../utils';
 import axios, { AxiosProgressEvent } from 'axios';
 import ReactSelect from 'react-select';
 import { AppContext } from '../../providers/app.provider';
-import ProgressBar from '../../components/progressbar';
 import { useNavigate } from 'react-router-dom';
 import MovieCategory from './category';
 import ModalBox from '../../components/modal';
+import { AppDispatch, MVProRootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategories } from '../../redux/slicers/movie.slice';
+import ProgressBar from '../../components/progressbar';
 
 type MovieInput = {
     name: string
@@ -25,8 +28,7 @@ const CreateMovie = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<MovieInput>({
         defaultValues: {
             name: "",
-            caption: "",
-            description: ""
+            caption: ""
         }
     });
 
@@ -37,16 +39,22 @@ const CreateMovie = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const getCategory = useApi();
     const [progress, setProgress] = useState<number>(0);
-    const [selectedCategory, setCategory] = useState<IMovie[]>();
+    const [selectedCategory, setCategory] = useState<ICategory[]>();
     const { loadingControl, token } = useContext(AppContext);
     const navigate = useNavigate();
     const [addCategory, setNewCategory] = useState<any>();
+    const categoryDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
+    const dispatch: AppDispatch = useDispatch();
+
+
 
 
     // Handle form submission
     const onSubmit = async (data: MovieInput) => {
         await handleFileUpload(data);
     };
+
+
 
     const handleFileUpload = async (vidInput: MovieInput) => {
         if (selectedFile) {
@@ -82,7 +90,13 @@ const CreateMovie = () => {
                     await createMovie.sendRequest({
                         method: 'POST',
                         url: "movie",
-                        data: { ...vidInput, url: response.data.result.fileUrl, thumbnail_url: response.data.result.thumbnail_url, categories: selectedCategory }
+                        data: {
+                            ...vidInput,
+                            description: '',
+                            url: response.data.result.fileUrl,
+                            thumbnail_url: response.data.result.thumbnail_url,
+                            categories: selectedCategory
+                        }
                     }).then(() => {
                         socket.disconnect();
                         navigate(0);
@@ -105,8 +119,6 @@ const CreateMovie = () => {
         }
     };
 
-
-
     const handleDivClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
@@ -122,17 +134,28 @@ const CreateMovie = () => {
 
 
     const loadCategory = async () => {
-        await getCategory.sendRequest({
+
+        const cate_res = await getCategory.sendRequest({
             method: 'GET',
             url: 'category'
         });
+
+        if (cate_res) {
+            const res = cate_res.result as ICategory[];
+            if (res.length > 0) {
+                dispatch(setCategories(res));
+            }
+        }
+
         setNewCategory(false);
     }
 
     useEffect(() => {
 
         (async () => {
-            await loadCategory();
+            if (categoryDetails.categories === null) {
+                await loadCategory();
+            }
         })()
 
 
@@ -146,7 +169,9 @@ const CreateMovie = () => {
 
     return (
         <div className='h-[calc(100%-3.5rem)] flex flex-1 justify-center'>
-            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 items-center p-5 w-full sm:w-2/3 md:w-2/3 lg:w-1/3'>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className='flex flex-col gap-6 items-center p-5 w-full sm:w-2/3 md:w-2/3 lg:w-1/3'>
                 <div>
                     <div className="cursor-pointer w-full" onClick={handleDivClick}>
                         <input name="video"
@@ -164,12 +189,10 @@ const CreateMovie = () => {
                             />}
                         </div>
                     </div>
-                    {
-                        `progress ${progress}%`
-                    }
-
-                    <ProgressBar progress={progress} />
                 </div>
+
+                <ProgressBar value={progress} />
+
                 <div className='w-full'>
                     <input
                         className='rounded p-2 shadow-md border focus:border-[#00f] w-full'
@@ -192,36 +215,46 @@ const CreateMovie = () => {
 
                 <div className='flex w-full gap-2'>
 
-                    {getCategory.data && <ReactSelect
+                    {categoryDetails.categories && <ReactSelect
                         className='w-full'
                         isMulti
-                        options={getCategory.data}
-                        onChange={(selectedOptions) => setCategory(selectedOptions as IMovie[])}
-                        getOptionLabel={(option: IMovie) => option.name}
-                        getOptionValue={(option: IMovie) => option.id}
+                        options={categoryDetails.categories}
+                        onChange={(selectedOptions) => setCategory(selectedOptions as ICategory[])}
+                        getOptionLabel={(option: ICategory) => option.name}
+                        getOptionValue={(option: ICategory) => option.id}
                     />}
 
-                    <ModalBox children={<MovieCategory apiRefresh={loadCategory} />} isOpen={addCategory} onClose={() => { setNewCategory(!addCategory) }} />
+                    <ModalBox children={<MovieCategory
+                        apiRefresh={loadCategory}
+                    />}
+                        isOpen={addCategory}
+                        onClose={() => { setNewCategory(!addCategory) }}
+                    />
 
-                    <button className='p-2 w-20 bg-primary rounded-md text-white' onClick={() => { setNewCategory(!addCategory) }}>
+                    <button className='p-2 w-20 bg-primary rounded-md text-white'
+                        type='button'
+                        onClick={() => { setNewCategory(!addCategory) }}>
                         ADD
                     </button>
                 </div>
 
-                <div className='w-full' >
-                    <textarea
-                        className='peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50'
-                        id="description"
-                        placeholder='Description'
-                        {...register('description', { required: true })}
-                    />
-                    {errors.description && <span>This field is required</span>}
-                </div>
+                {/* <div className='w-full' >
+    <textarea
+        className='peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50'
+        id="description"
+        placeholder='Description'
+        {...register('description', { required: false })}
+    />
+    {errors.description && <span>This field is required</span>}
+</div> */}
 
-                <button className='text-white p-3 bg-primary rounded-md w-full' type="submit" >Upload</button>
+                <button
+                    className='text-white p-3 bg-primary rounded-md w-full'
+                >Upload</button>
             </form>
         </div>
     );
 };
 
 export default CreateMovie;
+

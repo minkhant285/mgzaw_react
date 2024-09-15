@@ -13,11 +13,9 @@ const useApi = (name?: string) => {
 
     const sendRequest = async (reqModal: ApiRequestModel): Promise<IReturnPayload | undefined> => {
         loadingControl(true);
-        console.log(name)
         try {
             let fetched = await ApiInstance(reqModal);
             loadingControl(false);
-            // console.log(fetched)
             if (fetched) {
                 if (fetched.status === 401) {
                     alert('Session Expired! PlEASE Login Again!');
@@ -38,7 +36,7 @@ const useApi = (name?: string) => {
             }
             return fetched?.data as IReturnPayload;
         } catch (err) {
-            console.log('error', err);
+            console.log(`error ${name}`, err);
             setError("Error");
             loadingControl(false);
         }

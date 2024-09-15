@@ -1,17 +1,19 @@
 import React from 'react';
 
-interface ProgressBarProps {
-    progress: number; // Value between 0 and 100
-    className?: string; // Optional custom class name
-}
+const ProgressBar: React.FC<{ value: number }> = ({ value }) => {
+    const progress = Math.min(Math.max(value, 0), 100); // Ensures value is between 0 and max
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ progress, className }) => {
     return (
-        <div className={`relative w-full bg-gray-200 rounded-full h-4 ${className}`}>
+        <div className="relative w-full bg-secondary rounded-full h-4">
             <div
-                className="absolute top-0 left-0 h-full bg-blue-500 rounded-full"
-                style={{ width: `${progress}%` }}
+                className="bg-primary h-4 rounded-full"
+                style={{ width: `${(progress / 100) * 100}%` }}
             ></div>
+            <div className="absolute inset-0 flex justify-center items-center">
+                <span className="text-sm text-white">
+                    {Math.floor((progress / 100) * 100)}%
+                </span>
+            </div>
         </div>
     );
 };

@@ -180,6 +180,11 @@ function Profile() {
                         </label>
                     </div>
 
+                    <div className="py-2 cursor-pointer hover:filter">
+                        <h2 className="text-lg text-gray-700 font-semibold">Add Movie</h2>
+                        <span onClick={() => navigation('/movie/create')}> ADD Here </span>
+                    </div>
+
                 </div>
             </div>
             <div className='max-w-sm mx-auto bg-primary shadow-md rounded-lg overflow-hidden flex justify-center text-white p-3 mt-5'

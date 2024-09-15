@@ -5,17 +5,21 @@ import { ICategory, IMovie } from '../../models';
 import { MdDownload } from "react-icons/md";
 import AdComponent from '../../components/radcomponent';
 import VideoAdPlayer from '../../components/videoplayer';
-import { useSelector } from 'react-redux';
-import { MVProRootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, MVProRootState } from '../../redux/store';
+import { setMovies } from '../../redux/slicers/movie.slice';
 
 function Movie() {
 
     const getMovie = useApi();
+    const getAllMovies = useApi();
     const [searchParams] = useSearchParams();
     const id = searchParams.get('vid');
     const navigate = useNavigate();
     const [currentMovie, setCurrentMovie] = useState<IMovie>();
     const movieDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
+    const dispatch: AppDispatch = useDispatch();
+
 
 
     const loadMovieDetail = async () => {
@@ -33,6 +37,17 @@ function Movie() {
     React.useEffect(() => {
         (async () => {
             await loadMovieDetail();
+            if (movieDetails.movies === null) {
+                const res = await getAllMovies.sendRequest({
+                    method: 'GET',
+                    url: `movie?page=${1}&limit=${10}`
+                })
+                if (res) {
+                    const resMovies = res.result as { movies: IMovie[], total: number, page: number, limit: number }
+                    dispatch(setMovies(resMovies.movies));
+
+                }
+            }
         })();
     }, [id, currentMovie])
 

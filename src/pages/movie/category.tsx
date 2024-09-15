@@ -2,10 +2,6 @@ import useApi from '../../hooks/useApi';
 import { useState } from 'react';
 import { STATUS_MESSAGE } from '../../models';
 
-// type MovieCategoryInput = {
-//     name: string;
-//     description: string;
-// }
 
 const MovieCategory: React.FC<{ apiRefresh: Function }> = ({ apiRefresh }) => {
 
@@ -53,7 +49,7 @@ const MovieCategory: React.FC<{ apiRefresh: Function }> = ({ apiRefresh }) => {
                         />
                     </div>
                 </div>
-                <button className='text-white p-3 bg-primary rounded-md w-full' onClick={onSubmit}>Save</button>
+                <button disabled={!Ctitle} className='text-white p-3 bg-primary rounded-md w-full' type='button' onClick={onSubmit}>Save</button>
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import useApi from '../../hooks/useApi'
 import { IMovie } from '../../models';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ function MovieFeed() {
     const dispatch: AppDispatch = useDispatch();
     const movieDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
     const navigate = useNavigate();
-    const pagelimit = 12;
+    const pagelimit = 18;
 
 
 
@@ -69,7 +69,7 @@ function MovieFeed() {
                 lg:col-span-10
                 grid
                 grid-rows-3
-                grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+                grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5
                 gap-4 p-4
                 justify-start
                 '>

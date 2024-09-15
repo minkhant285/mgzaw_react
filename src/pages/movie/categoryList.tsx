@@ -11,10 +11,10 @@ function CategoryList() {
 
     const getCategory = useApi();
     const getAllMovie = useApi();
-    const dispatch: AppDispatch = useDispatch();
     const { modalControl } = useContext(AppContext);
     let { c_name } = useParams();
     const navigate = useNavigate();
+    const dispatch: AppDispatch = useDispatch();
     const categoryDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
 
 
