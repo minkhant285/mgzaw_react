@@ -1,18 +1,14 @@
 import { useForm } from 'react-hook-form';
 import useApi from '../../hooks/useApi';
-import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ICategory, IMovie } from '../../models';
-import { envLoader } from '../../utils';
-import axios, { AxiosProgressEvent } from 'axios';
 import ReactSelect from 'react-select';
-import { AppContext } from '../../providers/app.provider';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import MovieCategory from '../movie/category';
 import ModalBox from '../../components/modal';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCategories } from '../../redux/slicers/movie.slice';
-import ProgressBar from '../../components/progressbar';
 
 type MovieInput = {
     name: string

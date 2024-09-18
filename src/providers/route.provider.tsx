@@ -12,7 +12,7 @@ import Profile from '../pages/profile/profile';
 import About from '../pages/about';
 import Auth from '../pages/auth/auth';
 import useApi from '../hooks/useApi';
-import { STATUS_MESSAGE, UserInfoResult } from '../models';
+import { UserInfoResult } from '../models';
 import ComponentPage from '../pages/component/component';
 import ChangePasswordPage from '../pages/auth/changepass';
 import ChangePhonePage from '../pages/profile/change_phone';
