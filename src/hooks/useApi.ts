@@ -18,7 +18,7 @@ const useApi = (name?: string) => {
             loadingControl(false);
             if (fetched) {
                 if (fetched.status === 401) {
-                    alert('Session Expired! PlEASE Login Again!');
+                    // alert('Session Expired! PlEASE Login Again!');
                     logout();
                 }
                 if (fetched?.status === 400) {

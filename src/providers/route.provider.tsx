@@ -12,26 +12,32 @@ import Profile from '../pages/profile/profile';
 import About from '../pages/about';
 import Auth from '../pages/auth/auth';
 import useApi from '../hooks/useApi';
-import { UserInfoResult } from '../models';
+import { STATUS_MESSAGE, UserInfoResult } from '../models';
 import ComponentPage from '../pages/component/component';
 import ChangePasswordPage from '../pages/auth/changepass';
 import ChangePhonePage from '../pages/profile/change_phone';
 import ChangeEmailPage from '../pages/profile/change_email';
-import CreateMovie from '../pages/movie/create';
+import CreateMovie from '../pages/dashboard/create';
 import Movie from '../pages/movie/movie_detail';
 import MovieFeed from '../pages/movie/feed';
 import Footer from '../components/footer';
 import TNC from '../pages/about/terms';
 import Privacy from '../pages/about/privacy';
 import DownloadPage from '../pages/movie/download';
+import MovieDashboard from '../pages/dashboard/dashboard';
+import EditMovie from '../pages/dashboard/edit';
+import { ApiInstance } from '../services';
 
 const AppRouteProvider: React.FC = () => {
 
-    const { token } = useContext(AppContext);
+    const { token, userInfo } = useContext(AppContext);
 
-    const AuthLoader: LoaderFunction = () => {
-        if (!token || token === '') {
-            return redirect('/login')
+    const AuthLoader: LoaderFunction = async () => {
+        const res = await ApiInstance({ method: 'GET', url: 'auth/checkAuthStatus' });
+        if (res) {
+            if (res.data.result !== userInfo?.id || res.status === 401) {
+                return redirect('/login');
+            }
         }
         return 0;
     }
@@ -72,6 +78,18 @@ const AppRouteProvider: React.FC = () => {
             path: "/movie/create",
             loader: AuthLoader,
             element: <RouterRender component={<CreateMovie />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/movie/edit",
+            loader: AuthLoader,
+            element: <RouterRender component={<EditMovie />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/movie/dashboard",
+            loader: AuthLoader,
+            element: <RouterRender component={<MovieDashboard />} />,
             errorElement: <div>Error</div>,
         },
         {

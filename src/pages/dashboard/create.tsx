@@ -8,7 +8,7 @@ import axios, { AxiosProgressEvent } from 'axios';
 import ReactSelect from 'react-select';
 import { AppContext } from '../../providers/app.provider';
 import { useNavigate } from 'react-router-dom';
-import MovieCategory from './category';
+import MovieCategory from '../movie/category';
 import ModalBox from '../../components/modal';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,7 +28,8 @@ const CreateMovie = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<MovieInput>({
         defaultValues: {
             name: "",
-            caption: ""
+            caption: "",
+            description: ""
         }
     });
 
@@ -92,7 +93,6 @@ const CreateMovie = () => {
                         url: "movie",
                         data: {
                             ...vidInput,
-                            description: '',
                             url: response.data.result.fileUrl,
                             thumbnail_url: response.data.result.thumbnail_url,
                             categories: selectedCategory
@@ -238,15 +238,14 @@ const CreateMovie = () => {
                     </button>
                 </div>
 
-                {/* <div className='w-full' >
-    <textarea
-        className='peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50'
-        id="description"
-        placeholder='Description'
-        {...register('description', { required: false })}
-    />
-    {errors.description && <span>This field is required</span>}
-</div> */}
+                <div className='w-full' >
+                    <textarea
+                        className='peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50'
+                        id="description"
+                        placeholder='Description'
+                        {...register('description', { required: false })}
+                    />
+                </div>
 
                 <button
                     className='text-white p-3 bg-primary rounded-md w-full'

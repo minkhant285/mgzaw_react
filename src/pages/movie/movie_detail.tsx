@@ -16,9 +16,10 @@ function Movie() {
     const [searchParams] = useSearchParams();
     const id = searchParams.get('vid');
     const navigate = useNavigate();
-    const [currentMovie, setCurrentMovie] = useState<IMovie>();
     const movieDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
     const dispatch: AppDispatch = useDispatch();
+    const [currentMovie, setCurrentMovie] = useState<IMovie>();
+
 
 
 
@@ -55,6 +56,8 @@ function Movie() {
 
 
 
+
+
     return (
         <div className='grid contain grid-cols-1 md:grid-cols-12 '>
             <div className='col-span-1  hidden lg:block'></div>
@@ -71,7 +74,7 @@ function Movie() {
                     >
                         <source src={currentMovie.url}></source>
                     </video> */}
-                    {currentMovie.url}
+                    {/* {currentMovie.url} */}
                     <VideoAdPlayer
                         vastTagUrl="https://s.magsrv.com/splash.php?idzone=5395886"
                         videoUrl={`${currentMovie.url}`}
@@ -85,7 +88,9 @@ function Movie() {
                                 <span className='text-white  font-bold'>
                                     {getMovie.data.name}
                                 </span>
-                                <button onClick={() => navigate(`/movie/download?vid=${id}`)} className='flex justify-center items-center p-1 pl-3 text-white text-xs  bg-secondary rounded-md'>
+                                <button
+                                    onClick={() => navigate(`/movie/download?vid=${id}`)}
+                                    className='flex justify-center items-center p-1 pl-3 text-white text-xs  bg-secondary rounded-md'>
                                     Download
                                     <MdDownload
                                         className="text-white  shadow-lg mx-1 "

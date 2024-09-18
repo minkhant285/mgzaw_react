@@ -1,7 +1,8 @@
 // src/ThemeContext.js
 import React, { createContext, useState, useContext } from 'react';
-import { IUser } from '../models';
+import { IUser, STATUS_MESSAGE } from '../models';
 import { AppStorage } from '../utils';
+import useApi from '../hooks/useApi';
 
 export const AppContext = createContext<{
     theme: string;
@@ -10,6 +11,7 @@ export const AppContext = createContext<{
     searchModal: boolean;
     token: string | undefined;
     userInfo: IUser | undefined;
+    isAuthenticated: boolean;
     toggleTheme: (themeVal: string) => void;
     loadingControl: (val: boolean) => void;
     saveAuth: (token: string, info: IUser | undefined) => void;
@@ -17,6 +19,7 @@ export const AppContext = createContext<{
     saveUserInfo: (info: IUser) => void;
     modalControl: (value: boolean) => void;
     searchModalControl: (value: boolean) => void;
+    checkAuthStatus: () => void;
 }>({
     theme: 'default',
     appLoading: false,
@@ -24,13 +27,15 @@ export const AppContext = createContext<{
     searchModal: false,
     token: undefined,
     userInfo: undefined,
+    isAuthenticated: false,
     saveAuth: () => { },
     logout: () => { },
     saveUserInfo: () => { },
     toggleTheme: () => { },
     loadingControl: () => { },
     modalControl: () => { },
-    searchModalControl: () => { }
+    searchModalControl: () => { },
+    checkAuthStatus: async () => { }
 });
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -41,6 +46,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const [token, setToken] = useState(storage.getToken());
     const [categoryModal, setCategoryModal] = useState(false);
     const [searchModal, setSearchModal] = useState(false);
+    const [isAuthenticated, setAuth] = useState(false);
+    const checkIsAuthenticated = useApi();
+
+
 
 
     React.useEffect(() => {
@@ -50,11 +59,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return (
         <AppContext.Provider value={{
             theme,
+            isAuthenticated,
             userInfo: user,
             token,
             appLoading,
             categoryModal,
             searchModal,
+            checkAuthStatus: async () => {
+                const res = await checkIsAuthenticated.sendRequest({
+                    method: 'GET',
+                    url: 'auth/checkAuthStatus'
+                });
+                if (res) {
+                    if (res.status_message === STATUS_MESSAGE.FAIL) {
+                        setAuth(false);
+                    }
+                }
+            },
             searchModalControl: (value: boolean) => {
                 setSearchModal(value);
             },

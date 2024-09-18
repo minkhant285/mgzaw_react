@@ -97,7 +97,7 @@ const VideoAdPlayer: React.FC<VideoAdPlayerProps> = ({ vastTagUrl, videoUrl, key
                 vastTagUrl
             ],
             type: "linear",
-            offset: 2
+            offset: 0
         },
     ];
 
