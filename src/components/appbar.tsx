@@ -56,7 +56,7 @@ function AppBar() {
                     </span>
                     <div>
                         <img
-                            src={`http://${envLoader.host}:${envLoader.port}/image/${userInfo?.photoUrl}`}
+                            src={`${envLoader.host}/image/${userInfo?.photoUrl}`}
                             style={{ objectFit: 'contain', borderRadius: 50, marginLeft: 10 }}
                             width={30}
                             height={30}

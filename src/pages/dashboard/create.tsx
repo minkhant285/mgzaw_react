@@ -33,7 +33,7 @@ const CreateMovie = () => {
         }
     });
 
-    const socket = io(`http://${envLoader.host}:50002`);
+    const socket = io(`${envLoader.host}:50002`);
 
     const createMovie = useApi();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -185,7 +185,7 @@ const CreateMovie = () => {
                             src={URL.createObjectURL(selectedFile)} />
                             : <video
                                 className="h-[150px] w-full object-contain border-2 border-[#00f] border-solid"
-                            // src={`http://${envLoader.host}:${envLoader.port}/image/${userInfo?.photoUrl}`}
+
                             />}
                         </div>
                     </div>

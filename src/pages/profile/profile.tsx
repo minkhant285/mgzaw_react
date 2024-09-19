@@ -129,7 +129,7 @@ function Profile() {
                             src={URL.createObjectURL(selectedFile)} />
                             : <img alt="photo"
                                 className="h-24 w-24 object-contain border-2 border-primary border-solid"
-                                src={`http://${envLoader.host}:${envLoader.port}/image/${userInfo?.photoUrl}`}
+                                src={`${envLoader.host}/image/${userInfo?.photoUrl}`}
                             />}
                         </div>
                     </div>
