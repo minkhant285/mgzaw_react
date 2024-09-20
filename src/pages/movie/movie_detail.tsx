@@ -8,6 +8,7 @@ import VideoAdPlayer from '../../components/videoplayer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { setMovies } from '../../redux/slicers/movie.slice';
+import { formatDistanceToNow } from 'date-fns';
 
 function Movie() {
 
@@ -60,27 +61,24 @@ function Movie() {
 
     return (
         <div className='grid contain grid-cols-1 md:grid-cols-12 '>
-            <div className='col-span-1  hidden lg:block'></div>
+            <div className='col-span-2  hidden lg:block '></div>
 
-            <div className='lg:col-span-7 md:col-span-8  p-0 sm:p-4'>
+            <div className='lg:col-span-6 md:col-span-7  p-0 sm:p-4'>
                 {currentMovie && <div className='flex flex-col'>
-                    {/* <video
-                        controls
-                        key={currentMovie.id}
-                        controlsList='nodownload'
-                        onContextMenu={(e: any) => e.preventDefault()}
-                        poster={currentMovie.thumbnail_url}
-                        style={{ backgroundColor: 'black', width: '100%', maxHeight: 550, height: window.innerWidth < 400 ? 220 : '0%' }}
-                    >
-                        <source src={currentMovie.url}></source>
-                    </video> */}
                     {/* {currentMovie.url} */}
+                    {/* <div className='h-[90px] bg-secondary my-1  md:hidden'>
+                        <AdComponent />
+                    </div> */}
                     <VideoAdPlayer
                         vastTagUrl="https://s.magsrv.com/splash.php?idzone=5395886"
                         videoUrl={`${currentMovie.url}`}
                         key={currentMovie.id}
                         poster={currentMovie.thumbnail_url}
                     />
+
+                    {/* <div className='h-[90px] bg-primary hidden md:block'>
+                        <AdComponent />
+                    </div> */}
 
                     <div className='bg-[#242424] flex justify-between items-start p-2'>
                         <div className='w-full mt-1'>
@@ -97,7 +95,8 @@ function Movie() {
                                         size={20} />
                                 </button>
                             </div>
-                            <div className='flex p-2 gap-2 flex-wrap mt-[5px] '>
+
+                            <div className='flex p-1 gap-2 flex-wrap mt-[3px] '>
                                 {
                                     getMovie.data.categories.map((c: ICategory, i: number) => <div
                                         key={i}
@@ -105,25 +104,34 @@ function Movie() {
                                     >{c.name}</div>)
                                 }
                             </div>
+
+                            <div className='flex flex-col text-white'>
+                                <span>{formatDistanceToNow(new Date(currentMovie.created_at as Date), { addSuffix: true })} </span>
+                                <span>Views: {currentMovie.view_count + 10} </span>
+                                <span className='line-clamp-1'> {currentMovie.caption}</span>
+                                <span className='line-clamp-2'> {currentMovie.description}</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div className='h-[220px] hidden md:block'>
-                        <AdComponent />
-                    </div>
+
 
                 </div>
                 }
             </div>
 
-            <div className='lg:col-span-3 md:col-span-5  flex-col  p-2 overflow-auto'>
+            <div className='lg:col-span-2 md:col-span-5  flex-col  p-2 overflow-auto max-h-[calc(100vh-140px)]'>
+
+                {/* <div className='grid grid-cols-3  w-full mt-2 justify-start cursor-pointer bg-primary h-[80px]'>ad</div>
+                <div className='grid grid-cols-3  w-full mt-2 justify-start cursor-pointer bg-primary h-[80px]'>ad</div> */}
+
                 {
                     movieDetails.movies && movieDetails.movies.map((movie: IMovie, i: number) =>
                         <div className='grid grid-cols-3  w-full mt-2 justify-start cursor-pointer' key={i} onClick={() => {
                             navigate(`/movie/watch?vid=${movie.id}`)
                             navigate(0)
                         }}>
-                            <div >
+                            <div>
                                 <img
                                     // src={`https://img.freepik.com/premium-vector/adults-only-18-plus-sensitive-content-explicit-video-vector-stock-illustration_100456-10148.jpg`}
                                     src={movie.thumbnail_url !== null ? movie.thumbnail_url : `https://img.freepik.com/premium-vector/adults-only-18-plus-sensitive-content-explicit-video-vector-stock-illustration_100456-10148.jpg`}

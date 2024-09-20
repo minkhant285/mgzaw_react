@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setActiveCategory, setCategories, setCurrentPage, setMovies, setPageCount } from '../../redux/slicers/movie.slice';
 import { AppContext } from '../../providers/app.provider';
+import { loadMovieLimit } from '../../utils/constant';
 
 function CategoryList() {
 
@@ -21,7 +22,7 @@ function CategoryList() {
     const filterCategory = async (category: string) => {
         const res = await getAllMovie.sendRequest({
             method: 'GET',
-            url: `movie?page=${1}&limit=${12}&category_id=${category}`
+            url: `movie?page=${1}&limit=${loadMovieLimit}&category_id=${category}`
         })
         if (res) {
             const resMovies = res.result as { movies: IMovie[], total: number, page: number, limit: number }
@@ -60,7 +61,7 @@ function CategoryList() {
     const getAllMovies = async () => {
         const res = await getAllMovie.sendRequest({
             method: 'GET',
-            url: `movie?page=${1}&limit=${12}`
+            url: `movie?page=${1}&limit=${loadMovieLimit}`
         })
         if (res) {
             const resMovies = res.result as { movies: IMovie[], total: number, page: number, limit: number }
@@ -70,9 +71,10 @@ function CategoryList() {
         }
     }
 
-    return (
-        <div className=' bg-[#000] text-white p-2 h-3/5 overflow-auto '>
+    // h-[calc(100%-1.5rem)]
 
+    return (
+        <div className=' bg-[#000] text-white p-2 min-h-[calc(100vh-400px)] max-h-[calc(100vh-100px)] overflow-auto '>
             {
                 categoryDetails.categories && <div>
 

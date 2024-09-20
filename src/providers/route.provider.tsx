@@ -27,18 +27,19 @@ import DownloadPage from '../pages/movie/download';
 import MovieDashboard from '../pages/dashboard/dashboard';
 import EditMovie from '../pages/dashboard/edit';
 import { ApiInstance } from '../services';
+import Landing from '../pages/landing';
 
 const AppRouteProvider: React.FC = () => {
 
     const { token, userInfo } = useContext(AppContext);
 
     const AuthLoader: LoaderFunction = async () => {
-        const res = await ApiInstance({ method: 'GET', url: 'auth/checkAuthStatus' });
-        if (res) {
-            if (res.data.result !== userInfo?.id || res.status === 401) {
-                return redirect('/login');
-            }
-        }
+        // const res = await ApiInstance({ method: 'GET', url: 'auth/checkAuthStatus' });
+        // if (res) {
+        //     if (res.data.result !== userInfo?.id || res.status === 401) {
+        //         return redirect('/login');
+        //     }
+        // }
         return 0;
     }
 
@@ -46,6 +47,11 @@ const AppRouteProvider: React.FC = () => {
     const router = createBrowserRouter([
         {
             path: "/",
+            element: <RouterRender component={<Landing />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/feed",
             element: <RouterRender component={<MovieFeed />} />,
             errorElement: <div>Error</div>,
         },
@@ -185,10 +191,12 @@ const RouterRender: React.FC<{ component: React.ReactNode }> = ({ component }) =
         })()
     }, [user.data])
 
-    return <div className='bg-background h-screen overflow-y-scroll  top-0 left-0 right-0  relative  '>
+    return <div className='bg-background min-h-screen overflow-y-auto '>
         {appLoading && <Loading />}
         <AppBar />
-        {component}
+        <div className='min-h-[calc(100vh-90px)] pt-[56px]'>
+            {component}
+        </div>
         <Footer />
     </div>
 }

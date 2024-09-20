@@ -16,7 +16,7 @@ function AppBar() {
     const navigation = useNavigate();
 
     return (
-        <nav className='bg-primary h-14 p-2 md:p-7 flex justify-between items-center top-0 sticky z-10'>
+        <nav className='bg-primary h-14 p-2 md:p-7 flex justify-between items-center top-0 fixed w-full z-10'>
             <div className="flex-1 flex gap-2 items-center">
                 <img
                     src={LOGO}
@@ -38,7 +38,7 @@ function AppBar() {
                     <ImSearch size={20} color="white" />
                 </div>
 
-                <div className="md:hidden cursor-pointer hover:bg-secondary p-2 rounded-md" onClick={() => modalControl(true)}>
+                <div className="lg:hidden cursor-pointer hover:bg-secondary p-2 rounded-md" onClick={() => modalControl(true)}>
                     <FaFilter size={20} color="white" />
                 </div>
 
