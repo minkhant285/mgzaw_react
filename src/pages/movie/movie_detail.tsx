@@ -3,7 +3,6 @@ import useApi from '../../hooks/useApi';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ICategory, IMovie } from '../../models';
 import { MdDownload } from "react-icons/md";
-import AdComponent from '../../components/radcomponent';
 import VideoAdPlayer from '../../components/videoplayer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, MVProRootState } from '../../redux/store';

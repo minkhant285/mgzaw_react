@@ -74,8 +74,8 @@ interface PaginationProps {
 
 const Pagination: React.FC<PaginationProps> = ({ movieDetails, pageLimit, getAllMovies }) => {
     const generateRangeArray = (count: number) => Array.from({ length: count }, (_, i) => i + 1);
-    // movieDetails.pageCount / pageLimit
-    const totalPages = Math.ceil(100);
+
+    const totalPages = Math.ceil(movieDetails.pageCount / pageLimit);
     const pages = generateRangeArray(totalPages);
     const currentPage = movieDetails.currentPage;
 

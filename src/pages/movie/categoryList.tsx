@@ -82,7 +82,7 @@ function CategoryList() {
                         onClick={() => { getAllMovies(); modalControl(false); navigate('/'); dispatch(setActiveCategory('0')) }}
                         style={{ backgroundColor: '0' === categoryDetails.activeCategory ? 'blue' : 'black' }}
                     >
-                        All
+                        <span >All <span className='mx-1 text-gray text-xs'>({categoryDetails.pageCount})</span> </span>
                     </div>
                     {
                         categoryDetails.categories.map((category: ICategory, i: number) => <div

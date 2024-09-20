@@ -1,5 +1,3 @@
-import React from 'react'
-
 function US2257() {
     return (
         <div className='text-white grid grid-cols-5'>

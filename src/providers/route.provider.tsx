@@ -27,7 +27,6 @@ import DownloadPage from '../pages/movie/download';
 import MovieDashboard from '../pages/dashboard/dashboard';
 import EditMovie from '../pages/dashboard/edit';
 // import { ApiInstance } from '../services';
-import Landing from '../pages/landing';
 import DMCA from '../pages/about/dmca';
 import US2257 from '../pages/about/us2257';
 

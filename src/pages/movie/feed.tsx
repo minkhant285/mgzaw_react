@@ -10,7 +10,6 @@ import { generateRangeArray } from '../../utils/rangeArray';
 import { loadMovieLimit } from '../../utils/constant';
 import ResponsiveImage from '../../components/responsiveImage';
 import { formatDistanceToNow } from 'date-fns';
-import Pagination from '../../components/pagination';
 
 function MovieFeed() {
     const getAllMovie = useApi();
@@ -25,6 +24,7 @@ function MovieFeed() {
 
     useEffect(() => {
         (async () => {
+            document.title = `mgzaw (မောင်ဇော်)`;
             await getAllMovies(1);
             await getCategory.sendRequest({
                 method: 'GET',
