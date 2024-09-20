@@ -26,12 +26,14 @@ import Privacy from '../pages/about/privacy';
 import DownloadPage from '../pages/movie/download';
 import MovieDashboard from '../pages/dashboard/dashboard';
 import EditMovie from '../pages/dashboard/edit';
-import { ApiInstance } from '../services';
+// import { ApiInstance } from '../services';
 import Landing from '../pages/landing';
+import DMCA from '../pages/about/dmca';
+import US2257 from '../pages/about/us2257';
 
 const AppRouteProvider: React.FC = () => {
 
-    const { token, userInfo } = useContext(AppContext);
+    const { token } = useContext(AppContext);
 
     const AuthLoader: LoaderFunction = async () => {
         // const res = await ApiInstance({ method: 'GET', url: 'auth/checkAuthStatus' });
@@ -45,13 +47,13 @@ const AppRouteProvider: React.FC = () => {
 
 
     const router = createBrowserRouter([
+        // {
+        //     path: "/",
+        //     element: <RouterRender component={<Landing />} />,
+        //     errorElement: <div>Error</div>,
+        // },
         {
             path: "/",
-            element: <RouterRender component={<Landing />} />,
-            errorElement: <div>Error</div>,
-        },
-        {
-            path: "/feed",
             element: <RouterRender component={<MovieFeed />} />,
             errorElement: <div>Error</div>,
         },
@@ -68,6 +70,16 @@ const AppRouteProvider: React.FC = () => {
         {
             path: "/about",
             element: <RouterRender component={<About />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/dmca",
+            element: <RouterRender component={<DMCA />} />,
+            errorElement: <div>Error</div>,
+        },
+        {
+            path: "/us2257",
+            element: <RouterRender component={<US2257 />} />,
             errorElement: <div>Error</div>,
         },
         {

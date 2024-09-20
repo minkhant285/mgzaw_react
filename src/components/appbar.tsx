@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { AppContext } from "../providers/app.provider"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { envLoader } from "../utils";
 import SearchBox from "./searchbox";
 import { ImSearch } from "react-icons/im";
@@ -8,12 +8,14 @@ import ModalBox from './modal';
 import LOGO from '../assets/MZ.png';
 import { FaFilter } from "react-icons/fa";
 import CategoryList from "../pages/movie/categoryList";
+import { FaHome } from "react-icons/fa";
 
 
 function AppBar() {
 
     const { token, userInfo, categoryModal, modalControl, searchModal, searchModalControl } = useContext(AppContext);
     const navigation = useNavigate();
+    const location = useLocation();
 
     return (
         <nav className='bg-primary h-14 p-2 md:p-7 flex justify-between items-center top-0 fixed w-full z-10'>
@@ -38,9 +40,16 @@ function AppBar() {
                     <ImSearch size={20} color="white" />
                 </div>
 
-                <div className="lg:hidden cursor-pointer hover:bg-secondary p-2 rounded-md" onClick={() => modalControl(true)}>
+
+
+                {location.pathname === '/' && <div className="lg:hidden cursor-pointer  p-2 rounded-md" onClick={() => modalControl(true)}>
                     <FaFilter size={20} color="white" />
+                </div>}
+
+                <div className="md:hidden cursor-pointer  p-2 rounded-md" onClick={() => navigation('/')}>
+                    <FaHome size={25} color="white" />
                 </div>
+
 
                 <ModalBox children={<SearchBox />} isOpen={searchModal} onClose={() => { searchModalControl(!searchModal) }} />
                 <ModalBox children={
