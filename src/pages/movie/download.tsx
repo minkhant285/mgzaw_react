@@ -70,52 +70,53 @@ function DownloadPage() {
                 <AdComponent />
             </div>
 
-            <div className='col-span-12 md:col-span-3 p-4 flex flex-col items-center gap-2'>
 
-                <div className='h-[80px] w-full md:hidden'>
+            <div className='col-span-12 md:col-span-3 p-4 flex flex-col items-center gap-2 text-white'>
+
+                <header className="hero-section text-center mb-5">
+                    <h1 className="text-2xl font-bold">Download Your Favorite Adult Videos</h1>
+                    <p className="text-xl mt-2">Enjoy Anytime, Anywhere!</p>
+                    <p className="mt-2">
+                        With mgzaw.com, you can download high-quality adult videos directly to your device for offline viewing. Experience freedom and flexibility in your entertainment choices!
+                    </p>
+                </header>
+
+                <section className="how-to-download-section ">
+                    <h2 className="text-2xl font-bold mb-2">How to Download Videos</h2>
+                    <ol className="list-decimal list-inside my-2">
+                        <li><strong>Browse:</strong> Explore our extensive library of adult content.</li>
+                        <li><strong>Select:</strong> Choose the video you want to download.</li>
+                        <li><strong>Download:</strong> Click the download button and choose your preferred video quality.</li>
+                        <li><strong>Enjoy:</strong> Watch your downloaded video anytime, even without an internet connection!</li>
+                    </ol>
+                </section>
+
+                <section className="call-to-action-section my-2 text-center">
+                    <h2 className="text-2xl font-bold mb-4">Start Downloading Today!</h2>
+                    <p className="mb-4">
+                        Join MGZAW.com and take advantage of our easy video download feature.
+                    </p>
+                    <div className='w-full  flex justify-center'>
+                        <button disabled={start} onClick={() => setStart(true)} className='my-3 flex w-fit self-center justify-center items-center p-3 pl-3 text-white text-xs  bg-secondary rounded-md'>
+                            {
+                                start ? `Starting Download in (${counter} s)` : <>Download "{currentMovie?.name}.mp4" Here  <MdDownload
+                                    className="text-white  shadow-lg mx-1 "
+                                    size={20} /></>
+                            }
+                        </button>
+                    </div>
+                </section>
+
+                {/* <div className=' h-[200px] w-full md:hidden'>
                     <AdComponent />
-                </div>
+                </div> */}
 
-                <h2 className='text-white text-2xl'>IPhone16 2024 News</h2>
-                <p className='text-white text-justify indent-5 text-sm'>
-
-                    The iPhone 16, though still in the realm of speculation and future product expectations,
-                    is anticipated to follow Apple’s trend of innovation in the smartphone industry.
-                    As Apple typically releases its iPhone models with incremental upgrades in design, technology, and user experience,
-                    the iPhone 16 may include several exciting features based on industry predictions and trends.
-
-                    The iPhone 16 could see further refinements in terms of thinner bezels,
-                    more durable materials, or new color finishes.
-                    There’s also speculation that Apple may experiment with a completely portless design,
-                    relying on wireless charging and data transfer methods.
-
-                </p>
-
-                <button disabled={start} onClick={() => setStart(true)} className='my-3 flex w-fit self-center justify-center items-center p-3 pl-3 text-white text-xs  bg-secondary rounded-md'>
-                    {
-                        start ? `Starting Download in (${counter} s)` : <>Download Here <MdDownload
-                            className="text-white  shadow-lg mx-1 "
-                            size={20} /></>
-                    }
-                </button>
-
-                <p className='text-white text-justify indent-5 text-sm'>
-                    {`
-                    The iPhone 16 is anticipated to feature design refinements with thinner bezels and possibly a portless design,
-                     alongside display improvements like higher refresh rates and better brightness.
-                     Camera upgrades may include enhanced low-light performance and AI-driven photography,
-                      while a new A-series chip will boost performance and battery efficiency.
-                      It may introduce faster wireless charging, better AR capabilities, and advanced 5G or even 6G connectivity.
-                       Sustainability efforts could lead to more eco-friendly materials, and biometric enhancements like under-display Touch ID might return.
-                    Expected to release in September, pricing is likely to align with previous models.
-                    `}
-
-                </p>
-
-                <div className=' h-[200px] w-full md:hidden'>
-                    <AdComponent />
-                </div>
-
+                <section className="safety-section my-5">
+                    <h2 className="text-2xl font-bold mb-4">Safety and Privacy</h2>
+                    <p>
+                        Your privacy is our priority. We use secure protocols to ensure your data is protected during downloads. Enjoy your content worry-free, knowing that we respect your privacy and security.
+                    </p>
+                </section>
             </div>
 
             <div className='col-span-2 hidden md:block'>

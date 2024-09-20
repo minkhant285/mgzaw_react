@@ -20,6 +20,7 @@ const LandingPage: React.FC = () => {
                             <h3 className="text-2xl font-semibold">High-Quality Streaming</h3>
                             <p>
                                 Experience crystal-clear streaming with multiple resolutions available to suit your device and internet speed. Enjoy buffering-free viewing anytime, anywhere.
+                                The MGZAW team is always updating and adding more porn videos every day. It's all here and 100% free porn.
                             </p>
                         </div>
 
@@ -33,7 +34,7 @@ const LandingPage: React.FC = () => {
                         <div className="feature-item p-4 border rounded shadow">
                             <h3 className="text-2xl font-semibold">Privacy and Security</h3>
                             <p>
-                                Your privacy is our top priority. We use advanced encryption and secure payment methods to protect your information while you enjoy your viewing experience.
+                                Your privacy is our top priority. We use advanced encryption to protect your information while you enjoy your viewing experience.
                             </p>
                         </div>
                     </div>
