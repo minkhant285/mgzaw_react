@@ -21,7 +21,7 @@ export const AppContext = createContext<{
     saveUserInfo: (info: IUser) => void;
     modalControl: (value: boolean) => void;
     searchModalControl: (value: boolean) => void;
-    checkAuthStatus: () => void;
+    authStatusControl: (value: boolean) => void;
     appErrorControl: (value: boolean) => void;
     setErrorMessageControl: (value: string) => void;
 }>({
@@ -42,7 +42,7 @@ export const AppContext = createContext<{
     modalControl: () => { },
     appErrorControl: () => { },
     searchModalControl: () => { },
-    checkAuthStatus: async () => { },
+    authStatusControl: () => { },
     setErrorMessageControl: () => { }
 });
 
@@ -57,10 +57,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const [searchModal, setSearchModal] = useState(false);
     const [isAuthenticated, setAuth] = useState(false);
     const [appErrorMessage, setAppErrorMessage] = useState('');
-    const checkIsAuthenticated = useApi();
-
-
-
 
     React.useEffect(() => {
         document.documentElement.setAttribute('data-theme', theme);
@@ -77,16 +73,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             categoryModal,
             searchModal,
             appErrorMessage,
-            checkAuthStatus: async () => {
-                const res = await checkIsAuthenticated.sendRequest({
-                    method: 'GET',
-                    url: 'auth/checkAuthStatus'
-                });
-                if (res) {
-                    if (res.status_message === STATUS_MESSAGE.FAIL) {
-                        setAuth(false);
-                    }
-                }
+            authStatusControl: (value: boolean) => {
+                setAuth(value);
             },
             searchModalControl: (value: boolean) => {
                 setSearchModal(value);

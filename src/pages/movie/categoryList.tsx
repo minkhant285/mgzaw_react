@@ -13,7 +13,6 @@ function CategoryList() {
     const getCategory = useApi();
     const getAllMovie = useApi();
     const { modalControl } = useContext(AppContext);
-    let { c_name } = useParams();
     const navigate = useNavigate();
     const dispatch: AppDispatch = useDispatch();
     const categoryDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
@@ -34,7 +33,6 @@ function CategoryList() {
     }
 
     useEffect(() => {
-        console.log(c_name);
         (async () => {
 
             if (categoryDetails.categories === null) {
@@ -49,14 +47,8 @@ function CategoryList() {
                     }
                 }
             }
-
-            // if (c_name) {
-            //     await filterCategory(c_name as string);
-            // } else {
-            //     await getAllMovies();
-            // }
         })()
-    }, [c_name])
+    }, [])
 
     const getAllMovies = async () => {
         const res = await getAllMovie.sendRequest({
@@ -87,9 +79,9 @@ function CategoryList() {
                     {
                         categoryDetails.categories.map((category: ICategory, i: number) => <div
                             className=' m-2 rounded-md font-semibold px-2 cursor-pointer hover:bg-primary'
-                            style={{ backgroundColor: category.id === categoryDetails.activeCategory ? 'blue' : 'black' }}
+                            style={{ backgroundColor: category.name.toLocaleLowerCase() === categoryDetails.activeCategory.toLocaleLowerCase() ? 'blue' : 'black' }}
                             key={i}
-                            onClick={() => { filterCategory(category.id); modalControl(false) }}
+                            onClick={() => { navigate(`/video/category/${category.name}`); filterCategory(category.name); modalControl(false) }}
                         >
                             {
                                 category.name

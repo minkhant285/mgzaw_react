@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import useApi from '../../hooks/useApi'
 import { IMovie } from '../../models';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentPage, setMovies, setPageCount } from '../../redux/slicers/movie.slice';
+import { setActiveCategory, setCurrentPage, setMovies, setPageCount } from '../../redux/slicers/movie.slice';
 import CategoryList from './categoryList';
 import { generateRangeArray } from '../../utils/rangeArray';
 import { loadMovieLimit } from '../../utils/constant';
@@ -18,7 +18,7 @@ function MovieFeed() {
     const movieDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
     const navigate = useNavigate();
     const pagelimit = loadMovieLimit;
-
+    const location = useLocation();
 
 
 
@@ -34,9 +34,16 @@ function MovieFeed() {
     }, [])
 
     const getAllMovies = async (page: number) => {
+
+        let categorypath = location.pathname.split('/');
+        if (location.pathname.includes('/video/category')) {
+            dispatch(setActiveCategory(decodeURIComponent(categorypath[categorypath.length - 1])));
+        }
         const res = await getAllMovie.sendRequest({
             method: 'GET',
-            url: `movie?page=${page}&limit=${pagelimit}`
+            url: location.pathname.includes('/video/category') ?
+                `movie?page=${page}&limit=${pagelimit}&category_id=${categorypath[categorypath.length - 1]}` :
+                `movie?page=${page}&limit=${pagelimit}`
         });
 
         if (res) {

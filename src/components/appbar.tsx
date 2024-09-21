@@ -42,6 +42,9 @@ function AppBar() {
 
 
 
+                {location.pathname.includes('video/category') && <div className="lg:hidden cursor-pointer  p-2 rounded-md" onClick={() => modalControl(true)}>
+                    <FaFilter size={20} color="white" />
+                </div>}
                 {location.pathname === '/' && <div className="lg:hidden cursor-pointer  p-2 rounded-md" onClick={() => modalControl(true)}>
                     <FaFilter size={20} color="white" />
                 </div>}

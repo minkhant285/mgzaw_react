@@ -30,25 +30,28 @@ import { ApiInstance } from '../services';
 import DMCA from '../pages/about/dmca';
 import US2257 from '../pages/about/us2257';
 import GlobalError from '../components/error';
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 
 const AppRouteProvider: React.FC = () => {
 
-    const { token } = useContext(AppContext);
+    const { isAuthenticated, authStatusControl } = useContext(AppContext);
+
+    const AuthCheckerApi = async () => {
+        const res = await ApiInstance({ method: 'GET', url: 'auth/checkAuthStatus' });
+        const resData = res as AxiosResponse;
+        if (resData.data) {
+            authStatusControl(true);
+        }
+        return res;
+    }
 
     const AuthLoader: LoaderFunction = async () => {
-        try {
 
-            const res = await ApiInstance({ method: 'GET', url: 'auth/checkAuthStatus' });
-            const resErr = res as AxiosError;
-            if (resErr) {
-                if (resErr.code === AxiosError.ERR_BAD_REQUEST) {
-                    return redirect('/login');
-                }
-            }
-        } catch (e) {
-            console.log(e)
+
+        const resErr = await AuthCheckerApi() as AxiosError<unknown, any>;
+        if (resErr.code === AxiosError.ERR_BAD_REQUEST) {
+            return redirect('/login');
         }
         return 0;
     }
@@ -66,7 +69,7 @@ const AppRouteProvider: React.FC = () => {
             errorElement: <div>Error</div>,
         },
         {
-            path: "/s/category/:c_name",
+            path: "/video/category/:c_name",
             element: <RouterRender component={<MovieFeed />} />,
             errorElement: <div>Error</div>,
         },
@@ -113,7 +116,7 @@ const AppRouteProvider: React.FC = () => {
             errorElement: <div>Error</div>,
         },
         {
-            path: "/movie/dashboard",
+            path: "/manage/dashboard",
             loader: AuthLoader,
             element: <RouterRender component={<MovieDashboard />} />,
             errorElement: <div>Error</div>,
@@ -154,8 +157,9 @@ const AppRouteProvider: React.FC = () => {
         },
         {
             path: "/login",
-            loader: () => {
-                if (token) {
+            loader: async () => {
+                await AuthCheckerApi();
+                if (isAuthenticated) {
                     return redirect('/')
                 }
                 return 0;
@@ -165,8 +169,9 @@ const AppRouteProvider: React.FC = () => {
         },
         {
             path: "/register",
-            loader: () => {
-                if (token) {
+            loader: async () => {
+                await AuthCheckerApi();
+                if (isAuthenticated) {
                     return redirect('/')
                 }
                 return 0;
@@ -176,8 +181,9 @@ const AppRouteProvider: React.FC = () => {
         },
         {
             path: "/forgotpass",
-            loader: () => {
-                if (token) {
+            loader: async () => {
+                await AuthCheckerApi();
+                if (isAuthenticated) {
                     return redirect('/')
                 }
                 return 0;
