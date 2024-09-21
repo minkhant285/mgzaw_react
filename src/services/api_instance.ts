@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { AppStorage, envLoader } from "../utils";
 
 export interface ApiRequestModel {
@@ -10,7 +10,7 @@ export interface ApiRequestModel {
     contentType?: 'multipart/form-data' | 'application/json';
 }
 
-export async function ApiInstance(reqModal: ApiRequestModel) {
+export async function ApiInstance(reqModal: ApiRequestModel): Promise<AxiosResponse<any, any> | AxiosError> {
     const token = new AppStorage().getToken();
     // const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiZDJiM2EwMmUtNzE2MC00NTMzLTk5MGEtZDBhOWY5MDk3Yjk1IiwidXNlcm5hbWUiOiJXYWkgTWFyIEx3aW4ifSwiaWF0IjoxNzE5OTc2ODc1LCJleHAiOjE3MTk5ODA0NzV9.Pw6Z9Q8G9KPzTiQIDWvsRJfX6M5NanI6KJf3oKqevvw`
     try {
@@ -32,7 +32,7 @@ export async function ApiInstance(reqModal: ApiRequestModel) {
         return response;
     } catch (error) {
         const errorAxios: AxiosError = error as AxiosError;
-        // console.error('error', errorAxios.response?.status);
-        return errorAxios.response
+        // console.error('api instance error', errorAxios.code === 'ERR_NETWORK');
+        return errorAxios
     }
 }

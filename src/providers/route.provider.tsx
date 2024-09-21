@@ -26,21 +26,30 @@ import Privacy from '../pages/about/privacy';
 import DownloadPage from '../pages/movie/download';
 import MovieDashboard from '../pages/dashboard/dashboard';
 import EditMovie from '../pages/dashboard/edit';
-// import { ApiInstance } from '../services';
+import { ApiInstance } from '../services';
 import DMCA from '../pages/about/dmca';
 import US2257 from '../pages/about/us2257';
+import GlobalError from '../components/error';
+import { AxiosError } from 'axios';
+
 
 const AppRouteProvider: React.FC = () => {
 
     const { token } = useContext(AppContext);
 
     const AuthLoader: LoaderFunction = async () => {
-        // const res = await ApiInstance({ method: 'GET', url: 'auth/checkAuthStatus' });
-        // if (res) {
-        //     if (res.data.result !== userInfo?.id || res.status === 401) {
-        //         return redirect('/login');
-        //     }
-        // }
+        try {
+
+            const res = await ApiInstance({ method: 'GET', url: 'auth/checkAuthStatus' });
+            const resErr = res as AxiosError;
+            if (resErr) {
+                if (resErr.code === AxiosError.ERR_BAD_REQUEST) {
+                    return redirect('/login');
+                }
+            }
+        } catch (e) {
+            console.log(e)
+        }
         return 0;
     }
 
@@ -186,7 +195,7 @@ const AppRouteProvider: React.FC = () => {
 export default AppRouteProvider;
 
 const RouterRender: React.FC<{ component: React.ReactNode }> = ({ component }) => {
-    const { appLoading, userInfo, saveUserInfo, token } = useContext(AppContext);
+    const { appLoading, userInfo, saveUserInfo, token, appError } = useContext(AppContext);
     const user = useApi('getUser');
 
     useEffect(() => {
@@ -197,13 +206,13 @@ const RouterRender: React.FC<{ component: React.ReactNode }> = ({ component }) =
                     method: 'GET',
                 }) as UserInfoResult;
                 saveUserInfo(r.result);
-                console.log("main user info called", userInfo)
             }
         })()
     }, [user.data])
 
     return <div className='bg-background min-h-screen overflow-y-auto '>
         {appLoading && <Loading />}
+        {appError && <GlobalError />}
         <AppBar />
         <div className='min-h-[calc(100vh-90px)] pt-[56px]'>
             {component}

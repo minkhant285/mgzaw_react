@@ -7,6 +7,8 @@ import useApi from '../hooks/useApi';
 export const AppContext = createContext<{
     theme: string;
     appLoading: boolean;
+    appError: boolean;
+    appErrorMessage: string;
     categoryModal: boolean;
     searchModal: boolean;
     token: string | undefined;
@@ -20,9 +22,13 @@ export const AppContext = createContext<{
     modalControl: (value: boolean) => void;
     searchModalControl: (value: boolean) => void;
     checkAuthStatus: () => void;
+    appErrorControl: (value: boolean) => void;
+    setErrorMessageControl: (value: string) => void;
 }>({
     theme: 'default',
+    appErrorMessage: '',
     appLoading: false,
+    appError: false,
     categoryModal: false,
     searchModal: false,
     token: undefined,
@@ -34,19 +40,23 @@ export const AppContext = createContext<{
     toggleTheme: () => { },
     loadingControl: () => { },
     modalControl: () => { },
+    appErrorControl: () => { },
     searchModalControl: () => { },
-    checkAuthStatus: async () => { }
+    checkAuthStatus: async () => { },
+    setErrorMessageControl: () => { }
 });
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const storage = new AppStorage();
     const [theme, setTheme] = useState(storage.getTheme());
     const [appLoading, setAppLoading] = useState(false);
+    const [appError, setAppError] = useState(false);
     const [user, setUser] = useState<IUser | undefined>(storage.getUserInfo());
     const [token, setToken] = useState(storage.getToken());
     const [categoryModal, setCategoryModal] = useState(false);
     const [searchModal, setSearchModal] = useState(false);
     const [isAuthenticated, setAuth] = useState(false);
+    const [appErrorMessage, setAppErrorMessage] = useState('');
     const checkIsAuthenticated = useApi();
 
 
@@ -63,8 +73,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             userInfo: user,
             token,
             appLoading,
+            appError,
             categoryModal,
             searchModal,
+            appErrorMessage,
             checkAuthStatus: async () => {
                 const res = await checkIsAuthenticated.sendRequest({
                     method: 'GET',
@@ -100,6 +112,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             },
             loadingControl: (val: boolean) => {
                 setAppLoading(val);
+            },
+            setErrorMessageControl: (val: string) => {
+                setAppErrorMessage(val);
+            },
+            appErrorControl: (val: boolean) => {
+                setAppError(val);
             },
             saveUserInfo: (userInfo: IUser | undefined) => {
                 setUser(userInfo);
