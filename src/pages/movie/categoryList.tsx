@@ -3,7 +3,7 @@ import useApi from '../../hooks/useApi';
 import { ICategory, IMovie } from '../../models';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { setActiveCategory, setCategories, setCurrentPage, setMovies, setPageCount } from '../../redux/slicers/movie.slice';
 import { AppContext } from '../../providers/app.provider';
 import { loadMovieLimit } from '../../utils/constant';

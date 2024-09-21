@@ -19,7 +19,7 @@ function Movie() {
     const movieDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
     const dispatch: AppDispatch = useDispatch();
     const [currentMovie, setCurrentMovie] = useState<IMovie>();
-    const [seconds, setSeconds] = useState(0);
+    const [, setSeconds] = useState(0);
     const pathName = location.pathname.split('/');
     const currentMvName = decodeURIComponent(pathName[pathName.length - 1]);
 
@@ -30,7 +30,6 @@ function Movie() {
             method: 'GET',
             url: `movie/get_by_name/${currentMvName}`
         });
-        console.log(res)
         const m = res?.result as IMovie;
 
         if (JSON.stringify(currentMovie) !== JSON.stringify(m)) {
@@ -40,7 +39,6 @@ function Movie() {
     }
 
     React.useEffect(() => {
-        console.log(currentMvName);
         (async () => {
             !currentMovie && await loadMovieDetail();
 
@@ -63,7 +61,7 @@ function Movie() {
                     (async () => {
                         await addViewCount.sendRequest({
                             method: 'PUT',
-                            url: `movie/add/view/${currentMvName}`
+                            url: `movie/add/view/${currentMovie?.id}`
                         });
                         console.log('added')
                     })()
