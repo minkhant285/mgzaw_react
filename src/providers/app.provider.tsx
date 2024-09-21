@@ -1,8 +1,6 @@
-// src/ThemeContext.js
 import React, { createContext, useState, useContext } from 'react';
-import { IUser, STATUS_MESSAGE } from '../models';
+import { IUser } from '../models';
 import { AppStorage } from '../utils';
-import useApi from '../hooks/useApi';
 
 export const AppContext = createContext<{
     theme: string;

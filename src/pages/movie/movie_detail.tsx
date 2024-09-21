@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import useApi from '../../hooks/useApi';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ICategory, IMovie } from '../../models';
 import { MdDownload } from "react-icons/md";
 import VideoAdPlayer from '../../components/videoplayer';
@@ -13,22 +13,26 @@ function Movie() {
 
     const getMovie = useApi();
     const getAllMovies = useApi();
-    const [searchParams] = useSearchParams();
-    const id = searchParams.get('vid');
+    const addViewCount = useApi();
+    const location = useLocation();
     const navigate = useNavigate();
     const movieDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
     const dispatch: AppDispatch = useDispatch();
     const [currentMovie, setCurrentMovie] = useState<IMovie>();
-
+    const [seconds, setSeconds] = useState(0);
+    const pathName = location.pathname.split('/');
+    const currentMvName = decodeURIComponent(pathName[pathName.length - 1]);
 
 
 
     const loadMovieDetail = async () => {
         const res = await getMovie.sendRequest({
             method: 'GET',
-            url: `movie/${id}`
+            url: `movie/get_by_name/${currentMvName}`
         });
+        console.log(res)
         const m = res?.result as IMovie;
+
         if (JSON.stringify(currentMovie) !== JSON.stringify(m)) {
             setCurrentMovie(m);
             document.title = `mgzaw - ${m.name}`;
@@ -36,8 +40,10 @@ function Movie() {
     }
 
     React.useEffect(() => {
+        console.log(currentMvName);
         (async () => {
-            await loadMovieDetail();
+            !currentMovie && await loadMovieDetail();
+
             if (movieDetails.movies === null) {
                 const res = await getAllMovies.sendRequest({
                     method: 'GET',
@@ -50,7 +56,28 @@ function Movie() {
                 }
             }
         })();
-    }, [id, currentMovie])
+
+        const interval = setInterval(() => {
+            setSeconds((prevSeconds) => {
+                if (prevSeconds === 10) {
+                    (async () => {
+                        await addViewCount.sendRequest({
+                            method: 'PUT',
+                            url: `movie/add/view/${currentMvName}`
+                        });
+                        console.log('added')
+                    })()
+
+                }
+                return prevSeconds + 1
+            });
+        }, 1000);
+
+
+
+        // Clean up the interval when the component unmounts
+        return () => clearInterval(interval);
+    }, [])
 
     // h-[calc(100%-3.5rem)] overflow-auto
 
@@ -68,6 +95,7 @@ function Movie() {
                     {/* <div className='h-[90px] bg-secondary my-1  md:hidden'>
                         <AdComponent />
                     </div> */}
+
                     <VideoAdPlayer
                         vastTagUrl="https://s.magsrv.com/splash.php?idzone=5395886"
                         videoUrl={`${currentMovie.url}`}
@@ -83,10 +111,10 @@ function Movie() {
                         <div className='w-full mt-1'>
                             <div className='flex justify-between w-full items-center'>
                                 <span className='text-white  font-bold'>
-                                    {getMovie.data.name}
+                                    {currentMvName}
                                 </span>
                                 <button
-                                    onClick={() => navigate(`/movie/download?vid=${id}`)}
+                                    onClick={() => navigate(`/movie/download?vid=${currentMvName}`)}
                                     className='flex justify-center items-center p-1 pl-3 text-white text-xs  bg-secondary rounded-md'>
                                     Download
                                     <MdDownload
@@ -106,7 +134,7 @@ function Movie() {
 
                             <div className='flex flex-col text-white'>
                                 <span>{formatDistanceToNow(new Date(currentMovie.created_at as Date), { addSuffix: true })} </span>
-                                <span>Views: {currentMovie.view_count + 10} </span>
+                                <span>Views: {currentMovie.view_count} </span>
                                 <span className='line-clamp-1'> {currentMovie.caption}</span>
                                 <span className='line-clamp-2'> {currentMovie.description}</span>
                             </div>
@@ -141,6 +169,7 @@ function Movie() {
                             <div className='px-2 flex flex-col col-span-2'>
                                 <span className='text-white  text-sm font-bold line-clamp-1'> {movie.name}</span>
                                 <span className='text-white  text-[0.8em] font-light line-clamp-2'> {movie.caption}</span>
+                                <span className='text-white  text-[0.8em] font-light line-clamp-2'> {movie.view_count}</span>
                             </div>
                         </div>
                     )

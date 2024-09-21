@@ -122,7 +122,7 @@ const AppRouteProvider: React.FC = () => {
             errorElement: <div>Error</div>,
         },
         {
-            path: "/movie/watch",
+            path: "/movie/watch/:name",
             element: <RouterRender component={<Movie />} />,
             // errorElement: <div>Error</div>,
         },

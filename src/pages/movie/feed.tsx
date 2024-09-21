@@ -94,7 +94,7 @@ function MovieFeed() {
                                     display: 'flex', flexDirection: 'column', justifyContent: 'flex - start'
                                 }}
                                 onClick={() => {
-                                    navigate(`/movie/watch?vid=${movie.id}`);
+                                    navigate(`/movie/watch/${movie.name}`);
                                 }}>
                                 <div className='max-h-[170px] bg-black'>
                                     <ResponsiveImage
@@ -108,7 +108,7 @@ function MovieFeed() {
                                 </div>
                                 <div className='px-1 pb-2 flex flex-col'>
                                     <span className='text-white text-[0.8em] line-clamp-2  '> {movie.name}</span>
-                                    <span className='text-[#7e8a9d] text-[0.7em]'>Views: {movie.view_count + 10}</span>
+                                    <span className='text-[#7e8a9d] text-[0.7em]'>Views: {movie.view_count}</span>
                                     <span className='text-[#7e8a9d] text-[0.7em]'>{formatDistanceToNow(new Date(movie.created_at as Date), { addSuffix: true })}</span>
                                 </div>
                             </div>)
