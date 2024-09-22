@@ -35,7 +35,7 @@ const SearchBox: React.FC = () => {
 
         setSelectedOption(option);
         searchModalControl(false);
-        navigate(`/movie/watch?vid=${option.id}`);
+        navigate(`/movie/watch/${option.name}`);
     };
 
 

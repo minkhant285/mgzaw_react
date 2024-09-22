@@ -8,7 +8,7 @@ function DMCA() {
                 <section>
                     <h1 className="text-2xl font-bold">DMCA Notice of Copyright Infringement</h1>
                     <p className='text-white text-left p-4 leading-6'>
-                        In accordance with the Digital Millennium Copyright Act of 1998 (the text of which may be found on the U.S. Copyright Office website at <a href='http://lcweb.loc.gov/copyright' >http://lcweb.loc.gov/copyright</a>), mgzaw (မောင်ဇော်) will respond expeditiously to claims of copyright infringement that are reported to mgzaw (မောင်ဇော်) designated copyright agent identified below.
+                        In accordance with the Digital Millennium Copyright Act of 1998 (the text of which may be found on the U.S. Copyright Office website at <a href='https://lcweb.loc.gov/copyright' >https://lcweb.loc.gov/copyright</a>), mgzaw (မောင်ဇော်) will respond expeditiously to claims of copyright infringement that are reported to mgzaw (မောင်ဇော်) designated copyright agent identified below.
                         <br />
                         Please also note that under Section 512(f) any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability.
                         <br />
