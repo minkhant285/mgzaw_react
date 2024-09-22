@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import useApi from '../../hooks/useApi';
 import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
 import { ICategory } from '../../models';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import { envLoader } from '../../utils';
 import axios, { AxiosProgressEvent } from 'axios';
 import ReactSelect from 'react-select';
@@ -33,7 +33,7 @@ const CreateMovie = () => {
         }
     });
 
-    const socket = io(`${envLoader.socketHost}`);
+    // const socket = io(`${envLoader.socketHost}`);
 
     const createMovie = useApi();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -98,7 +98,7 @@ const CreateMovie = () => {
                             categories: selectedCategory
                         }
                     }).then(() => {
-                        socket.disconnect();
+                        // socket.disconnect();
                         navigate(0);
                     })
                     setProgress(100);
@@ -108,7 +108,7 @@ const CreateMovie = () => {
                 } catch (error) {
                     loadingControl(false);
                     console.error('Error uploading file:', error);
-                    socket.disconnect()
+                    // socket.disconnect()
                 }
 
             } else {
@@ -157,14 +157,6 @@ const CreateMovie = () => {
                 await loadCategory();
             }
         })()
-
-
-        return () => {
-            socket.off('uploadProgress', (data: { progress: number }) => {
-                setProgress(data.progress);
-            });
-        };
-
     }, [])
 
     return (
