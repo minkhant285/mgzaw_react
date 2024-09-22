@@ -1,9 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import {
     createBrowserRouter,
+    ErrorResponse,
     LoaderFunction,
     redirect,
-    RouterProvider
+    RouterProvider,
+    useRouteError
 } from "react-router-dom";
 import Loading from '../components/loading';
 import { AppContext } from './app.provider';
@@ -13,7 +15,6 @@ import About from '../pages/about';
 import Auth from '../pages/auth/auth';
 import useApi from '../hooks/useApi';
 import { UserInfoResult } from '../models';
-import ComponentPage from '../pages/component/component';
 import ChangePasswordPage from '../pages/auth/changepass';
 import ChangePhonePage from '../pages/profile/change_phone';
 import ChangeEmailPage from '../pages/profile/change_email';
@@ -31,6 +32,7 @@ import DMCA from '../pages/about/dmca';
 import US2257 from '../pages/about/us2257';
 import GlobalError from '../components/error';
 import { AxiosError, AxiosResponse } from 'axios';
+import Error404 from '../components/error404';
 
 
 const AppRouteProvider: React.FC = () => {
@@ -46,11 +48,21 @@ const AppRouteProvider: React.FC = () => {
         return res;
     }
 
-    const AuthLoader: LoaderFunction = async () => {
+    function ErrorBoundary() {
+        const error = useRouteError() as ErrorResponse;
+        if (error.status === 404) {
+            return <Error404 />;
+        }
 
+        // Return a default error message or component for other errors
+        return <div>Something went wrong!</div>;
+    }
+
+    const AuthLoader: LoaderFunction = async () => {
 
         const resErr = await AuthCheckerApi() as AxiosError<unknown, any>;
         if (resErr.code === AxiosError.ERR_BAD_REQUEST) {
+            console.log(resErr.code)
             return redirect('/login');
         }
         return 0;
@@ -66,106 +78,114 @@ const AppRouteProvider: React.FC = () => {
         {
             path: "/",
             element: <RouterRender component={<MovieFeed />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/video/category/:c_name",
             element: <RouterRender component={<MovieFeed />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
-        {
-            path: "/components",
-            element: <RouterRender component={<ComponentPage />} />,
-            errorElement: <div>Error</div>,
-        },
+        // {
+        //     path: "/components",
+        //     element: <RouterRender component={<ComponentPage />} />,
+        //     errorElement: <ErrorBoundary />
+        // },
         {
             path: "/about",
             element: <RouterRender component={<About />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/dmca",
             element: <RouterRender component={<DMCA />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/us2257",
             element: <RouterRender component={<US2257 />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/terms",
             element: <RouterRender component={<TNC />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/privacy",
             element: <RouterRender component={<Privacy />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/movie/create",
             loader: AuthLoader,
             element: <RouterRender component={<CreateMovie />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/movie/edit",
             loader: AuthLoader,
             element: <RouterRender component={<EditMovie />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
+        },
+        {
+            path: "/manage/dashboard/:mode",
+            loader: AuthLoader,
+            element: <RouterRender component={<MovieDashboard />} />,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/manage/dashboard",
             loader: AuthLoader,
             element: <RouterRender component={<MovieDashboard />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/movie/watch/:name",
             element: <RouterRender component={<Movie />} />,
-            // errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/movie/download",
             element: <RouterRender component={<DownloadPage />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/profile",
             loader: AuthLoader,
             element: <RouterRender component={<Profile />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/changepass",
             loader: AuthLoader,
             element: <RouterRender component={<ChangePasswordPage />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/changephone",
             loader: AuthLoader,
             element: <RouterRender component={<ChangePhonePage />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/changeemail",
             loader: AuthLoader,
             element: <RouterRender component={<ChangeEmailPage />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/login",
             loader: async () => {
-                await AuthCheckerApi();
-                if (isAuthenticated) {
-                    return redirect('/')
+                const resErr = await AuthCheckerApi() as AxiosError;
+
+                if (resErr.code === AxiosError.ERR_BAD_REQUEST) {
+                    console.log(resErr.code)
+                    return 0;
                 }
-                return 0;
+                return redirect('/manage/dashboard');
             },
             element: <RouterRender component={<Auth />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/register",
@@ -177,7 +197,7 @@ const AppRouteProvider: React.FC = () => {
                 return 0;
             },
             element: <RouterRender component={<Auth />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         },
         {
             path: "/forgotpass",
@@ -189,7 +209,7 @@ const AppRouteProvider: React.FC = () => {
                 return 0;
             },
             element: <RouterRender component={<Auth />} />,
-            errorElement: <div>Error</div>,
+            errorElement: <ErrorBoundary />
         }
     ]);
 

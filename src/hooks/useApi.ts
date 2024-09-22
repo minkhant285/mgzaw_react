@@ -5,7 +5,7 @@ import { ApiRequestModel } from '../services/api_instance';
 import { IReturnPayload } from "../models";
 import { AxiosError, AxiosResponse } from "axios";
 
-const useApi = (name?: string) => {
+const useApi = (name?: string, disableLoading?: boolean) => {
 
     const [data, setData] = useState<any>();
     const [error, setError] = useState<any>();
@@ -13,7 +13,7 @@ const useApi = (name?: string) => {
     const { loadingControl, logout, appErrorControl, setErrorMessageControl } = useContext(AppContext);
 
     const sendRequest = async (reqModal: ApiRequestModel): Promise<IReturnPayload | undefined> => {
-        loadingControl(true);
+        !disableLoading && loadingControl(true);
         try {
             const fetched: AxiosResponse<any, any> | AxiosError = await ApiInstance(reqModal);
             const res = fetched as AxiosResponse<any, any>;
@@ -24,7 +24,7 @@ const useApi = (name?: string) => {
                 setErrorMessageControl("Can't connect to video streaming server");
             }
 
-            loadingControl(false);
+            !disableLoading && loadingControl(false);
             if (res) {
                 if (res.status === 401) {
                     // alert('Session Expired! PlEASE Login Again!');
@@ -47,7 +47,7 @@ const useApi = (name?: string) => {
         } catch (err) {
             console.log(`error ${name}`, err);
             setError("Error");
-            loadingControl(false);
+            !disableLoading && loadingControl(false);
         }
     }
 

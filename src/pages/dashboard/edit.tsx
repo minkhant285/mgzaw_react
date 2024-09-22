@@ -146,7 +146,7 @@ const EditMovie = () => {
                         id="caption"
                         defaultValue={currentMovie?.caption}
                         placeholder='Caption'
-                        {...register('caption', { required: true })}
+                        {...register('caption', { required: false })}
                     />
                     {errors.caption && <span className='text-[#f00]'>This field is required</span>}
                 </div>

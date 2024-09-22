@@ -6,7 +6,7 @@ import SearchBox from "./searchbox";
 import { ImSearch } from "react-icons/im";
 import ModalBox from './modal';
 import LOGO from '../assets/MZ.png';
-import { FaFilter } from "react-icons/fa";
+import { IoFilterSharp } from "react-icons/io5";
 import CategoryList from "../pages/movie/categoryList";
 import { FaHome } from "react-icons/fa";
 
@@ -43,15 +43,15 @@ function AppBar() {
 
 
                 {location.pathname.includes('video/category') && <div className="lg:hidden cursor-pointer  p-2 rounded-md" onClick={() => modalControl(true)}>
-                    <FaFilter size={20} color="white" />
+                    <IoFilterSharp size={20} color="white" />
                 </div>}
                 {location.pathname === '/' && <div className="lg:hidden cursor-pointer  p-2 rounded-md" onClick={() => modalControl(true)}>
-                    <FaFilter size={20} color="white" />
+                    <IoFilterSharp size={20} color="white" />
                 </div>}
 
-                <div className="md:hidden cursor-pointer  p-2 rounded-md" onClick={() => navigation('/')}>
+                {location.pathname.includes('movie') && <div className=" cursor-pointer  p-2 rounded-md" onClick={() => navigation('/')}>
                     <FaHome size={25} color="white" />
-                </div>
+                </div>}
 
 
                 <ModalBox children={<SearchBox />} isOpen={searchModal} onClose={() => { searchModalControl(!searchModal) }} />

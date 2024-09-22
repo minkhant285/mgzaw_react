@@ -56,6 +56,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const [isAuthenticated, setAuth] = useState(false);
     const [appErrorMessage, setAppErrorMessage] = useState('');
 
+
     React.useEffect(() => {
         document.documentElement.setAttribute('data-theme', theme);
     }, [theme, appLoading]);

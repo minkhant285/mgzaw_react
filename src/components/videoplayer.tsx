@@ -1,14 +1,14 @@
 interface VideoAdPlayerProps {
     vastTagUrl: string; // The VAST URL for the ad
     videoUrl: string;   // The main content video URL
-    key: string;
+    vidkey: string;
     poster: string;
 }
 
 //@ts-ignore
 import ReactJWPlayer from "react-jw-player";
 
-const VideoAdPlayer: React.FC<VideoAdPlayerProps> = ({ vastTagUrl, videoUrl, key, poster }) => {
+const VideoAdPlayer: React.FC<VideoAdPlayerProps> = ({ vastTagUrl, videoUrl, vidkey, poster }) => {
     let newScheduleArray = [
         {
             tag: [
@@ -39,7 +39,7 @@ const VideoAdPlayer: React.FC<VideoAdPlayerProps> = ({ vastTagUrl, videoUrl, key
             <ReactJWPlayer
                 image={poster}
                 file={videoUrl}
-                playerId={key}
+                playerId={vidkey}
                 playerScript="https://cdn.jwplayer.com/libraries/cDnha7c4.js"
                 customProps={{ advertising: { ...ads } }}
             />

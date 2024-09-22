@@ -1,28 +1,44 @@
 import useApi from '../../hooks/useApi';
 import { useState } from 'react';
-import { STATUS_MESSAGE } from '../../models';
+import { ICategory, STATUS_MESSAGE } from '../../models';
 
 
-const MovieCategory: React.FC<{ apiRefresh: Function }> = ({ apiRefresh }) => {
+const MovieCategory: React.FC<{ apiRefresh: Function, value?: ICategory }> = ({ apiRefresh, value }) => {
 
 
 
     const createCategory = useApi();
-    const [Ctitle, SetCTitle] = useState<string>();
-    const [CDes, SetCDes] = useState<string>();
+    const [Ctitle, SetCTitle] = useState<string | undefined>(value?.name);
+    const [CDes, SetCDes] = useState<string | undefined>(value?.description);
 
     const onSubmit = async () => {
-        const res = await createCategory.sendRequest({
-            method: 'POST',
-            url: 'category',
-            data: {
-                name: Ctitle,
-                description: CDes || ''
+        if (value) {
+            const res = await createCategory.sendRequest({
+                method: 'PUT',
+                url: `category/${value.id}`,
+                data: {
+                    name: Ctitle,
+                    description: CDes || ''
+                }
+            });
+            if (res?.status_message === STATUS_MESSAGE.SUCCESS) {
+                await apiRefresh();
             }
-        });
-        if (res?.status_message === STATUS_MESSAGE.SUCCESS) {
-            await apiRefresh();
+        } else {
+            const res = await createCategory.sendRequest({
+                method: 'POST',
+                url: 'category',
+                data: {
+                    name: Ctitle,
+                    description: CDes || ''
+                }
+            });
+            if (res?.status_message === STATUS_MESSAGE.SUCCESS) {
+                await apiRefresh();
+            }
         }
+
+
 
     };
 
@@ -36,6 +52,7 @@ const MovieCategory: React.FC<{ apiRefresh: Function }> = ({ apiRefresh }) => {
                             className='rounded p-2 shadow-md border focus:border-[#00f] w-full'
                             id="name"
                             placeholder='Title'
+                            value={Ctitle}
                             onChange={(e) => SetCTitle(e.target.value)}
                         />
                     </div>
@@ -45,6 +62,7 @@ const MovieCategory: React.FC<{ apiRefresh: Function }> = ({ apiRefresh }) => {
                             className='rounded p-2 shadow-md border focus:border-[#00f] w-full'
                             id="caption"
                             placeholder='Caption'
+                            value={CDes}
                             onChange={(e) => SetCDes(e.target.value)}
                         />
                     </div>

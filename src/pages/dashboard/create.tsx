@@ -208,7 +208,7 @@ const CreateMovie = () => {
                         className='rounded p-2 shadow-md border focus:border-[#00f] w-full'
                         id="caption"
                         placeholder='Caption'
-                        {...register('caption', { required: true })}
+                        {...register('caption', { required: false })}
                     />
                     {errors.caption && <span className='text-[#f00]'>This field is required</span>}
                 </div>
