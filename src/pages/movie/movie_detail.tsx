@@ -133,7 +133,7 @@ function Movie() {
                                     getMovie.data.categories.map((c: ICategory, i: number) => <div
                                         key={i}
                                         onClick={() => navigate(`/video/category/${c.name}`)}
-                                        className='bg-primary p-[5px] px-2 text-white rounded-md shadow-md text-[8px] cursor-pointer'
+                                        className='bg-primary p-[5px] px-2 text-white rounded-md shadow-md text-[10px] cursor-pointer'
                                     >{c.name}</div>)
                                 }
                             </div>

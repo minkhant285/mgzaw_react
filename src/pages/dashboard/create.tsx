@@ -33,7 +33,7 @@ const CreateMovie = () => {
         }
     });
 
-    const socket = io(`${envLoader.host}:50002`);
+    const socket = io(`${envLoader.socketHost}`);
 
     const createMovie = useApi();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -86,7 +86,7 @@ const CreateMovie = () => {
                         },
                     });
 
-                    console.log(response.data)
+                    // console.log(response.data)
 
                     await createMovie.sendRequest({
                         method: 'POST',
@@ -189,6 +189,10 @@ const CreateMovie = () => {
                             />}
                         </div>
                     </div>
+                    {selectedFile && <div className='flex flex-col text-white'>
+                        <span>Name: {selectedFile.name}</span>
+                        <span>Size: {(selectedFile.size / (1024 * 1024)).toFixed(1)} MB</span>
+                    </div>}
                 </div>
 
                 <ProgressBar value={progress} />
