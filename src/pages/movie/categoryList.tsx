@@ -66,7 +66,7 @@ function CategoryList() {
     // h-[calc(100%-1.5rem)]
 
     return (
-        <div className=' bg-[#000] text-white p-2 min-h-[calc(100vh-400px)] max-h-[calc(100vh-100px)] overflow-auto '>
+        <div className=' bg-[#000] w-[300px] text-white p-2 min-h-[calc(100vh-400px)] max-h-[calc(100vh-100px)] overflow-auto '>
             {
                 categoryDetails.categories && <div>
 

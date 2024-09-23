@@ -1,11 +1,13 @@
+import { Outstream } from 'exoclick-react'
 import { Link } from 'react-router-dom'
 
 function Footer() {
     return (
         <div className='bottom-0 static'>
-            {/* <div className='w-full h-28 bg-primary'>
-                ad
-            </div> */}
+            <div className='w-full h-fit flex flex-col sm:flex-row justify-center '>
+                <Outstream zoneId="5426590" maxWidth={400} />
+                <Outstream zoneId="5426636" maxWidth={400} />
+            </div>
             <div className='w-full h-[150px]  bg-[#000] text-white text-sm  flex justify-center flex-col items-center '>
                 <div className='flex flex-col justify-center'>
                     <span>Copyright © 2024 MGZAW.com All rights reserved.</span>

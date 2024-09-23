@@ -46,13 +46,22 @@ const CreateMovie = () => {
     const [addCategory, setNewCategory] = useState<any>();
     const categoryDetails = useSelector((mov: MVProRootState) => mov.MovieReducer);
     const dispatch: AppDispatch = useDispatch();
+    const checkMovieNameApi = useApi();
 
 
 
 
     // Handle form submission
     const onSubmit = async (data: MovieInput) => {
-        await handleFileUpload(data);
+        const checkRes = await checkMovieNameApi.sendRequest({
+            method: 'GET',
+            url: `movie/check/${data.name.trim()}`
+        })
+        if (checkRes?.result) {
+            await handleFileUpload(data);
+        } else {
+            alert('Movie Name Already Exist! Try Another Name')
+        }
     };
 
 

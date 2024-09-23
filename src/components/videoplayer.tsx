@@ -15,7 +15,14 @@ const VideoAdPlayer: React.FC<VideoAdPlayerProps> = ({ vastTagUrl, videoUrl, vid
                 vastTagUrl
             ],
             type: "linear",
-            offset: 0
+            offset: 5
+        },
+        {
+            tag: [
+                'https://s.magsrv.com/splash.php?idzone=5426630'
+            ],
+            type: "linear",
+            offset: 10
         },
     ];
 

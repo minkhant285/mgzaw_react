@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface ResponsiveImageProps {
     src: string;
@@ -30,7 +31,7 @@ const ResponsiveImage: React.FC<ResponsiveImageProps> = ({ src, alt, containerHe
                 overflow: 'hidden',
             }}
         >
-            <img
+            <LazyLoadImage
                 src={src}
                 alt={alt}
                 onLoad={handleImageLoad}

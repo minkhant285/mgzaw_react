@@ -10,6 +10,9 @@ import { generateRangeArray } from '../../utils/rangeArray';
 import { loadMovieLimit } from '../../utils/constant';
 import ResponsiveImage from '../../components/responsiveImage';
 import { formatDistanceToNow } from 'date-fns';
+import { Banner, FullpageInterstitial } from "exoclick-react";
+
+
 
 function MovieFeed() {
     const getAllMovie = useApi();
@@ -61,24 +64,37 @@ function MovieFeed() {
     return (
         <div className='grid grid-cols-1 md:grid-cols-12  '>
 
-            <div className='col-span-2  hidden p-1  lg:flex flex-col justify-start  h-[calc(100vh-137px)] '>
-                <h3 className='bg-primary p-2 rounded-md text-white'>Categories</h3>
+            <FullpageInterstitial
+                zoneId={5426540}
+                frequencyType="clicks"
+                firstTriggerClicks={1}
+                nextTriggerClicks={1}
+                triggerClass={['demo-mobile']}
+            />
+
+            <div className='col-span-2 hidden p-1 w-[300px] lg:flex flex-col justify-start  h-[calc(100vh-137px)] '>
+                <h3 className='bg-primary p-1 rounded-md text-white w-[300px]'>Categories</h3>
                 <CategoryList />
-                {/* <div className='bg-[#f00] h-[200px]'>
-                    AD component
-                </div> */}
+                <div className='w-[300px] h-[260px] pt-3'>
+                    <Banner zoneId={5426568} />
+                </div>
             </div>
 
             <div className='
                 col-span-12
-                lg:col-span-10
+                lg:col-span-8
                 gap-4 p-0 sm:p-2
                 h-fit
                 grid-rows-3
             '>
-                {/* <div className='flex  h-[60px]'>
-                    AD component
-                </div> */}
+
+                {/* mobile ad */}
+                <div className='flex w-full sm:hidden  justify-center pt-1 h-[55px]'>
+                    <Banner zoneId={5425982} />
+                </div>
+
+                {/* mobile ad */}
+
 
                 {
                     movieDetails.movies && <div className='
@@ -86,6 +102,7 @@ function MovieFeed() {
                 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5
                  gap-4 p-2
                 justify-start
+                sm:ml-[50px]
                 '>
                         {
                             movieDetails.movies.map((movie: IMovie, i: number) => <div key={i}
@@ -97,14 +114,16 @@ function MovieFeed() {
                                     navigate(`/movie/watch/${movie.name}`);
                                 }}>
                                 <div className='max-h-[170px] bg-black'>
-                                    <ResponsiveImage
-                                        alt=''
-                                        containerHeight={150}
-                                        src={movie.thumbnail_url !== null ?
-                                            movie.thumbnail_url === "" ?
-                                                `https://img.freepik.com/premium-vector/adults-only-18-plus-sensitive-content-explicit-video-vector-stock-illustration_100456-10148.jpg` :
-                                                movie.thumbnail_url : ""}
-                                    />
+                                    <a href="#" onClick={e => e.preventDefault()} className="demo-mobile">
+                                        <ResponsiveImage
+                                            alt=''
+                                            containerHeight={150}
+                                            src={movie.thumbnail_url !== null ?
+                                                movie.thumbnail_url === "" ?
+                                                    `https://img.freepik.com/premium-vector/adults-only-18-plus-sensitive-content-explicit-video-vector-stock-illustration_100456-10148.jpg` :
+                                                    movie.thumbnail_url : ""}
+                                        />
+                                    </a>
                                 </div>
                                 <div className='px-1 pb-2 flex flex-col'>
                                     <span className='text-white text-[0.8em] line-clamp-2  '> {movie.name}</span>
@@ -119,11 +138,17 @@ function MovieFeed() {
 
                     {generateRangeArray(Math.ceil(movieDetails.pageCount / pagelimit)).map((num, i) =>
 
-                        <button className={`px-2 p-1  rounded-md ${movieDetails.currentPage === num ? 'bg-secondary' : 'bg-background'}  text-white m-1`} key={i} onClick={() => getAllMovies(num)}>{num}</button>
+                        <button className={`px-2 p-1 rounded-md ${movieDetails.currentPage === num ? 'bg-secondary' : 'bg-background'}  text-white m-1`} key={i} onClick={() => getAllMovies(num)}>{num}</button>
 
                     )}
 
 
+                </div>
+            </div>
+
+            <div className='col-span-2'>
+                <div className='hidden sm:flex  justify-center'>
+                    <Banner zoneId={5425870} />
                 </div>
             </div>
 

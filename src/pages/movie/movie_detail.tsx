@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { setMovies } from '../../redux/slicers/movie.slice';
 import { formatDistanceToNow } from 'date-fns';
+import { Banner } from 'exoclick-react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 function Movie() {
 
@@ -88,16 +90,18 @@ function Movie() {
 
     return (
         <div className='grid contain grid-cols-1 md:grid-cols-12 '>
-            <div className='col-span-2  hidden lg:block '></div>
+            <div className='col-span-2 p-3  hidden lg:block '>
+                <Banner zoneId={5426620} />
+            </div>
 
             <div className='lg:col-span-6 md:col-span-7  p-0 sm:p-4'>
                 {currentMovie && <div className='flex flex-col'>
                     {/* {currentMovie.url} */}
-                    {/* <div className='h-[90px] bg-secondary my-1  md:hidden'>
-                        <AdComponent />
-                    </div> */}
+                    <div className='h-[55px] flex justify-center  my-1'>
+                        <Banner zoneId={5426622} />
+                    </div>
                     <VideoAdPlayer
-                        vastTagUrl="https://s.magsrv.com/splash.php?idzone=5395886"
+                        vastTagUrl="https://s.magsrv.com/v1/vast.php?idzone=5426628"
                         videoUrl={`${currentMovie.url}`}
                         key={currentMovie.id}
                         vidkey={currentMovie.id}
@@ -108,9 +112,10 @@ function Movie() {
                         <source src={`${currentMovie.url}`} />
                     </video> */}
 
-                    {/* <div className='h-[90px] bg-primary hidden md:block'>
-                        <AdComponent />
-                    </div> */}
+                    <div className='lg:hidden  flex justify-center'>
+                        <Banner zoneId={5426612} />
+                    </div>
+
 
                     <div className='bg-[#242424] flex justify-between items-start p-2'>
                         <div className='w-full mt-1'>
@@ -153,8 +158,10 @@ function Movie() {
 
             <div className='lg:col-span-2 md:col-span-5  flex-col  p-2 overflow-auto max-h-[calc(100vh-140px)]'>
 
-                {/* <div className='grid grid-cols-3  w-full mt-2 justify-start cursor-pointer bg-primary h-[80px]'>ad</div>
-                <div className='grid grid-cols-3  w-full mt-2 justify-start cursor-pointer bg-primary h-[80px]'>ad</div> */}
+
+                {/* <div className='grid grid-cols-3  w-full mt-2 justify-start cursor-pointer bg-primary h-[80px]'>
+                    ad
+                </div> */}
 
                 {
                     movieDetails.movies && movieDetails.movies.map((movie: IMovie, i: number) =>
@@ -163,7 +170,7 @@ function Movie() {
                             navigate(0)
                         }}>
                             <div>
-                                <img
+                                <LazyLoadImage
                                     // src={`https://img.freepik.com/premium-vector/adults-only-18-plus-sensitive-content-explicit-video-vector-stock-illustration_100456-10148.jpg`}
                                     src={movie.thumbnail_url !== null ? movie.thumbnail_url : `https://img.freepik.com/premium-vector/adults-only-18-plus-sensitive-content-explicit-video-vector-stock-illustration_100456-10148.jpg`}
                                     style={{ objectFit: 'contain', width: 130, height: 80, backgroundColor: 'black' }}
@@ -178,9 +185,15 @@ function Movie() {
                         </div>
                     )
                 }
+                {/* <div className='grid grid-cols-3  w-full mt-2 justify-start cursor-pointer bg-primary h-[400px]'>
+                    <Outstream zoneId="5426636" maxWidth={400} />
+
+                </div> */}
             </div>
 
-            <div className='col-span-2  hidden lg:block'></div>
+            <div className='col-span-2 ml-10  hidden lg:block p-3'>
+                <Banner zoneId={5426632} />
+            </div>
         </div>
     )
 }
