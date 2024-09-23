@@ -37,7 +37,7 @@ import Error404 from '../components/error404';
 
 const AppRouteProvider: React.FC = () => {
 
-    const { isAuthenticated, authStatusControl } = useContext(AppContext);
+    const { authStatusControl } = useContext(AppContext);
 
     const AuthCheckerApi = async () => {
         const res = await ApiInstance({ method: 'GET', url: 'auth/checkAuthStatus' });
