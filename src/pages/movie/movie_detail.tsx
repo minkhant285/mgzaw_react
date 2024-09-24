@@ -30,6 +30,7 @@ function Movie() {
             method: 'GET',
             url: `movie/get_by_name/${currentMvName}`
         });
+        console.log(res?.result)
         const m = res?.result as IMovie;
 
         if (JSON.stringify(currentMovie) !== JSON.stringify(m)) {
@@ -124,7 +125,7 @@ function Movie() {
                                     {currentMvName}
                                 </span>
                                 <button
-                                    onClick={() => navigate(`/movie/download?vid=${currentMvName}`)}
+                                    onClick={() => navigate(`/movie/download?vid=${currentMovie.id}`)}
                                     className='flex justify-center items-center p-1 pl-3 text-white text-xs  bg-secondary rounded-md'>
                                     Download
                                     <MdDownload

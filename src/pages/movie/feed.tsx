@@ -11,6 +11,10 @@ import { loadMovieLimit } from '../../utils/constant';
 import ResponsiveImage from '../../components/responsiveImage';
 import { formatDistanceToNow } from 'date-fns';
 import { Banner, FullpageInterstitial } from "exoclick-react";
+import { MdOutlineOndemandVideo } from "react-icons/md";
+import { IoEye } from "react-icons/io5";
+import { IoIosCreate } from "react-icons/io";
+
 
 
 
@@ -125,10 +129,22 @@ function MovieFeed() {
                                         />
                                     </a>
                                 </div>
-                                <div className='px-1 pb-2 flex flex-col'>
+                                <div className=' pb-2 flex flex-col px-2'>
                                     <span className='text-white text-[0.8em] line-clamp-2  '> {movie.name}</span>
-                                    <span className='text-[#7e8a9d] text-[0.7em]'>Views: {movie.view_count}</span>
-                                    <span className='text-[#7e8a9d] text-[0.7em]'>{formatDistanceToNow(new Date(movie.created_at as Date), { addSuffix: true })}</span>
+                                    <div className='flex items-center justify-between py-1 '>
+                                        {movie.duration && <div className='flex gap-1 items-center'>
+                                            <MdOutlineOndemandVideo size={15} color='white' />
+                                            <span className='text-[#7e8a9d] text-[0.7em]'> {movie.duration.replace(/\.\d{2}/, '')}</span>
+                                        </div>}
+                                        <div className='flex gap-1 items-center pr-2'>
+                                            <IoEye size={15} color='white' />
+                                            <span className='text-[#7e8a9d] text-[0.7em]'> {movie.view_count} views</span>
+                                        </div>
+                                    </div>
+                                    <div className='flex gap-1 items-center '>
+                                        <IoIosCreate size={15} color='white' />
+                                        <span className='text-[#7e8a9d] text-[0.7em]'>{formatDistanceToNow(new Date(movie.created_at as Date), { addSuffix: true })}</span>
+                                    </div>
                                 </div>
                             </div>)
                         }

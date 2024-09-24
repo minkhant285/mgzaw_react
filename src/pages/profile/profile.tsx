@@ -181,8 +181,8 @@ function Profile() {
                     </div>
 
                     <div className="py-2 cursor-pointer hover:filter">
-                        <h2 className="text-lg text-gray-700 font-semibold">Add Movie</h2>
-                        <span onClick={() => navigation('/movie/create')}> ADD Here </span>
+                        <h2 className="text-lg text-gray-700 font-semibold">Dashboard</h2>
+                        <span className='cursor-pointer' onClick={() => navigation('/manage/dashboard')}> Go To Dashboard </span>
                     </div>
 
                 </div>

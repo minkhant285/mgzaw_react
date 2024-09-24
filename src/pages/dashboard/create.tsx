@@ -18,18 +18,20 @@ import ProgressBar from '../../components/progressbar';
 type MovieInput = {
     name: string
     caption: string,
-    description: string
+    description: string,
+    thumb_time: string
 }
 
 
 
 const CreateMovie = () => {
     // Initialize React Hook Form
-    const { register, handleSubmit, formState: { errors } } = useForm<MovieInput>({
+    const { register, handleSubmit, formState: { errors }, watch } = useForm<MovieInput>({
         defaultValues: {
             name: "",
             caption: "",
-            description: ""
+            description: "",
+            thumb_time: "00:00:05"
         }
     });
 
@@ -72,17 +74,13 @@ const CreateMovie = () => {
             if (selectedFile.type.startsWith('video/')) {
                 const fileData = new FormData();
                 fileData.append('file', selectedFile);
-
-                // socket.on('uploadProgress', (data: { progress: number }) => {
-                //     setProgress(data.progress);
-                // });
+                fileData.append('body', JSON.stringify({ thumbnail_time: watch('thumb_time') }))
 
 
                 try {
                     loadingControl(true)
                     const response = await axios.post(`${envLoader.baseURL}/movie/upload`, fileData, {
                         headers: {
-                            'x-socket-id': "gg",
                             'Content-Type': 'multipart/form-data',
                             Authorization: `Bearer ${token}`,
                         },
@@ -107,7 +105,6 @@ const CreateMovie = () => {
                             categories: selectedCategory
                         }
                     }).then(() => {
-                        // socket.disconnect();
                         navigate(0);
                     })
                     setProgress(100);
@@ -117,7 +114,6 @@ const CreateMovie = () => {
                 } catch (error) {
                     loadingControl(false);
                     console.error('Error uploading file:', error);
-                    // socket.disconnect()
                 }
 
             } else {
@@ -204,6 +200,16 @@ const CreateMovie = () => {
                         id="name"
                         placeholder='Title'
                         {...register('name', { required: true })}
+                    />
+                    {errors.name && <span className='text-[#f00]'>This field is required</span>}
+                </div>
+
+                <div className='w-full'>
+                    <input
+                        className='rounded p-2 shadow-md border focus:border-[#00f] w-full'
+                        id="thumb_time"
+                        placeholder='Photo Time'
+                        {...register('thumb_time', { required: true })}
                     />
                     {errors.name && <span className='text-[#f00]'>This field is required</span>}
                 </div>

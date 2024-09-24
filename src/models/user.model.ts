@@ -33,6 +33,7 @@ export interface IMovie {
     thumbnail_url: string;
     categories: ICategory[];
     created_at?: Date;
+    duration: string;
 }
 
 export type MovieUpdateProp = {
