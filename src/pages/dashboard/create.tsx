@@ -99,7 +99,10 @@ const CreateMovie = () => {
                         method: 'POST',
                         url: "movie",
                         data: {
-                            ...vidInput,
+                            name: vidInput.name.trim(),
+                            caption: vidInput.caption.trim(),
+                            description: vidInput.description.trim(),
+                            thumb_time: vidInput.thumb_time.trim(),
                             url: response.data.result.fileUrl,
                             thumbnail_url: response.data.result.thumbnail_url,
                             categories: selectedCategory

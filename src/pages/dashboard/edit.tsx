@@ -54,7 +54,9 @@ const EditMovie = () => {
             method: 'PUT',
             url: `movie/${id}`,
             data: {
-                ...data,
+                name: data.name.trim(),
+                caption: data.caption.trim(),
+                description: data.description.trim(),
                 categories: selectedCategory
             }
         }).then(() => {

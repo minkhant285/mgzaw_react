@@ -30,7 +30,6 @@ function Movie() {
             method: 'GET',
             url: `movie/get_by_name/${currentMvName}`
         });
-        console.log(res?.result)
         const m = res?.result as IMovie;
 
         if (JSON.stringify(currentMovie) !== JSON.stringify(m)) {
@@ -62,7 +61,7 @@ function Movie() {
 
 
     React.useEffect(() => {
-
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         (async () => {
             await loadMovieDetail();
 
@@ -107,6 +106,7 @@ function Movie() {
                         key={currentMovie.id}
                         vidkey={currentMovie.id}
                         poster={currentMovie.thumbnail_url}
+
                     />
 
                     {/* <video width={200} height={200} controls key={currentMovie.id}>

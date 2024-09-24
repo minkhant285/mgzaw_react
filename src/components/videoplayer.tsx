@@ -5,10 +5,14 @@ interface VideoAdPlayerProps {
     poster: string;
 }
 
+import { useState } from "react";
 //@ts-ignore
 import ReactJWPlayer from "react-jw-player";
 
 const VideoAdPlayer: React.FC<VideoAdPlayerProps> = ({ vastTagUrl, videoUrl, vidkey, poster }) => {
+
+    const [loading, setLoading] = useState<boolean>(true);
+
     let newScheduleArray = [
         {
             tag: [
@@ -43,12 +47,25 @@ const VideoAdPlayer: React.FC<VideoAdPlayerProps> = ({ vastTagUrl, videoUrl, vid
 
     return (
         <div className="mt-1">
+
+
+            {loading && (
+                <div style={{
+                    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                    display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', zIndex: 10
+                }}>
+                    <div className="spinner text-white">Loading...</div> {/* Replace with your actual loader */}
+                </div>
+            )}
+
             <ReactJWPlayer
                 image={poster}
                 file={videoUrl}
                 playerId={vidkey}
                 playerScript="https://cdn.jwplayer.com/libraries/cDnha7c4.js"
                 customProps={{ advertising: { ...ads } }}
+                onReady={() => setLoading(false)}
+                onPlay={() => setLoading(false)}
             />
         </div>
     );

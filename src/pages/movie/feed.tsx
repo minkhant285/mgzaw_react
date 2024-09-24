@@ -30,6 +30,7 @@ function MovieFeed() {
 
 
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         (async () => {
             document.title = `mgzaw (မောင်ဇော်)`;
             await getAllMovies(1);
