@@ -49,7 +49,7 @@ function AppBar() {
                     <IoFilterSharp size={20} color="white" />
                 </div>}
 
-                {location.pathname.includes('video') && <div className=" cursor-pointer  p-2 rounded-md" onClick={() => navigation('/')}>
+                {!location.pathname.includes('video/page') && <div className=" cursor-pointer  p-2 rounded-md" onClick={() => navigation('/')}>
                     <FaHome size={25} color="white" />
                 </div>}
 

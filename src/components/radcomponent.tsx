@@ -1,5 +1,5 @@
 
-import { Banner } from "exoclick-react";
+// import { Banner } from "exoclick-react";
 
 
 
@@ -29,7 +29,7 @@ const AdComponent = () => {
     return (
         <div>
             {/* Ad placeholder */}
-            <Banner zoneId={5395928} />
+            {/* <Banner zoneId={5395928} /> */}
         </div>
     );
 };

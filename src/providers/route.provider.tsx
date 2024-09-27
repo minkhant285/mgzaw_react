@@ -35,6 +35,7 @@ import US2257 from '../pages/about/us2257';
 import GlobalError from '../components/error';
 import { AxiosError, AxiosResponse } from 'axios';
 import Error404 from '../components/error404';
+import { StickyBanner } from 'exoclick-react';
 
 
 const AppRouteProvider: React.FC = () => {
@@ -62,7 +63,7 @@ const AppRouteProvider: React.FC = () => {
 
         const resErr = await AuthCheckerApi() as AxiosError<unknown, any>;
         if (resErr.code === AxiosError.ERR_BAD_REQUEST) {
-            console.log(resErr.code)
+            // console.log(resErr.code)
             return redirect('/login');
         }
         return 0;
@@ -191,7 +192,7 @@ const AppRouteProvider: React.FC = () => {
                 const resErr = await AuthCheckerApi() as AxiosError;
 
                 if (resErr.code === AxiosError.ERR_BAD_REQUEST) {
-                    console.log(resErr.code)
+                    // console.log(resErr.code)
                     return 0;
                 }
                 return redirect('/manage/dashboard');
@@ -256,5 +257,6 @@ const RouterRender: React.FC<{ component: React.ReactNode }> = ({ component }) =
             {component}
         </div>
         <Footer />
+        {process.env.NODE_ENV === 'production' && <StickyBanner format='300x250' zoneId={5425980} />}
     </div>
 }

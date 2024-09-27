@@ -14,8 +14,10 @@ import { Banner, FullpageInterstitial } from "exoclick-react";
 import { MdOutlineOndemandVideo } from "react-icons/md";
 import { IoEye } from "react-icons/io5";
 import { IoIosCreate } from "react-icons/io";
+import Pagination from '../../components/pagination';
 
 function MovieFeed() {
+    const paginationLimit = 10;
     const getAllMovie = useApi();
     const getCategory = useApi();
     const dispatch: AppDispatch = useDispatch();
@@ -28,6 +30,7 @@ function MovieFeed() {
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+
         (async () => {
             document.title = `mgzaw (မောင်ဇော်)`;
             await getAllMovies(Number.parseInt(param.pg_number));
@@ -41,9 +44,6 @@ function MovieFeed() {
     const getAllMovies = async (page: number) => {
 
         const splitedPath = location.pathname.split('/');
-        if (location.pathname.includes('/video/')) {
-            console.log('params =>', param)
-        }
         if (location.pathname.includes('/video/category')) {
             dispatch(setActiveCategory(decodeURIComponent(splitedPath[splitedPath.length - 1])));
         }
@@ -58,7 +58,6 @@ function MovieFeed() {
         if (res) {
             const resMovies = res.result as { movies: IMovie[], total: number, page: number, limit: number }
             dispatch(setPageCount(resMovies.total));
-            // dispatch(setCurrentPage(resMovies.page));
             dispatch(setMovies(resMovies.movies));
         }
     }
@@ -95,7 +94,7 @@ function MovieFeed() {
             '>
 
                 {/* mobile ad */}
-                <div className='flex w-full sm:hidden  justify-center pt-1 h-[55px]'>
+                <div className='flex w-full sm:hidden  justify-center pt-1 h-[102px]'>
                     {process.env.NODE_ENV === 'production' && <Banner zoneId={5425982} />}
                 </div>
 
@@ -152,18 +151,13 @@ function MovieFeed() {
                         }
                     </div>}
 
-                <div className=' flex justify-center overflow-y-auto w-[100%] '>
-                    {
-                        generateRangeArray(Math.ceil(movieDetails.pageCount / pagelimit)).map((num, i) =>
-                            // generateRangeArray(10).map((num, i) =>
-                            <button
-                                className={`px-2 p-1 rounded-md ${Number.parseInt(param.pg_number) === num ? 'bg-secondary' : 'bg-background'}  text-white m-1`}
-                                key={i}
-                                onClick={() => navigate(`/video/page/${num}`)}
-                            >
-                                {num}
-                            </button>)
-                    }
+                <div className='flex flex-col w-full'>
+                    <div className='flex w-full sm:hidden  justify-center pt-1 h-[55px] mb-2'>
+                        {process.env.NODE_ENV === 'production' && <Banner zoneId={5430480} />}
+                    </div>
+                    <div className=' flex justify-center overflow-y-auto w-[100%] '>
+                        <Pagination limit={paginationLimit} totalPage={generateRangeArray(Math.ceil(movieDetails.pageCount / pagelimit))} />
+                    </div>
                 </div>
             </div>
 

@@ -23,7 +23,7 @@ const SearchBox: React.FC = () => {
             url: `movie/search/${query}`,
             method: 'GET',
         }) as IReturnPayload;
-        console.log(query, res.result)
+        // console.log(query, res.result)
         if (res && res.result && res.result !== null) {
             const d = res.result as IMovie[];
             return d;

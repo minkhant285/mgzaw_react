@@ -30,7 +30,7 @@ function MovieDashboard() {
     const [selectedCate, setSelectedCate] = useState<ICategory>();
 
     useEffect(() => {
-        console.log(activemode)
+        // console.log(activemode)
         const controller = new AbortController(); // Create an AbortController instance
         const signal = controller.signal;
         (async () => {
@@ -68,7 +68,7 @@ function MovieDashboard() {
     }
 
     const getAllMovies = async (page: number, signal?: GenericAbortSignal | undefined) => {
-        console.log('get all move called')
+        // console.log('get all move called')
         const res = await getAllMovie.sendRequest({
             method: 'GET',
             url: `movie?page=${page}&limit=${pagelimit}`,

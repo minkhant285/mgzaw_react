@@ -13,16 +13,13 @@ function ForgotPass() {
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
-        const result = await forgotApi.sendRequest({
+        await forgotApi.sendRequest({
             url: `auth/forgotpass`,
             method: 'POST',
             data: {
                 'phemail': data.emph,
             }
         });
-
-        console.log(result)
-
     }
 
     return (

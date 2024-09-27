@@ -71,7 +71,7 @@ function Profile() {
     };
 
     const handleFileUpload = async () => {
-        console.log(selectedFile)
+        // console.log(selectedFile)
         if (selectedFile) {
 
             if (selectedFile.type.startsWith('image/')) {

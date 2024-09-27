@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { MdDownload } from 'react-icons/md'
-import AdComponent from '../../components/radcomponent';
 import useApi from '../../hooks/useApi';
 import { useSearchParams } from 'react-router-dom';
 import { IMovie } from '../../models';
+import { Banner, FullpageInterstitial, Outstream } from 'exoclick-react';
 
 function DownloadPage() {
 
@@ -66,9 +66,17 @@ function DownloadPage() {
 
     return (
         <div className='grid grid-cols-7 h-fit min-h-[calc(100vh-137px)] '>
-            <div className='col-span-2  hidden md:block'>
-                <AdComponent />
+            <div className='col-span-2  hidden md:flex justify-center'>
+                {process.env.NODE_ENV === 'production' && <Banner zoneId={5430466} />}
             </div>
+
+            <FullpageInterstitial
+                zoneId={5430462}
+                frequencyType="clicks"
+                firstTriggerClicks={1}
+                nextTriggerClicks={1}
+                triggerClass={['downloadBtn']}
+            />
 
 
             <div className='col-span-12 md:col-span-3 p-4 flex flex-col items-center gap-2 text-white'>
@@ -81,6 +89,10 @@ function DownloadPage() {
                     </p>
                 </header>
 
+                {process.env.NODE_ENV === 'production' && <Banner zoneId={5430454} />}
+
+
+
                 <section className="how-to-download-section ">
                     <h2 className="text-2xl font-bold mb-2">How to Download Videos</h2>
                     <ol className="list-decimal list-inside my-2">
@@ -91,19 +103,28 @@ function DownloadPage() {
                     </ol>
                 </section>
 
+                {process.env.NODE_ENV === 'production' && <Banner zoneId={5430456} />}
+
                 <section className="call-to-action-section my-2 text-center">
                     <h2 className="text-2xl font-bold mb-4">Start Downloading Today!</h2>
                     <p className="mb-4">
                         Join MGZAW.com and take advantage of our easy video download feature.
                     </p>
-                    <div className='w-full  flex justify-center'>
-                        <button disabled={start} onClick={() => setStart(true)} className='my-3 flex w-fit self-center justify-center items-center p-3 pl-3 text-white text-xs  bg-secondary rounded-md'>
-                            {
-                                start ? `Starting Download in (${counter} s)` : <>Download "{currentMovie?.name}.mp4" Here  <MdDownload
-                                    className="text-white  shadow-lg mx-1 "
-                                    size={20} /></>
-                            }
-                        </button>
+                    <div className='w-full  flex justify-center flex-col items-center'>
+                        {process.env.NODE_ENV === 'production' && <Banner zoneId={5430452} />}
+
+                        <a href="#" onClick={e => e.preventDefault()} className="downloadBtn self-center">
+                            <button disabled={start} onClick={() => setStart(true)} className='my-3 flex w-fit self-center justify-center items-center p-3 pl-3 text-white text-xs  bg-secondary rounded-md'>
+                                {
+                                    start ? `Starting Download in (${counter} s)` : <>Download "{currentMovie?.name}.mp4" Here  <MdDownload
+                                        className="text-white  shadow-lg mx-1 "
+                                        size={20} /></>
+                                }
+                            </button>
+                        </a>
+
+                        {process.env.NODE_ENV === 'production' && <Outstream zoneId={5430460} />}
+
                     </div>
                 </section>
 
@@ -119,8 +140,8 @@ function DownloadPage() {
                 </section>
             </div>
 
-            <div className='col-span-2 hidden md:block'>
-                <AdComponent />
+            <div className='col-span-2 hidden md:flex justify-center '>
+                {process.env.NODE_ENV === 'production' && <Banner zoneId={5430470} />}
             </div>
         </div>
     )
