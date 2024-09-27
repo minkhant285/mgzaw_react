@@ -35,7 +35,7 @@ const SearchBox: React.FC = () => {
 
         setSelectedOption(option);
         searchModalControl(false);
-        navigate(`/movie/watch/${option.name}`);
+        navigate(`/video/watch/${option.name}`);
     };
 
 
@@ -87,7 +87,7 @@ const SearchBox: React.FC = () => {
                 }}
                 onClick={() => {
                     searchModalControl(false);
-                    navigate(`/movie/watch?vid=${props.data.id}`);
+                    navigate(`/video/watch/${props.data.name}`);
                 }}
             >
                 {/* <img

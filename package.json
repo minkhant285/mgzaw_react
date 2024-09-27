@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@types/jwplayer": "^8.31.1",
+    "@types/node": "^22.7.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/react-lazy-load-image-component": "^1.6.4",

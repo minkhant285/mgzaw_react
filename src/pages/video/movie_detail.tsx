@@ -91,14 +91,14 @@ function Movie() {
     return (
         <div className='grid contain grid-cols-1 md:grid-cols-12 '>
             <div className='col-span-2 p-3  hidden lg:block '>
-                <Banner zoneId={5426620} />
+                {process.env.NODE_ENV === 'production' && <Banner zoneId={5426620} />}
             </div>
 
             <div className='lg:col-span-6 md:col-span-7  p-0 sm:p-4'>
                 {currentMovie && <div className='flex flex-col'>
                     {/* {currentMovie.url} */}
                     <div className='h-[55px] flex justify-center  my-1'>
-                        <Banner zoneId={5426622} />
+                        {process.env.NODE_ENV === 'production' && <Banner zoneId={5426622} />}
                     </div>
                     <VideoAdPlayer
                         vastTagUrl="https://s.magsrv.com/v1/vast.php?idzone=5426628"
@@ -114,7 +114,7 @@ function Movie() {
                     </video> */}
 
                     <div className='lg:hidden  flex justify-center'>
-                        <Banner zoneId={5426612} />
+                        {process.env.NODE_ENV === 'production' && <Banner zoneId={5426612} />}
                     </div>
 
 
@@ -125,7 +125,7 @@ function Movie() {
                                     {currentMvName}
                                 </span>
                                 <button
-                                    onClick={() => navigate(`/movie/download?vid=${currentMovie.id}`)}
+                                    onClick={() => navigate(`/video/download?vid=${currentMovie.id}`)}
                                     className='flex justify-center items-center p-1 pl-3 text-white text-xs  bg-secondary rounded-md'>
                                     Download
                                     <MdDownload
@@ -167,7 +167,7 @@ function Movie() {
                 {
                     movieDetails.movies && movieDetails.movies.map((movie: IMovie, i: number) =>
                         <div className='grid grid-cols-3  w-full mt-2 justify-start cursor-pointer' key={i} onClick={() => {
-                            navigate(`/movie/watch/${movie.name.trim()}`)
+                            navigate(`/video/watch/${movie.name.trim()}`)
                             navigate(0)
                         }}>
                             <div>
@@ -193,7 +193,7 @@ function Movie() {
             </div>
 
             <div className='col-span-2 ml-10  hidden lg:block p-3'>
-                <Banner zoneId={5426632} />
+                {process.env.NODE_ENV === 'production' && <Banner zoneId={5426632} />}
             </div>
         </div>
     )

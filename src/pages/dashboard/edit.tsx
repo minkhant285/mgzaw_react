@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ICategory, IMovie } from '../../models';
 import ReactSelect from 'react-select';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import MovieCategory from '../movie/category';
+import MovieCategory from '../video/category';
 import ModalBox from '../../components/modal';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';

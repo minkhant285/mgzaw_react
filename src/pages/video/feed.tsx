@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import useApi from '../../hooks/useApi'
 import { IMovie } from '../../models';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveCategory, setCurrentPage, setMovies, setPageCount } from '../../redux/slicers/movie.slice';
+import { setActiveCategory, setMovies, setPageCount } from '../../redux/slicers/movie.slice';
 import CategoryList from './categoryList';
 import { generateRangeArray } from '../../utils/rangeArray';
 import { loadMovieLimit } from '../../utils/constant';
@@ -15,9 +15,6 @@ import { MdOutlineOndemandVideo } from "react-icons/md";
 import { IoEye } from "react-icons/io5";
 import { IoIosCreate } from "react-icons/io";
 
-
-
-
 function MovieFeed() {
     const getAllMovie = useApi();
     const getCategory = useApi();
@@ -26,38 +23,42 @@ function MovieFeed() {
     const navigate = useNavigate();
     const pagelimit = loadMovieLimit;
     const location = useLocation();
-
+    const param = useParams() as { pg_number: string; c_name: string };
 
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         (async () => {
             document.title = `mgzaw (မောင်ဇော်)`;
-            await getAllMovies(1);
+            await getAllMovies(Number.parseInt(param.pg_number));
             await getCategory.sendRequest({
                 method: 'GET',
                 url: 'category',
             });
         })()
-    }, [])
+    }, [location.key])
 
     const getAllMovies = async (page: number) => {
 
-        let categorypath = location.pathname.split('/');
-        if (location.pathname.includes('/video/category')) {
-            dispatch(setActiveCategory(decodeURIComponent(categorypath[categorypath.length - 1])));
+        const splitedPath = location.pathname.split('/');
+        if (location.pathname.includes('/video/')) {
+            console.log('params =>', param)
         }
+        if (location.pathname.includes('/video/category')) {
+            dispatch(setActiveCategory(decodeURIComponent(splitedPath[splitedPath.length - 1])));
+        }
+
         const res = await getAllMovie.sendRequest({
             method: 'GET',
             url: location.pathname.includes('/video/category') ?
-                `movie?page=${page}&limit=${pagelimit}&category_id=${categorypath[categorypath.length - 1]}` :
+                `movie?page=${page}&limit=${pagelimit}&category_id=${param.c_name}` :
                 `movie?page=${page}&limit=${pagelimit}`
         });
 
         if (res) {
             const resMovies = res.result as { movies: IMovie[], total: number, page: number, limit: number }
             dispatch(setPageCount(resMovies.total));
-            dispatch(setCurrentPage(resMovies.page));
+            // dispatch(setCurrentPage(resMovies.page));
             dispatch(setMovies(resMovies.movies));
         }
     }
@@ -81,7 +82,7 @@ function MovieFeed() {
                 <h3 className='bg-primary p-1 rounded-md text-white w-[300px]'>Categories</h3>
                 <CategoryList />
                 <div className='w-[300px] h-[260px] pt-3'>
-                    <Banner zoneId={5426568} />
+                    {process.env.NODE_ENV === 'production' && <Banner zoneId={5426568} />}
                 </div>
             </div>
 
@@ -95,7 +96,7 @@ function MovieFeed() {
 
                 {/* mobile ad */}
                 <div className='flex w-full sm:hidden  justify-center pt-1 h-[55px]'>
-                    <Banner zoneId={5425982} />
+                    {process.env.NODE_ENV === 'production' && <Banner zoneId={5425982} />}
                 </div>
 
                 {/* mobile ad */}
@@ -116,7 +117,7 @@ function MovieFeed() {
                                     display: 'flex', flexDirection: 'column', justifyContent: 'flex - start'
                                 }}
                                 onClick={() => {
-                                    navigate(`/movie/watch/${movie.name}`);
+                                    navigate(`/video/watch/${movie.name}`);
                                 }}>
                                 <div className='max-h-[170px] bg-black'>
                                     <a href="#" onClick={e => e.preventDefault()} className="demo-mobile">
@@ -152,20 +153,23 @@ function MovieFeed() {
                     </div>}
 
                 <div className=' flex justify-center overflow-y-auto w-[100%] '>
-
-                    {generateRangeArray(Math.ceil(movieDetails.pageCount / pagelimit)).map((num, i) =>
-
-                        <button className={`px-2 p-1 rounded-md ${movieDetails.currentPage === num ? 'bg-secondary' : 'bg-background'}  text-white m-1`} key={i} onClick={() => getAllMovies(num)}>{num}</button>
-
-                    )}
-
-
+                    {
+                        generateRangeArray(Math.ceil(movieDetails.pageCount / pagelimit)).map((num, i) =>
+                            // generateRangeArray(10).map((num, i) =>
+                            <button
+                                className={`px-2 p-1 rounded-md ${Number.parseInt(param.pg_number) === num ? 'bg-secondary' : 'bg-background'}  text-white m-1`}
+                                key={i}
+                                onClick={() => navigate(`/video/page/${num}`)}
+                            >
+                                {num}
+                            </button>)
+                    }
                 </div>
             </div>
 
             <div className='col-span-2'>
                 <div className='hidden sm:flex  justify-center'>
-                    <Banner zoneId={5425870} />
+                    {process.env.NODE_ENV === 'production' && <Banner zoneId={5425870} />}
                 </div>
             </div>
 

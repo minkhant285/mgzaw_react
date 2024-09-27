@@ -3,8 +3,10 @@ import {
     createBrowserRouter,
     ErrorResponse,
     LoaderFunction,
+    Navigate,
     redirect,
     RouterProvider,
+    useParams,
     useRouteError
 } from "react-router-dom";
 import Loading from '../components/loading';
@@ -19,12 +21,12 @@ import ChangePasswordPage from '../pages/auth/changepass';
 import ChangePhonePage from '../pages/profile/change_phone';
 import ChangeEmailPage from '../pages/profile/change_email';
 import CreateMovie from '../pages/dashboard/create';
-import Movie from '../pages/movie/movie_detail';
-import MovieFeed from '../pages/movie/feed';
+import Movie from '../pages/video/movie_detail';
+import MovieFeed from '../pages/video/feed';
 import Footer from '../components/footer';
 import TNC from '../pages/about/terms';
 import Privacy from '../pages/about/privacy';
-import DownloadPage from '../pages/movie/download';
+import DownloadPage from '../pages/video/download';
 import MovieDashboard from '../pages/dashboard/dashboard';
 import EditMovie from '../pages/dashboard/edit';
 import { ApiInstance } from '../services';
@@ -37,7 +39,7 @@ import Error404 from '../components/error404';
 
 const AppRouteProvider: React.FC = () => {
 
-    const { authStatusControl } = useContext(AppContext);
+    const { authStatusControl, isAuthenticated } = useContext(AppContext);
 
     const AuthCheckerApi = async () => {
         const res = await ApiInstance({ method: 'GET', url: 'auth/checkAuthStatus' });
@@ -53,8 +55,6 @@ const AppRouteProvider: React.FC = () => {
         if (error.status === 404) {
             return <Error404 />;
         }
-
-        // Return a default error message or component for other errors
         return <div>Something went wrong!</div>;
     }
 
@@ -68,28 +68,40 @@ const AppRouteProvider: React.FC = () => {
         return 0;
     }
 
+    const RedirectToPageOne: React.FC = () => {
+        const { c_name } = useParams<{ c_name: string }>(); // Retrieve the c_name parameter from the URL
+
+        // If c_name is undefined or empty, return null to prevent erroneous redirects
+        if (!c_name) return null;
+
+        // Redirect to /video/category/{c_name}/page/1
+        return <Navigate to={`/video/category/${c_name}/page/1`} replace />;
+    };
 
     const router = createBrowserRouter([
-        // {
-        //     path: "/",
-        //     element: <RouterRender component={<Landing />} />,
-        //     errorElement: <div>Error</div>,
-        // },
         {
             path: "/",
+            element: <Navigate to={'/video/page/1'} replace />,
+            // element: <RouterRender component={<MovieFeed />} />,
+            errorElement: <ErrorBoundary />
+        },
+        {
+            path: "/video/page/:pg_number",
             element: <RouterRender component={<MovieFeed />} />,
             errorElement: <ErrorBoundary />
         },
         {
             path: "/video/category/:c_name",
-            element: <RouterRender component={<MovieFeed />} />,
-            errorElement: <ErrorBoundary />
+            element: <RedirectToPageOne />,
+            errorElement: <ErrorBoundary />,
+
         },
-        // {
-        //     path: "/components",
-        //     element: <RouterRender component={<ComponentPage />} />,
-        //     errorElement: <ErrorBoundary />
-        // },
+        {
+            path: "/video/category/:c_name/page/:pg_number",
+            element: <RouterRender component={<MovieFeed />} />,
+            errorElement: <ErrorBoundary />,
+
+        },
         {
             path: "/about",
             element: <RouterRender component={<About />} />,
@@ -116,13 +128,13 @@ const AppRouteProvider: React.FC = () => {
             errorElement: <ErrorBoundary />
         },
         {
-            path: "/movie/create",
+            path: "/video/create",
             loader: AuthLoader,
             element: <RouterRender component={<CreateMovie />} />,
             errorElement: <ErrorBoundary />
         },
         {
-            path: "/movie/edit",
+            path: "/video/edit",
             loader: AuthLoader,
             element: <RouterRender component={<EditMovie />} />,
             errorElement: <ErrorBoundary />
@@ -140,12 +152,12 @@ const AppRouteProvider: React.FC = () => {
             errorElement: <ErrorBoundary />
         },
         {
-            path: "/movie/watch/:name",
+            path: "/video/watch/:name",
             element: <RouterRender component={<Movie />} />,
             errorElement: <ErrorBoundary />
         },
         {
-            path: "/movie/download",
+            path: "/video/download",
             element: <RouterRender component={<DownloadPage />} />,
             errorElement: <ErrorBoundary />
         },
@@ -199,18 +211,18 @@ const AppRouteProvider: React.FC = () => {
         //     element: <RouterRender component={<Auth />} />,
         //     errorElement: <ErrorBoundary />
         // },
-        // {
-        //     path: "/forgotpass",
-        //     loader: async () => {
-        //         await AuthCheckerApi();
-        //         if (isAuthenticated) {
-        //             return redirect('/')
-        //         }
-        //         return 0;
-        //     },
-        //     element: <RouterRender component={<Auth />} />,
-        //     errorElement: <ErrorBoundary />
-        // }
+        {
+            path: "/forgotpass",
+            loader: async () => {
+                await AuthCheckerApi();
+                if (isAuthenticated) {
+                    return redirect('/')
+                }
+                return 0;
+            },
+            element: <RouterRender component={<Auth />} />,
+            errorElement: <ErrorBoundary />
+        }
     ]);
 
     return <div>

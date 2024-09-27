@@ -8,7 +8,7 @@ import axios, { AxiosProgressEvent } from 'axios';
 import ReactSelect from 'react-select';
 import { AppContext } from '../../providers/app.provider';
 import { useNavigate } from 'react-router-dom';
-import MovieCategory from '../movie/category';
+import MovieCategory from '../video/category';
 import ModalBox from '../../components/modal';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';

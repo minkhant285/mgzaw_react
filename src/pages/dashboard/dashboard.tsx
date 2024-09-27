@@ -9,7 +9,7 @@ import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { FaFileVideo } from "react-icons/fa";
 import ModalBox from '../../components/modal';
-import MovieCategory from '../movie/category';
+import MovieCategory from '../video/category';
 import { GenericAbortSignal } from 'axios';
 
 
@@ -107,7 +107,7 @@ function MovieDashboard() {
             </div>
 
             {activemode === 'movie' && movieDetails.movies && <div>
-                <button className='p-2 bg-primary text-white flex items-center m-2 rounded-md' onClick={() => navigate('/movie/create')}> <FaFileVideo />  Create New Video</button>
+                <button className='p-2 bg-primary text-white flex items-center m-2 rounded-md' onClick={() => navigate('/video/create')}> <FaFileVideo />  Create New Video</button>
                 <table className='table-auto border-collapse border border-slate-500 w-full min-w-max  text-left'>
 
                     <thead>
@@ -138,7 +138,7 @@ function MovieDashboard() {
                                 </td>
                                 <td className='p-2 flex gap-1'>
                                     <button className='px-2 mx-1 py-1 bg-[#00f] text-white rounded-md flex items-center'
-                                        onClick={() => navigate(`/movie/edit?vid=${mv.id}`)}
+                                        onClick={() => navigate(`/video/edit?vid=${mv.id}`)}
                                     >
                                         <MdEdit color='white' /> Edit
                                     </button>
