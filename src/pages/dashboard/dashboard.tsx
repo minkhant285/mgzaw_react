@@ -58,12 +58,11 @@ function MovieDashboard() {
         const res = await deleteMovieApi.sendRequest({
             method: 'DELETE',
             url: `category/${category_id}`,
-
         });
-        //@ts-ignore
-        if (res && res?.status === 200) {
+        if (res && res?.status_message === STATUS_MESSAGE.SUCCESS) {
             await getAllCategories();
-
+        } else if (res?.status_message === STATUS_MESSAGE.FAIL) {
+            alert(res.message);
         }
     }
 

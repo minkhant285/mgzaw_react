@@ -119,7 +119,7 @@ function MovieFeed() {
                                     navigate(`/video/watch/${movie.name}`);
                                 }}>
                                 <div className='max-h-[170px] bg-black'>
-                                    <a href="#" onClick={e => e.preventDefault()} className="demo-mobile">
+                                    <a href="" onClick={e => e.preventDefault()} className="demo-mobile">
                                         <ResponsiveImage
                                             alt=''
                                             containerHeight={150}

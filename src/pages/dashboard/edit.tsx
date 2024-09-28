@@ -34,7 +34,7 @@ const EditMovie = () => {
     const updateMovie = useApi();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const getCategory = useApi();
-    const [selectedCategory, setCategory] = useState<ICategory[]>();
+    const [selectedCategory, setCategory] = useState<ICategory[]>(currentMovie ? currentMovie.categories : []);
     // const { loadingControl, token } = useContext(AppContext);
     const navigate = useNavigate();
     const [addCategory, setNewCategory] = useState<any>();
