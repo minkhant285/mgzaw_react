@@ -17,7 +17,7 @@ import { IoIosCreate } from "react-icons/io";
 import Pagination from '../../components/pagination';
 
 function MovieFeed() {
-    const paginationLimit = 7;
+    const paginationLimit = 5;
     const getAllMovie = useApi();
     const getCategory = useApi();
     const dispatch: AppDispatch = useDispatch();
@@ -118,16 +118,16 @@ function MovieFeed() {
                                     navigate(`/video/watch/${movie.name}`);
                                 }}>
                                 <div className='max-h-[170px] bg-black'>
-                                    <a href="" onClick={e => e.preventDefault()} className="demo-mobile">
-                                        <ResponsiveImage
-                                            alt=''
-                                            containerHeight={150}
-                                            src={movie.thumbnail_url !== null ?
-                                                movie.thumbnail_url === "" ?
-                                                    `https://img.freepik.com/premium-vector/adults-only-18-plus-sensitive-content-explicit-video-vector-stock-illustration_100456-10148.jpg` :
-                                                    movie.thumbnail_url : ""}
-                                        />
-                                    </a>
+                                    {/* <a href="" onClick={e => e.preventDefault()} className="demo-mobile"> */}
+                                    <ResponsiveImage
+                                        alt=''
+                                        containerHeight={150}
+                                        src={movie.thumbnail_url !== null ?
+                                            movie.thumbnail_url === "" ?
+                                                `https://img.freepik.com/premium-vector/adults-only-18-plus-sensitive-content-explicit-video-vector-stock-illustration_100456-10148.jpg` :
+                                                movie.thumbnail_url : ""}
+                                    />
+                                    {/* </a> */}
                                 </div>
                                 <div className=' pb-2 flex flex-col px-2'>
                                     <span className='text-white text-[0.8em] line-clamp-2  '> {movie.name}</span>
