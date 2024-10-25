@@ -200,18 +200,18 @@ const AppRouteProvider: React.FC = () => {
             element: <RouterRender component={<Auth />} />,
             errorElement: <ErrorBoundary />
         },
-        // {
-        //     path: "/register",
-        //     loader: async () => {
-        //         await AuthCheckerApi();
-        //         if (isAuthenticated) {
-        //             return redirect('/')
-        //         }
-        //         return 0;
-        //     },
-        //     element: <RouterRender component={<Auth />} />,
-        //     errorElement: <ErrorBoundary />
-        // },
+        {
+            path: "/register",
+            loader: async () => {
+                await AuthCheckerApi();
+                if (isAuthenticated) {
+                    return redirect('/')
+                }
+                return 0;
+            },
+            element: <RouterRender component={<Auth />} />,
+            errorElement: <ErrorBoundary />
+        },
         {
             path: "/forgotpass",
             loader: async () => {

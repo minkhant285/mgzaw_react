@@ -15,6 +15,8 @@
     "axios": "^1.7.2",
     "date-fns": "^4.1.0",
     "exoclick-react": "^1.2.0",
+    "fluid-player": "^3.0.0",
+    "hls.js": "^1.5.17",
     "react": "^18.3.1",
     "react-datepicker": "^7.2.0",
     "react-dom": "^18.3.1",
@@ -36,11 +38,13 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/hls.js": "^1.0.0",
     "@types/jwplayer": "^8.31.1",
     "@types/node": "^22.7.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/react-lazy-load-image-component": "^1.6.4",
+    "@types/videojs": "^5.16.2",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "@vitejs/plugin-react": "^4.3.1",

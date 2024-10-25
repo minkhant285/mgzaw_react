@@ -1,78 +1,63 @@
-interface VideoAdPlayerProps {
-    vastTagUrl: string; // The VAST URL for the ad
-    videoUrl: string;   // The main content video URL
-    vidkey: string;
-    poster: string;
+import React, { useEffect, useRef } from 'react';
+// import '../../fluidplayer.css';
+import 'fluid-player/src/css/fluidplayer.css'
+import FluidPlayer from 'fluid-player';
+
+interface FluidPlayerProps {
+    videoUrl: string;
+    adTagUrl?: string; // Optional for VAST ads
+    thumbnail_url: string;
 }
 
-import { useState } from "react";
-//@ts-ignore
-import ReactJWPlayer from "react-jw-player";
+const FluidVideoPlayer: React.FC<FluidPlayerProps> = ({ videoUrl, adTagUrl, thumbnail_url }) => {
+    let self = useRef(null);
+    let player: any = null;
 
-const VideoAdPlayer: React.FC<VideoAdPlayerProps> = ({ vastTagUrl, videoUrl, vidkey, poster }) => {
+    useEffect(() => {
+        if (!player) {
+            player = FluidPlayer('hls-video',
+                {
+                    layoutControls: {
+                        fillToContainer: true,
+                        keyboardControl: true,
+                        posterImage: thumbnail_url,
+                        primaryColor: '#1F4068'
+                    },
+                    vastOptions: {
+                        showPlayButton: true,
+                        adList: [{
+                            roll: 'preRoll',
+                            vastTag: adTagUrl as string,
+                            adText: 'Advertising supports us directly',
 
-    const [loading, setLoading] = useState<boolean>(true);
-
-    let newScheduleArray = [
-        {
-            tag: [
-                vastTagUrl
-            ],
-            type: "linear",
-            offset: 5
-        },
-        {
-            tag: [
-                'https://s.magsrv.com/splash.php?idzone=5426630'
-            ],
-            type: "linear",
-            offset: 10
-        },
-    ];
-
-    const ads = {
-        admessage: "This video will resume in 5 seconds",
-        adscheduleid: "adscheduledid",
-        client: "vast",
-        cuetext: "Advertisement",
-        outstream: false,
-        preloadAds: false,
-        vpaidcontrols: false,
-        rules: {
-            startOnSeek: "pre",
-            timeBetweenAds: 0
-        },
-        schedule: newScheduleArray
-    };
+                        },
+                        {
+                            roll: 'midRoll',
+                            vastTag: 'https://s.magsrv.com/splash.php?idzone=5426630',
+                            timer: 10
+                        },
+                        {
+                            roll: 'postRoll',
+                            vastTag: 'https://s.magsrv.com/v1/vast.php?idzone=5454502',
+                        }
+                        ],
+                        skipButtonCaption: 'Wait [seconds] more second(s)'
+                    }
+                }
+            );
+        }
+    }, []);
 
     return (
-        <div className="mt-1">
-
-
-            {loading && (
-                <div style={{
-                    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                    display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', zIndex: 10
-                }}>
-                    <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
-                        <circle className="opacity-25 text-white" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75 text-white" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                    </svg>
-                    <div className="spinner text-white">Loading...</div> {/* Replace with your actual loader */}
-                </div>
-            )}
-
-            <ReactJWPlayer
-                image={poster}
-                file={videoUrl}
-                playerId={vidkey}
-                playerScript="https://cdn.jwplayer.com/libraries/cDnha7c4.js"
-                customProps={{ advertising: { ...ads } }}
-                onReady={() => setLoading(false)}
-                onPlay={() => setLoading(false)}
-            />
+        <div style={{ width: '100%', height: '300px' }}>
+            <video ref={self} controls id='hls-video' height={300}>
+                <source src={videoUrl}
+                    data-fluid-hd
+                    title='1080p'
+                    type='application/x-mpegURL' />
+            </video>
         </div>
     );
-}
+};
 
-export default VideoAdPlayer;
+export default FluidVideoPlayer;

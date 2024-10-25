@@ -10,6 +10,12 @@ import { setMovies } from '../../redux/slicers/movie.slice';
 import { formatDistanceToNow } from 'date-fns';
 import { Banner } from 'exoclick-react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import VideoPlayer from '../../components/videoplayerv2';
+import { envLoader } from '../../utils';
+import HLSPlayer from '../../components/videoplayerv2';
+import JWPlayerWithAds from '../../components/videoplayer';
+import VideoPlayerWithAds from '../../components/videoplayer';
+import FluidVideoPlayer from '../../components/videoplayer';
 
 function Movie() {
 
@@ -100,15 +106,25 @@ function Movie() {
                     <div className='h-[55px] flex justify-center  my-1'>
                         {process.env.NODE_ENV === 'production' && <Banner zoneId={5426622} />}
                     </div>
-                    <VideoAdPlayer
+
+                    {`https://bluemoviepro.s3.ap-southeast-1.amazonaws.com/hls/${currentMovie.url.split('/').pop()?.split('.')[0].trim()}/${currentMovie.url}`}
+
+                    {/* <VideoAdPlayer
                         vastTagUrl="https://s.magsrv.com/v1/vast.php?idzone=5426628"
                         videoUrl={`${currentMovie.url}`}
                         key={currentMovie.id}
                         vidkey={currentMovie.id}
                         poster={currentMovie.thumbnail_url}
 
+                    /> */}
+                    <FluidVideoPlayer
+                        thumbnail_url={currentMovie.thumbnail_url}
+                        adTagUrl='https://s.magsrv.com/v1/vast.php?idzone=5426628'
+                        videoUrl={`https://bluemoviepro.s3.ap-southeast-1.amazonaws.com/hls/${currentMovie.url.split('/').pop()?.split('.')[0].trim()}/${currentMovie.url}`}
                     />
 
+                    {/* <VideoPlayerWithAds vastUrl='https://s.magsrv.com/v1/vast.php?idzone=5426628'
+                    hlsUrl={`https://bluemoviepro.s3.ap-southeast-1.amazonaws.com/hls/${currentMovie.url.split('/').pop()?.split('.')[0].trim()}/${currentMovie.url}`} /> */}
                     {/* <video width={200} height={200} controls key={currentMovie.id}>
                         <source src={`${currentMovie.url}`} />
                     </video> */}
