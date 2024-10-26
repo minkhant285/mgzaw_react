@@ -51,6 +51,17 @@ function MovieDashboard() {
         });
         if (res && res?.status_message === STATUS_MESSAGE.SUCCESS) {
             await getAllMovies(1);
+            const cate_res = await getCategory.sendRequest({
+                method: 'GET',
+                url: 'category'
+            });
+
+            if (cate_res) {
+                const res = cate_res.result as ICategory[];
+                if (res.length > 0) {
+                    dispatch(setCategories(res));
+                }
+            }
 
         }
     }

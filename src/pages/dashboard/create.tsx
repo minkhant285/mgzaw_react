@@ -161,9 +161,9 @@ const CreateMovie = () => {
     useEffect(() => {
 
         (async () => {
-            if (categoryDetails.categories === null) {
-                await loadCategory();
-            }
+            // if (categoryDetails.categories === null) {
+            await loadCategory();
+            // }
         })()
     }, [])
 
