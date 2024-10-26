@@ -735,18 +735,6 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.5.tgz#a6ce3e556e00fd9895dd872dd172ad0d4bd687f4"
   integrity sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==
 
-"@types/hls.js@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@types/hls.js/-/hls.js-1.0.0.tgz#47a03f97217461d279e4dc89481ddff86def5a36"
-  integrity sha512-EGY2QJefX+Z9XH4PAxI7RFoNqBlQEk16UpYR3kbr82CIgMX5SlMe0PjFdFV0JytRhyVPQCiwSyONuI6S1KdSag==
-  dependencies:
-    hls.js "*"
-
-"@types/jwplayer@^8.31.1":
-  version "8.31.1"
-  resolved "https://registry.yarnpkg.com/@types/jwplayer/-/jwplayer-8.31.1.tgz#c70c6e69981880a635ff13362a0ec490134a3242"
-  integrity sha512-hWZhx0dYV6hriqmBnGp5pKLlbPQS8QnLldSj2/vSGUSxgIwIfsz5C/tlWA2BnaduDXzZ466Qa3CAH2QNPw/hPQ==
-
 "@types/node@^22.7.2":
   version "22.7.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-22.7.2.tgz#80ed66c0a5025ffa037587fd69a816f29b54e4c7"
@@ -798,11 +786,6 @@
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@types/use-sync-external-store/-/use-sync-external-store-0.0.3.tgz#b6725d5f4af24ace33b36fafd295136e75509f43"
   integrity sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==
-
-"@types/videojs@^5.16.2":
-  version "5.16.2"
-  resolved "https://registry.yarnpkg.com/@types/videojs/-/videojs-5.16.2.tgz#36c0f4f7005a492aa9980bee2e0c6591baa146f3"
-  integrity sha512-pgKewIXl3nXuDG3LboA1Z0d0quLSQexJiNUsquW8wSFhTtvhbK2WRg1tubS8yIhOpW7ygRi9xW9xuj3KipvYGQ==
 
 "@typescript-eslint/eslint-plugin@^7.13.1":
   version "7.14.1"
@@ -1726,7 +1709,7 @@ hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
-hls.js@*, hls.js@^1.5.13:
+hls.js@^1.5.13:
   version "1.5.17"
   resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-1.5.17.tgz#8a4a9bae2df4dab23168156f5f7d0f39a71026fd"
   integrity sha512-wA66nnYFvQa1o4DO/BFgLNRKnBTVXpNeldGRBJ2Y0SvFtdwvFKCbqa9zhHoZLoxHhZ+jYsj3aIBkWQQCPNOhMw==
