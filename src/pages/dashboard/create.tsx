@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form';
 import useApi from '../../hooks/useApi';
 import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
 import { ICategory } from '../../models';
-// import { io } from 'socket.io-client';
 import { envLoader } from '../../utils';
 import axios, { AxiosProgressEvent } from 'axios';
 import ReactSelect from 'react-select';
@@ -105,7 +104,8 @@ const CreateMovie = () => {
                             thumb_time: vidInput.thumb_time.trim(),
                             url: response.data.result.fileUrl,
                             thumbnail_url: response.data.result.thumbnail_url,
-                            categories: selectedCategory
+                            categories: selectedCategory,
+                            duration: response.data.result.duration.duration
                         }
                     }).then(() => {
                         navigate(0);

@@ -92,17 +92,6 @@ function DownloadPage() {
                 {process.env.NODE_ENV === 'production' && <Banner zoneId={5430454} />}
 
 
-
-                <section className="how-to-download-section ">
-                    <h2 className="text-2xl font-bold mb-2">How to Download Videos</h2>
-                    <ol className="list-decimal list-inside my-2">
-                        <li><strong>Browse:</strong> Explore our extensive library of adult content.</li>
-                        <li><strong>Select:</strong> Choose the video you want to download.</li>
-                        <li><strong>Download:</strong> Click the download button and choose your preferred video quality.</li>
-                        <li><strong>Enjoy:</strong> Watch your downloaded video anytime, even without an internet connection!</li>
-                    </ol>
-                </section>
-
                 {process.env.NODE_ENV === 'production' && <Banner zoneId={5430456} />}
 
                 <section className="call-to-action-section my-2 text-center">
@@ -116,7 +105,7 @@ function DownloadPage() {
                         <a href="#" onClick={e => e.preventDefault()} className="downloadBtn self-center">
                             <button disabled={start} onClick={() => setStart(true)} className='my-3 flex w-fit self-center justify-center items-center p-3 pl-3 text-white text-xs  bg-secondary rounded-md'>
                                 {
-                                    start ? `Starting Download in (${counter} s)` : <>Download "{currentMovie?.name}.mp4" Here  <MdDownload
+                                    start ? `Starting Download in (${counter} s)` : <>Download "{currentMovie?.name}" Here  <MdDownload
                                         className="text-white  shadow-lg mx-1 "
                                         size={20} /></>
                                 }

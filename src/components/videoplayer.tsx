@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-// import '../../fluidplayer.css';
 import 'fluid-player/src/css/fluidplayer.css'
 import FluidPlayer from 'fluid-player';
 
@@ -21,20 +20,18 @@ const FluidVideoPlayer: React.FC<FluidPlayerProps> = ({ videoUrl, adTagUrl, thum
                         fillToContainer: true,
                         keyboardControl: true,
                         posterImage: thumbnail_url,
-                        primaryColor: '#1F4068'
+                        primaryColor: '#f00'
                     },
                     vastOptions: {
                         showPlayButton: true,
                         adList: [{
                             roll: 'preRoll',
                             vastTag: adTagUrl as string,
-                            adText: 'Advertising supports us directly',
 
                         },
                         {
-                            roll: 'midRoll',
+                            roll: 'onPauseRoll',
                             vastTag: 'https://s.magsrv.com/splash.php?idzone=5426630',
-                            timer: 10
                         },
                         {
                             roll: 'postRoll',
@@ -49,8 +46,8 @@ const FluidVideoPlayer: React.FC<FluidPlayerProps> = ({ videoUrl, adTagUrl, thum
     }, []);
 
     return (
-        <div style={{ width: '100%', height: '300px' }}>
-            <video ref={self} controls id='hls-video' height={300}>
+        <div style={{ width: '100%' }} className='md:h-[400px] h-[280px]'>
+            <video ref={self} controls id='hls-video'>
                 <source src={videoUrl}
                     data-fluid-hd
                     title='1080p'

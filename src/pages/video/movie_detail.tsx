@@ -3,18 +3,12 @@ import useApi from '../../hooks/useApi';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ICategory, IMovie } from '../../models';
 import { MdDownload } from "react-icons/md";
-import VideoAdPlayer from '../../components/videoplayer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, MVProRootState } from '../../redux/store';
 import { setMovies } from '../../redux/slicers/movie.slice';
 import { formatDistanceToNow } from 'date-fns';
 import { Banner } from 'exoclick-react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import VideoPlayer from '../../components/videoplayerv2';
-import { envLoader } from '../../utils';
-import HLSPlayer from '../../components/videoplayerv2';
-import JWPlayerWithAds from '../../components/videoplayer';
-import VideoPlayerWithAds from '../../components/videoplayer';
 import FluidVideoPlayer from '../../components/videoplayer';
 
 function Movie() {
@@ -107,27 +101,15 @@ function Movie() {
                         {process.env.NODE_ENV === 'production' && <Banner zoneId={5426622} />}
                     </div>
 
-                    {`https://bluemoviepro.s3.ap-southeast-1.amazonaws.com/hls/${currentMovie.url.split('/').pop()?.split('.')[0].trim()}/${currentMovie.url}`}
+                    {/* {`https://mgzaw.sgp1.cdn.digitaloceanspaces.com/hls/${currentMovie.url.split('/').pop()?.split('.')[0].trim()}/${currentMovie.url}`} */}
 
-                    {/* <VideoAdPlayer
-                        vastTagUrl="https://s.magsrv.com/v1/vast.php?idzone=5426628"
-                        videoUrl={`${currentMovie.url}`}
-                        key={currentMovie.id}
-                        vidkey={currentMovie.id}
-                        poster={currentMovie.thumbnail_url}
 
-                    /> */}
                     <FluidVideoPlayer
                         thumbnail_url={currentMovie.thumbnail_url}
                         adTagUrl='https://s.magsrv.com/v1/vast.php?idzone=5426628'
-                        videoUrl={`https://bluemoviepro.s3.ap-southeast-1.amazonaws.com/hls/${currentMovie.url.split('/').pop()?.split('.')[0].trim()}/${currentMovie.url}`}
+                        // videoUrl='http://localhost:3000/hls/just/master.m3u8'
+                        videoUrl={`https://mgzaw.sgp1.cdn.digitaloceanspaces.com/hls/${currentMovie.url.split('/').pop()?.split('.')[0].trim()}/${currentMovie.url}`}
                     />
-
-                    {/* <VideoPlayerWithAds vastUrl='https://s.magsrv.com/v1/vast.php?idzone=5426628'
-                    hlsUrl={`https://bluemoviepro.s3.ap-southeast-1.amazonaws.com/hls/${currentMovie.url.split('/').pop()?.split('.')[0].trim()}/${currentMovie.url}`} /> */}
-                    {/* <video width={200} height={200} controls key={currentMovie.id}>
-                        <source src={`${currentMovie.url}`} />
-                    </video> */}
 
                     <div className='lg:hidden  flex justify-center'>
                         {process.env.NODE_ENV === 'production' && <Banner zoneId={5426612} />}
