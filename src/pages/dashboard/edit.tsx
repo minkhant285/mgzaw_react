@@ -3,7 +3,7 @@ import useApi from '../../hooks/useApi';
 import { useEffect, useRef, useState } from 'react';
 import { ICategory, IMovie } from '../../models';
 import ReactSelect from 'react-select';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import MovieCategory from '../video/category';
 import ModalBox from '../../components/modal';
 import { AppDispatch, MVProRootState } from '../../redux/store';
@@ -30,6 +30,7 @@ const EditMovie = () => {
         }
     });
 
+    const location = useLocation();
 
     const updateMovie = useApi();
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -90,10 +91,10 @@ const EditMovie = () => {
         });
         const m = res?.result as IMovie;
         if (JSON.stringify(currentMovie) !== JSON.stringify(m)) {
+            setCategory(m.categories)
             setCurrentMovie(m);
             document.title = `mgzaw - ${m.name}`;
             reset({ name: m.name, caption: m.caption, description: m.description });
-            setCategory(m.categories)
         }
     }
 
@@ -102,12 +103,12 @@ const EditMovie = () => {
         (async () => {
             (async () => {
                 await loadMovieDetail();
-                if (categoryDetails.categories === null) {
-                    await loadCategory();
-                }
+                // if (categoryDetails.categories === null) {
+                await loadCategory();
+                // }
             })();
         })()
-    }, [])
+    }, [currentMovie?.id, location.key, selectedCategory.length])
 
     return (
         <div className='h-[calc(100%-3.5rem)] flex flex-1 justify-center'>
@@ -158,7 +159,7 @@ const EditMovie = () => {
                     {categoryDetails.categories && <ReactSelect
                         className='w-full'
                         isMulti
-                        defaultValue={currentMovie?.categories}
+                        value={selectedCategory}
                         options={categoryDetails.categories}
                         onChange={(selectedOptions) => setCategory(selectedOptions as ICategory[])}
                         getOptionLabel={(option: ICategory) => option.name}
