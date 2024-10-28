@@ -2367,6 +2367,11 @@ react-lazy-load-image-component@^1.6.2:
     lodash.debounce "^4.0.8"
     lodash.throttle "^4.1.1"
 
+react-mobile-picker@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-mobile-picker/-/react-mobile-picker-1.0.1.tgz#498db6196082e546e85ad6eaf710695370007a41"
+  integrity sha512-rUbAiEAXC2/Kvnc4iBnchEf6Fzj/ymL1xiDTsPPhUBY1akB84NGRpIdgE9DQeB+mCLGIKuSEIJpMA3Zg1AUL0g==
+
 react-onclickoutside@^6.13.0:
   version "6.13.1"
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.13.1.tgz#1f5e0241c08784b6e65745d91aca0d700c548a89"

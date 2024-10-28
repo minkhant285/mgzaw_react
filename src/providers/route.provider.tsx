@@ -252,11 +252,13 @@ const RouterRender: React.FC<{ component: React.ReactNode }> = ({ component }) =
     return <div className='bg-background min-h-screen overflow-y-auto '>
         {appLoading && <Loading />}
         {appError && <GlobalError />}
+
         <AppBar />
         <div className='min-h-[calc(100vh-90px)] pt-[56px]'>
+            {process.env.NODE_ENV === 'production' && <StickyBanner format='300x250' zoneId={5425980} />}
             {component}
         </div>
         <Footer />
-        {process.env.NODE_ENV === 'production' && <StickyBanner format='300x250' zoneId={5425980} />}
+
     </div>
 }
