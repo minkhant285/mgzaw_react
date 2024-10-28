@@ -1,5 +1,4 @@
 import React, { ReactNode, MouseEvent } from 'react';
-import { MdCancel } from "react-icons/md";
 
 interface ModalProps {
     isOpen: boolean;
