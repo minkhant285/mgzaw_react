@@ -17,7 +17,7 @@ import { IoIosCreate } from "react-icons/io";
 import Pagination from '../../components/pagination';
 
 function MovieFeed() {
-    const paginationLimit = 10;
+    const paginationLimit = 5;
     const getAllMovie = useApi();
     const getCategory = useApi();
     const dispatch: AppDispatch = useDispatch();

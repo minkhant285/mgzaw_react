@@ -124,7 +124,7 @@ function Movie() {
                                 </span>
                                 <button
                                     onClick={() => navigate(`/video/download?vid=${currentMovie.id}`)}
-                                    className='flex justify-center items-center p-1 pl-3 text-white text-xs  bg-secondary rounded-md'>
+                                    className='flex justify-center items-center p-1 pl-3 text-white text-xs  bg-secondary rounded-md download-btn'>
                                     Download
                                     <MdDownload
                                         className="text-white  shadow-lg mx-1 "
