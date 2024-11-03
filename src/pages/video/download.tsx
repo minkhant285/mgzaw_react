@@ -96,14 +96,14 @@ function DownloadPage() {
 
                 <section className="call-to-action-section my-2 text-center">
                     <h2 className="text-2xl font-bold mb-4">Start Downloading Today!</h2>
-                    <p className="mb-4">
+                    <p className="mb-4 downloadBtn " >
                         Join MGZAW.com and take advantage of our easy video download feature.
                     </p>
                     <div className='w-full  flex justify-center flex-col items-center'>
                         {process.env.NODE_ENV === 'production' && <Banner zoneId={5430452} />}
 
-                        <a href="#" onClick={e => e.preventDefault()} className="downloadBtn self-center">
-                            <button disabled={start} onClick={() => setStart(true)} className='my-3 flex w-fit self-center justify-center items-center p-3 pl-3 text-white text-xs  bg-secondary rounded-md'>
+                        <a onClick={e => e.preventDefault()} className="downloadBtn self-center">
+                            <button disabled={start} onClick={() => setStart(true)} className='my-3 flex w-fit self-center justify-center items-center p-3 pl-3 text-white text-xs  bg-secondary rounded-md mbPopunder'>
                                 {
                                     start ? `Starting Download in (${counter} s)` : <>Download "{currentMovie?.name}" Here  <MdDownload
                                         className="text-white  shadow-lg mx-1 "

@@ -10,7 +10,7 @@ import { generateRangeArray } from '../../utils/rangeArray';
 import { loadMovieLimit } from '../../utils/constant';
 import ResponsiveImage from '../../components/responsiveImage';
 import { formatDistanceToNow } from 'date-fns';
-import { Banner, FullpageInterstitial } from "exoclick-react";
+import { Banner, FullpageInterstitial, RecommendationWidget } from "exoclick-react";
 import { MdOutlineOndemandVideo } from "react-icons/md";
 import { IoEye } from "react-icons/io5";
 import { IoIosCreate } from "react-icons/io";
@@ -148,6 +148,10 @@ function MovieFeed() {
                             </div>)
                         }
                     </div>}
+
+                <div className='px-2'>
+                    <RecommendationWidget zoneId={'5461390'} />
+                </div>
 
                 <div className='flex flex-col w-full'>
                     <div className='flex w-full sm:hidden  justify-center pt-1 h-[55px] mb-2'>
